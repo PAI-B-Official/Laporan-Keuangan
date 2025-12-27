@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Laporan Kas PAI B</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,21 +32,14 @@
         body {
             /* Gradasi Merah ke Hitam */
             background: linear-gradient(180deg, #8B0000 0%, #000000 100%);
-            min-height: 100vh;
+            height: 100vh; /* Tinggi pas layar */
+            width: 100vw;
+            overflow: hidden; /* Hilangkan scroll */
             color: white;
             font-family: 'Poppins', sans-serif;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #8B0000;
-            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .glass-panel {
@@ -102,34 +95,48 @@
         }
     </style>
 </head>
-<body class="flex items-center justify-center p-4">
+<body class="p-4">
 
     <!-- Container Utama -->
-    <div class="w-full max-w-md relative z-10">
+    <div class="w-full max-w-md relative z-10 flex flex-col h-full justify-center">
         
         <!-- LOGO / HEADER AREA -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-white tracking-wider drop-shadow-lg uppercase italic">
-                Laporan kas <span class="text-yellow-500">pai b</span>
+        <div class="text-center mb-6 shrink-0">
+            <h1 class="text-4xl font-bold text-white tracking-wider drop-shadow-lg uppercase italic leading-tight">
+                Laporan kas <br> <span class="text-yellow-500 text-5xl">PAI B</span>
             </h1>
-            <p class="text-gray-400 text-sm mt-1">Catatan keuangan gak pake ribet.</p>
+            <p class="text-gray-400 text-sm mt-2">Catatan keuangan gak pake ribet.</p>
         </div>
 
         <!-- HALAMAN LOGIN -->
-        <div id="loginPage" class="glass-panel p-8 rounded-2xl shadow-neon transition-all duration-500 transform">
+        <div id="loginPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon transition-all duration-500 transform w-full">
             <h2 class="text-2xl font-bold mb-6 text-center border-b border-red-900 pb-4">Lengkapi Data</h2>
             
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="mb-4">
                     <label class="block text-gray-300 text-sm mb-2">Username</label>
-                    <input type="text" id="usernameInput" required placeholder="Masukkan Username" 
+                    <!-- inputmode="numeric" memicu keyboard angka di HP -->
+                    <input type="text" inputmode="numeric" id="usernameInput" required placeholder="Masukkan Username" 
                         class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:border-red-500 transition-all duration-300 input-glow">
                 </div>
 
-                <div class="mb-6">
+                <div class="mb-6 relative">
                     <label class="block text-gray-300 text-sm mb-2">Password</label>
-                    <input type="password" id="passwordInput" required placeholder="Masukkan Password" 
-                        class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:border-red-500 transition-all duration-300 input-glow">
+                    <div class="relative">
+                        <input type="password" id="passwordInput" required placeholder="Masukkan Password" 
+                            class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:border-red-500 transition-all duration-300 input-glow pr-12">
+                        
+                        <!-- Ikon Mata (Show/Hide Password) -->
+                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none">
+                            <svg id="eyeIconOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <svg id="eyeIconClosed" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.059 10.059 0 013.999-5.125m3.75-2.13A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.059 10.059 0 01-3.328 5.75m-3.414-3.414a3 3 0 01-4.242 0m4.242-4.242l4.242 4.242M1 1l22 22" />
+                            </svg>
+                        </button>
+                    </div>
                     <!-- Inline Error Message -->
                     <p id="inlineError" class="text-red-500 text-xs mt-2 hidden font-bold italic">⚠️ Data tidak Valid</p>
                 </div>
@@ -145,8 +152,6 @@
         <div id="errorModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
             <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeErrorModal()"></div>
             <div class="bg-[#1a0000] border border-red-600 p-6 rounded-2xl shadow-[0_0_30px_rgba(255,0,0,0.6)] w-80 text-center transform scale-0 transition-transform duration-300 relative z-10" id="errorModalContent">
-                
-                <!-- Animated X Icon -->
                 <div class="flex justify-center mb-4">
                     <div class="w-20 h-20 rounded-full border-4 border-red-600 flex items-center justify-center bg-red-900/20">
                         <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,10 +159,8 @@
                         </svg>
                     </div>
                 </div>
-
                 <h3 class="text-xl font-bold text-red-500 mb-2 uppercase tracking-wide">Authorization Failed</h3>
                 <p class="text-gray-300 text-sm mb-6">Silahkan masukan data yang valid untuk melanjutkan.</p>
-                
                 <button onclick="closeErrorModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
                     Coba Lagi
                 </button>
@@ -171,7 +174,7 @@
         </div>
 
         <!-- HALAMAN FORMULIR SETOR (Awalnya Hidden) -->
-        <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden transition-all duration-500 transform scale-95 opacity-0">
+        <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden transition-all duration-500 transform scale-95 opacity-0 w-full">
             
             <!-- Header User Profile -->
             <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4">
@@ -181,7 +184,7 @@
                 </div>
                 
                 <div class="flex-grow min-w-0">
-                    <p class="text-xs text-gray-400 mb-0.5">Hello',</p>
+                    <p class="text-xs text-gray-400 mb-0.5">Hello,</p>
                     <h2 id="displayUsername" class="text-lg sm:text-xl font-bold text-white leading-tight truncate">User Name</h2>
                     <p id="displayUserID" class="text-sm font-mono text-red-400 mt-0.5">ID: 000000</p>
                 </div>
@@ -194,18 +197,23 @@
             <form id="depositForm" onsubmit="kirimKeWA(event)">
                 
                 <!-- Input Nominal dengan Font Digital -->
-                <div class="mb-6 relative group">
+                <div class="mb-4 relative group">
                     <label class="block text-red-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Setor</label>
-                    <div class="relative">
-                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-red-500 text-3xl font-digital mt-1">Rp</span>
-                        <input type="text" id="nominalInput" required placeholder="0" oninput="formatInputCurrency(this)"
-                            class="w-full bg-black border-2 border-red-900 rounded-xl py-4 pl-12 pr-4 text-right text-4xl text-white font-digital placeholder-gray-800 focus:border-red-500 transition-all duration-300 input-glow tracking-widest">
+                    
+                    <!-- Wrapper agar Rp dan Input lurus -->
+                    <div class="relative flex items-center bg-black border-2 border-red-900 rounded-xl transition-all duration-300 focus-within:border-red-500 focus-within:shadow-[0_0_15px_rgba(255,0,51,0.4)]">
+                        <!-- Label RP -->
+                        <span class="pl-4 text-red-500 text-3xl font-digital select-none pb-1">Rp</span>
+                        
+                        <!-- Input Nominal (Keyboard Angka) -->
+                        <input type="text" inputmode="numeric" id="nominalInput" required placeholder="0" oninput="formatInputCurrency(this)"
+                            class="w-full bg-transparent border-none py-3 px-4 text-right text-4xl text-white font-digital placeholder-gray-800 focus:ring-0 focus:outline-none tracking-widest h-full">
                     </div>
                     <p class="text-right text-xs text-gray-500 mt-1">Silahkan Isi Nominal</p>
                 </div>
 
                 <!-- Input Metode/Catatan -->
-                <div class="mb-6">
+                <div class="mb-4">
                     <label class="block text-gray-300 text-sm mb-2">Metode Pembayaran</label>
                     <select id="methodInput" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 mb-4 input-glow font-bold">
                         <option value="Cash">Cash</option>
@@ -227,7 +235,7 @@
         </div>
         
         <!-- Footer -->
-        <div class="mt-8 text-center text-gray-500 text-xs">
+        <div class="mt-4 shrink-0 text-center text-gray-500 text-xs">
             &copy; 2025 All rights reserved.
         </div>
     </div>
@@ -240,7 +248,6 @@
     <script>
         // --- LOGIC APLIKASI ---
 
-        // DATA CREDENTIALS & FOTO
         const USERS = {
             '2511061': { 
                 name: 'Putri Dwi Astuti', 
@@ -266,7 +273,6 @@
         const userAvatar = document.getElementById('userAvatar');
         const notification = document.getElementById('notification');
         
-        // Element Error, Loading & Inputs
         const errorModal = document.getElementById('errorModal');
         const errorModalContent = document.getElementById('errorModalContent');
         const inlineError = document.getElementById('inlineError');
@@ -275,6 +281,23 @@
         const passwordInput = document.getElementById('passwordInput');
 
         const ADMIN_PHONE = "6285179920064";
+
+        // Toggle Password Visibility
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            const iconOpen = document.getElementById('eyeIconOpen');
+            const iconClosed = document.getElementById('eyeIconClosed');
+            
+            if (input.type === "password") {
+                input.type = "text";
+                iconOpen.classList.add('hidden');
+                iconClosed.classList.remove('hidden');
+            } else {
+                input.type = "password";
+                iconOpen.classList.remove('hidden');
+                iconClosed.classList.add('hidden');
+            }
+        }
 
         // Fungsi Format Input Nominal (Auto Titik)
         function formatInputCurrency(input) {
@@ -285,7 +308,6 @@
             input.value = value;
         }
 
-        // Fungsi Login
         function handleLogin(e) {
             e.preventDefault();
             
@@ -295,7 +317,6 @@
             const userData = USERS[userId];
 
             if(userData && userData.password === pass) { 
-                // LOGIN SUKSES
                 inlineError.classList.add('hidden');
                 
                 displayUsername.innerText = userData.name;
@@ -315,7 +336,6 @@
                 }, 300);
 
             } else {
-                // LOGIN GAGAL
                 showError();
             }
         }
@@ -360,7 +380,6 @@
         function kirimKeWA(e) {
             e.preventDefault();
 
-            // 1. Ambil data saat ini sebelum reset
             const name = displayUsername.innerText;
             const idRaw = displayUserID.innerText.replace('ID: ', '');
             const nominalFormatted = document.getElementById('nominalInput').value;
@@ -369,12 +388,9 @@
 
             if(!nominalFormatted) return;
 
-            // 2. Munculkan Loading "Tunggu Sebentar"
             loadingOverlay.classList.remove('hidden');
 
-            // 3. Set Timeout 2 Detik agar animasi terlihat
             setTimeout(() => {
-                // Format Pesan Baru Sesuai Request
                 const pesan = `
 *LAPORAN KEUANGAN KAS PAI B*
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -389,20 +405,15 @@ _Admin, Mohon segera update laporan KAS Pai B_
 
                 const encodedPesan = encodeURIComponent(pesan);
                 
-                // Hilangkan Loading
                 loadingOverlay.classList.add('hidden');
 
-                // Buka WA
                 const waLink = `https://wa.me/${ADMIN_PHONE}?text=${encodedPesan}`;
                 window.open(waLink, '_blank');
 
-                // 4. Kosongkan Form (Reset)
                 document.getElementById('nominalInput').value = '';
                 document.getElementById('noteInput').value = '';
-                // Optional: methodInput tidak direset agar user tidak capek milih lagi, tapi kalau mau reset total:
-                // document.getElementById('methodInput').selectedIndex = 0; 
                 
-            }, 2000); // Delay 2000ms (2 detik)
+            }, 2000); 
         }
     </script>
 </body>
