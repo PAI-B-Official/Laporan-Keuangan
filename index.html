@@ -32,10 +32,9 @@
         body {
             /* Gradasi Merah ke Hitam */
             background: linear-gradient(180deg, #8B0000 0%, #000000 100%);
-            min-height: 100vh; /* Pakai min-height biar fleksibel */
+            height: 100vh; /* Tinggi pas layar */
             width: 100vw;
-            overflow-y: auto; /* WAJIB AUTO AGAR BISA PULL REFRESH */
-            overscroll-behavior-y: auto; /* Mengizinkan efek bounce/refresh browser */
+            overflow: hidden; /* Hilangkan scroll */
             color: white;
             font-family: 'Poppins', sans-serif;
             display: flex;
@@ -43,20 +42,10 @@
             justify-content: center;
         }
 
-        /* Memastikan konten utama bisa di-scroll jika layar terlalu pendek */
         .glass-panel {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 0, 0, 0.2);
-            /* Tambahan agar panel aman di layar kecil */
-            max-height: 90vh;
-            overflow-y: auto; 
-        }
-
-        /* Sembunyikan scrollbar di panel tapi tetap bisa scroll */
-        .glass-panel::-webkit-scrollbar {
-            width: 0px;
-            background: transparent;
         }
 
         /* Animation for input focus */
@@ -140,7 +129,7 @@
     <div id="browserLoader"></div>
 
     <!-- Container Utama -->
-    <div class="w-full max-w-md relative z-10 flex flex-col h-full pt-10 pb-4">
+    <div class="w-full max-w-md relative z-10 flex flex-col h-full pt-10">
         
         <!-- LOGO / HEADER AREA -->
         <div class="text-center mb-6 shrink-0">
