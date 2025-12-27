@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Kas PAI B</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: VT323 for Digital Look & Poppins for Body -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-red': '#ff0033',
+                        'dark-red': '#8B0000',
+                    },
+                    fontFamily: {
+                        'digital': ['"VT323"', 'monospace'],
+                        'body': ['"Poppins"', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 10px rgba(255, 0, 51, 0.5), 0 0 20px rgba(255, 0, 51, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            /* Gradasi Merah ke Hitam */
+            background: linear-gradient(180deg, #8B0000 0%, #000000 100%);
+            min-height: 100vh;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8B0000;
+            border-radius: 4px;
+        }
+
+        .glass-panel {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+
+        /* Animation for input focus */
+        .input-glow:focus {
+            outline: none;
+            border-color: #ff0033;
+            box-shadow: 0 0 15px rgba(255, 0, 51, 0.4);
+        }
+
+        /* X Animation */
+        .x-mark-path {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawX 0.5s ease-in-out forwards;
+        }
+        
+        @keyframes drawX {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #ff0033;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+
+    <!-- Container Utama -->
+    <div class="w-full max-w-md relative z-10">
+        
+        <!-- LOGO / HEADER AREA -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white tracking-wider drop-shadow-lg uppercase italic">
+                Laporan kas <span class="text-yellow-500">pai b</span>
+            </h1>
+            <p class="text-gray-400 text-sm mt-1">Catatan keuangan gak pake ribet.</p>
+        </div>
+
+        <!-- HALAMAN LOGIN -->
+        <div id="loginPage" class="glass-panel p-8 rounded-2xl shadow-neon transition-all duration-500 transform">
+            <h2 class="text-2xl font-bold mb-6 text-center border-b border-red-900 pb-4">Lengkapi Data</h2>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-300 text-sm mb-2">Username</label>
+                    <input type="text" id="usernameInput" required placeholder="Masukkan Username" 
+                        class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:border-red-500 transition-all duration-300 input-glow">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-300 text-sm mb-2">Password</label>
+                    <input type="password" id="passwordInput" required placeholder="Masukkan Password" 
+                        class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:border-red-500 transition-all duration-300 input-glow">
+                    <!-- Inline Error Message -->
+                    <p id="inlineError" class="text-red-500 text-xs mt-2 hidden font-bold italic">⚠️ Data tidak Valid</p>
+                </div>
+
+                <button type="submit" 
+                    class="w-full bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold py-3 px-4 rounded-lg transform hover:scale-[1.02] transition-all duration-200 shadow-lg flex justify-center items-center gap-2">
+                    <span>👤MASUK</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- MODAL AUTHORIZATION FAILED -->
+        <div id="errorModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeErrorModal()"></div>
+            <div class="bg-[#1a0000] border border-red-600 p-6 rounded-2xl shadow-[0_0_30px_rgba(255,0,0,0.6)] w-80 text-center transform scale-0 transition-transform duration-300 relative z-10" id="errorModalContent">
+                
+                <!-- Animated X Icon -->
+                <div class="flex justify-center mb-4">
+                    <div class="w-20 h-20 rounded-full border-4 border-red-600 flex items-center justify-center bg-red-900/20">
+                        <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path class="x-mark-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-red-500 mb-2 uppercase tracking-wide">Authorization Failed</h3>
+                <p class="text-gray-300 text-sm mb-6">Silahkan masukan data yang valid untuk melanjutkan.</p>
+                
+                <button onclick="closeErrorModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+
+        <!-- LOADING OVERLAY -->
+        <div id="loadingOverlay" class="fixed inset-0 flex flex-col items-center justify-center z-50 hidden bg-black/90 backdrop-blur-sm transition-opacity duration-300">
+            <div class="loader mb-4"></div>
+            <p class="text-white font-bold tracking-widest animate-pulse">TUNGGU SEBENTAR...</p>
+        </div>
+
+        <!-- HALAMAN FORMULIR SETOR (Awalnya Hidden) -->
+        <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden transition-all duration-500 transform scale-95 opacity-0">
+            
+            <!-- Header User Profile -->
+            <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4">
+                <div class="relative shrink-0">
+                    <img id="userAvatar" src="https://via.placeholder.com/150" alt="Profile" 
+                         class="w-16 h-16 rounded-full border-2 border-red-500 object-cover shadow-[0_0_15px_rgba(255,0,0,0.4)]">
+                </div>
+                
+                <div class="flex-grow min-w-0">
+                    <p class="text-xs text-gray-400 mb-0.5">Hello',</p>
+                    <h2 id="displayUsername" class="text-lg sm:text-xl font-bold text-white leading-tight truncate">User Name</h2>
+                    <p id="displayUserID" class="text-sm font-mono text-red-400 mt-0.5">ID: 000000</p>
+                </div>
+                
+                <button onclick="logout()" class="shrink-0 text-xs bg-gray-800 hover:bg-gray-700 px-3 py-2 rounded text-gray-300 transition border border-gray-600">
+                    Keluar
+                </button>
+            </div>
+
+            <form id="depositForm" onsubmit="kirimKeWA(event)">
+                
+                <!-- Input Nominal dengan Font Digital -->
+                <div class="mb-6 relative group">
+                    <label class="block text-red-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Setor</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-red-500 text-3xl font-digital mt-1">Rp</span>
+                        <input type="text" id="nominalInput" required placeholder="0" oninput="formatInputCurrency(this)"
+                            class="w-full bg-black border-2 border-red-900 rounded-xl py-4 pl-12 pr-4 text-right text-4xl text-white font-digital placeholder-gray-800 focus:border-red-500 transition-all duration-300 input-glow tracking-widest">
+                    </div>
+                    <p class="text-right text-xs text-gray-500 mt-1">Silahkan Isi Nominal</p>
+                </div>
+
+                <!-- Input Metode/Catatan -->
+                <div class="mb-6">
+                    <label class="block text-gray-300 text-sm mb-2">Metode Pembayaran</label>
+                    <select id="methodInput" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 mb-4 input-glow font-bold">
+                        <option value="Cash">Cash</option>
+                        <option value="Transfer">Transfer</option>
+                    </select>
+                    
+                    <label class="block text-gray-300 text-sm mb-2">Catatan (Opsional)</label>
+                    <textarea id="noteInput" rows="2" placeholder="Pesan tambahan..." 
+                        class="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white placeholder-gray-600 focus:border-red-500 input-glow text-sm"></textarea>
+                </div>
+
+                <!-- Tombol Kirim -->
+                <button type="submit" 
+                    class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 px-4 rounded-xl transform hover:-translate-y-1 transition-all duration-200 shadow-[0_4px_14px_0_rgba(72,187,120,0.39)] flex justify-center items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    Kirim ke WhatsApp
+                </button>
+            </form>
+        </div>
+        
+        <!-- Footer -->
+        <div class="mt-8 text-center text-gray-500 text-xs">
+            &copy; 2025 All rights reserved.
+        </div>
+    </div>
+
+    <!-- NOTIFIKASI SUKSES (Popup Kecil) -->
+    <div id="notification" class="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-xl transform translate-x-40 opacity-0 transition-all duration-300 pointer-events-none z-50">
+        Pesan Siap Dikirim!
+    </div>
+
+    <script>
+        // --- LOGIC APLIKASI ---
+
+        // DATA CREDENTIALS & FOTO
+        const USERS = {
+            '2511061': { 
+                name: 'Putri Dwi Astuti', 
+                password: 'Bendahara 1',
+                photo: 'Putri.jpg' 
+            },
+            '2511043': { 
+                name: 'Anggun Lolyka H.', 
+                password: 'Bendahara 2',
+                photo: 'Anggun.jpg' 
+            },
+            '2511079': { 
+                name: 'Muh. Hanif Fakhry', 
+                password: 'Admin',
+                photo: 'Fakhry.jpg' 
+            }
+        };
+
+        const loginPage = document.getElementById('loginPage');
+        const depositPage = document.getElementById('depositPage');
+        const displayUsername = document.getElementById('displayUsername');
+        const displayUserID = document.getElementById('displayUserID');
+        const userAvatar = document.getElementById('userAvatar');
+        const notification = document.getElementById('notification');
+        
+        // Element Error, Loading & Inputs
+        const errorModal = document.getElementById('errorModal');
+        const errorModalContent = document.getElementById('errorModalContent');
+        const inlineError = document.getElementById('inlineError');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const usernameInput = document.getElementById('usernameInput');
+        const passwordInput = document.getElementById('passwordInput');
+
+        const ADMIN_PHONE = "6285179920064";
+
+        // Fungsi Format Input Nominal (Auto Titik)
+        function formatInputCurrency(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value) {
+                value = new Intl.NumberFormat('id-ID').format(value);
+            }
+            input.value = value;
+        }
+
+        // Fungsi Login
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const userId = usernameInput.value.trim();
+            const pass = passwordInput.value.trim(); 
+
+            const userData = USERS[userId];
+
+            if(userData && userData.password === pass) { 
+                // LOGIN SUKSES
+                inlineError.classList.add('hidden');
+                
+                displayUsername.innerText = userData.name;
+                displayUserID.innerText = `ID: ${userId}`;
+                userAvatar.src = userData.photo; 
+                
+                loginPage.classList.add('scale-95', 'opacity-0');
+                
+                setTimeout(() => {
+                    loginPage.classList.add('hidden');
+                    depositPage.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        depositPage.classList.remove('scale-95', 'opacity-0');
+                        depositPage.classList.add('scale-100', 'opacity-100');
+                    }, 50);
+                }, 300);
+
+            } else {
+                // LOGIN GAGAL
+                showError();
+            }
+        }
+
+        function showError() {
+            errorModal.classList.remove('hidden');
+            setTimeout(() => {
+                errorModalContent.classList.remove('scale-0');
+                errorModalContent.classList.add('scale-100', 'shake');
+            }, 10);
+            
+            inlineError.classList.remove('hidden');
+            
+            usernameInput.value = '';
+            passwordInput.value = '';
+            
+            setTimeout(() => {
+                errorModalContent.classList.remove('shake');
+            }, 500);
+        }
+
+        function closeErrorModal() {
+            errorModalContent.classList.remove('scale-100');
+            errorModalContent.classList.add('scale-0');
+            setTimeout(() => {
+                errorModal.classList.add('hidden');
+            }, 300);
+        }
+
+        function logout() {
+            depositPage.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                depositPage.classList.add('hidden');
+                loginPage.classList.remove('hidden', 'scale-95', 'opacity-0');
+                
+                document.getElementById('loginForm').reset();
+                document.getElementById('depositForm').reset();
+                inlineError.classList.add('hidden');
+            }, 300);
+        }
+
+        function kirimKeWA(e) {
+            e.preventDefault();
+
+            // 1. Ambil data saat ini sebelum reset
+            const name = displayUsername.innerText;
+            const idRaw = displayUserID.innerText.replace('ID: ', '');
+            const nominalFormatted = document.getElementById('nominalInput').value;
+            const metode = document.getElementById('methodInput').value;
+            const catatan = document.getElementById('noteInput').value;
+
+            if(!nominalFormatted) return;
+
+            // 2. Munculkan Loading "Tunggu Sebentar"
+            loadingOverlay.classList.remove('hidden');
+
+            // 3. Set Timeout 2 Detik agar animasi terlihat
+            setTimeout(() => {
+                // Format Pesan Baru Sesuai Request
+                const pesan = `
+*LAPORAN KEUANGAN KAS PAI B*
+~~~~~~~~~~~~~~~~~~~~~~
+Account = ${name}
+NIM = ${idRaw}
+Nominal = Rp${nominalFormatted}
+Metode = ${metode}
+Note = ${catatan || '-'}
+________________________________________
+_Admin, Mohon segera update laporan KAS Pai B_
+                `.trim();
+
+                const encodedPesan = encodeURIComponent(pesan);
+                
+                // Hilangkan Loading
+                loadingOverlay.classList.add('hidden');
+
+                // Buka WA
+                const waLink = `https://wa.me/${ADMIN_PHONE}?text=${encodedPesan}`;
+                window.open(waLink, '_blank');
+
+                // 4. Kosongkan Form (Reset)
+                document.getElementById('nominalInput').value = '';
+                document.getElementById('noteInput').value = '';
+                // Optional: methodInput tidak direset agar user tidak capek milih lagi, tapi kalau mau reset total:
+                // document.getElementById('methodInput').selectedIndex = 0; 
+                
+            }, 2000); // Delay 2000ms (2 detik)
+        }
+    </script>
+</body>
+</html>
