@@ -195,6 +195,23 @@
             </div>
         </div>
 
+        <!-- MODAL MINIMAL DEPOSIT (BARU) -->
+        <div id="minDepositModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeMinDepositModal()"></div>
+            <div class="bg-[#1a0000] border border-yellow-600 p-6 rounded-2xl shadow-[0_0_30px_rgba(255,200,0,0.4)] w-80 text-center transform scale-0 transition-transform duration-300 relative z-10" id="minDepositModalContent">
+                <div class="flex justify-center mb-4">
+                    <div class="w-20 h-20 rounded-full border-4 border-yellow-600 flex items-center justify-center bg-yellow-900/20">
+                        <span class="text-4xl">💸</span>
+                    </div>
+                </div>
+                <h3 class="text-xl font-bold text-yellow-500 mb-2 uppercase tracking-wide">Nominal Kurang</h3>
+                <p class="text-gray-300 text-sm mb-6">Minimal setoran adalah Rp 10.000 ya Sayang :)</p>
+                <button onclick="closeMinDepositModal()" class="w-full bg-yellow-700 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                    Okey, Mengerti
+                </button>
+            </div>
+        </div>
+
         <!-- PAGE LOADING OVERLAY (SIMULASI BROWSER LOAD) -->
         <div id="pageLoading" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center hidden">
              <!-- Spinner Simple -->
@@ -337,6 +354,10 @@
         const usernameInput = document.getElementById('usernameInput');
         const passwordInput = document.getElementById('passwordInput');
 
+        // Referensi Modal Minimal Deposit (BARU)
+        const minDepositModal = document.getElementById('minDepositModal');
+        const minDepositModalContent = document.getElementById('minDepositModalContent');
+
         const ADMIN_PHONE = "6285179920064";
 
         function toggleHelp() {
@@ -474,6 +495,27 @@
             }, 300);
         }
 
+        // Logic Popup Minimal Deposit (BARU)
+        function showMinDepositModal() {
+            minDepositModal.classList.remove('hidden');
+            setTimeout(() => {
+                minDepositModalContent.classList.remove('scale-0');
+                minDepositModalContent.classList.add('scale-100', 'shake');
+            }, 10);
+            
+            setTimeout(() => {
+                minDepositModalContent.classList.remove('shake');
+            }, 500);
+        }
+
+        function closeMinDepositModal() {
+            minDepositModalContent.classList.remove('scale-100');
+            minDepositModalContent.classList.add('scale-0');
+            setTimeout(() => {
+                minDepositModal.classList.add('hidden');
+            }, 300);
+        }
+
         function logout() {
             // Simulasi Logout seperti reload halaman
             location.reload(); 
@@ -489,6 +531,14 @@
             const catatan = document.getElementById('noteInput').value;
 
             if(!nominalFormatted) return;
+
+            // VALIDASI MINIMAL 10K (BARU)
+            // Hilangkan titik untuk cek angka asli
+            const rawNominal = nominalFormatted.replace(/\D/g, '');
+            if(parseInt(rawNominal) < 10000) {
+                showMinDepositModal();
+                return; // Stop function, jangan lanjut kirim WA
+            }
 
             loadingOverlay.classList.remove('hidden');
 
