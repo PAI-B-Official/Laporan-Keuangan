@@ -79,7 +79,7 @@
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
 
-        /* Loading Spinner */
+        /* Loading Spinner for WA */
         .loader {
             border: 4px solid rgba(255, 255, 255, 0.1);
             border-left-color: #ff0033;
@@ -102,15 +102,31 @@
             opacity: 0;
         }
         .accordion-content.active {
-            max-height: 200px; /* Cukup untuk konten text */
+            max-height: 200px;
             opacity: 1;
         }
         .rotate-arrow {
             transform: rotate(180deg);
         }
+
+        /* Browser Loading Bar Simulation */
+        #browserLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: #ff0033;
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.2s ease;
+            box-shadow: 0 0 10px #ff0033;
+        }
     </style>
 </head>
 <body class="p-4">
+
+    <!-- BROWSER LOADING BAR -->
+    <div id="browserLoader"></div>
 
     <!-- Container Utama -->
     <div class="w-full max-w-md relative z-10 flex flex-col h-full pt-10">
@@ -124,7 +140,7 @@
         </div>
 
         <!-- HALAMAN LOGIN -->
-        <div id="loginPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon transition-all duration-500 transform w-full">
+        <div id="loginPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon w-full">
             <h2 class="text-2xl font-bold mb-6 text-center border-b border-red-900 pb-4">Lengkapi Data</h2>
             
             <form id="loginForm" onsubmit="handleLogin(event)">
@@ -179,16 +195,23 @@
             </div>
         </div>
 
-        <!-- LOADING OVERLAY -->
+        <!-- PAGE LOADING OVERLAY (SIMULASI BROWSER LOAD) -->
+        <div id="pageLoading" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center hidden">
+             <!-- Spinner Simple -->
+             <div class="w-12 h-12 border-4 border-red-900 border-t-red-500 rounded-full animate-spin mb-4"></div>
+             <p class="text-gray-400 text-sm tracking-widest animate-pulse">MEMUAT HALAMAN...</p>
+        </div>
+
+        <!-- LOADING OVERLAY (UNTUK KIRIM WA) -->
         <div id="loadingOverlay" class="fixed inset-0 flex flex-col items-center justify-center z-50 hidden bg-black/90 backdrop-blur-sm transition-opacity duration-300">
             <div class="loader mb-4"></div>
             <p class="text-white font-bold tracking-widest animate-pulse">TUNGGU SEBENTAR...</p>
         </div>
 
         <!-- HALAMAN FORMULIR SETOR (Awalnya Hidden) -->
-        <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden transition-all duration-500 transform scale-95 opacity-0 w-full relative">
+        <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden w-full relative">
             
-            <!-- TOMBOL BANTUAN (Tanda Tanya) -->
+            <!-- TOMBOL BANTUAN -->
             <div class="absolute top-4 right-4 z-30">
                 <button onclick="toggleHelp()" class="text-gray-400 hover:text-yellow-500 transition-colors focus:outline-none" title="Bantuan">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -198,11 +221,8 @@
                     </svg>
                 </button>
 
-                <!-- Dropdown Bantuan -->
                 <div id="helpDropdown" class="absolute right-0 mt-2 w-64 bg-black/95 border border-red-900 rounded-xl shadow-2xl p-4 hidden transform origin-top-right transition-all duration-300 scale-95 opacity-0 backdrop-blur-xl">
                     <h4 class="text-red-500 font-bold mb-3 border-b border-gray-700 pb-2 text-sm uppercase tracking-wider">Pusat Bantuan</h4>
-                    
-                    <!-- Item 1 -->
                     <div class="mb-2">
                         <button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white py-1 focus:outline-none group">
                             <span>📝 Petunjuk Pengisian</span>
@@ -212,8 +232,6 @@
                             Isi nominal setor (minimal 10rb), pilih metode (Cash/Transfer), lalu klik tombol hijau untuk kirim laporan ke WhatsApp Admin.
                         </div>
                     </div>
-
-                    <!-- Item 2 -->
                     <div>
                         <button onclick="toggleAccordion('acc2')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white py-1 focus:outline-none group">
                             <span>🌐 Tentang Web Ini</span>
@@ -227,7 +245,7 @@
             </div>
 
             <!-- Header User Profile -->
-            <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4 pr-8"> <!-- Added pr-8 to avoid overlap with help icon -->
+            <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4 pr-8">
                 <div class="relative shrink-0">
                     <img id="userAvatar" src="https://via.placeholder.com/150" alt="Profile" 
                          class="w-16 h-16 rounded-full border-2 border-red-500 object-cover shadow-[0_0_15px_rgba(255,0,0,0.4)]">
@@ -246,7 +264,6 @@
 
             <form id="depositForm" onsubmit="kirimKeWA(event)">
                 
-                <!-- Input Nominal dengan Font Digital -->
                 <div class="mb-4 relative group">
                     <label class="block text-red-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Setor</label>
                     <div class="relative flex items-center bg-black border-2 border-red-900 rounded-xl transition-all duration-300 focus-within:border-red-500 focus-within:shadow-[0_0_15px_rgba(255,0,51,0.4)]">
@@ -284,7 +301,6 @@
             </div>
             
             <a href="https://wa.me/6285179920064?text=*Eror%20Sintaks%20Report*%20" target="_blank" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-all duration-300 group">
-                <!-- Headset Mic Icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500 group-hover:text-red-400 transition-colors">
                     <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
                     <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
@@ -294,30 +310,16 @@
         </div>
     </div>
 
-    <!-- NOTIFIKASI SUKSES (Popup Kecil) -->
+    <!-- NOTIFIKASI SUKSES -->
     <div id="notification" class="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-xl transform translate-x-40 opacity-0 transition-all duration-300 pointer-events-none z-50">
         Pesan Siap Dikirim!
     </div>
 
     <script>
-        // --- LOGIC APLIKASI ---
-
         const USERS = {
-            '2511061': { 
-                name: 'Putri Dwi Astuti', 
-                password: 'Bendahara 1',
-                photo: 'Putri.jpg' 
-            },
-            '2511043': { 
-                name: 'Anggun Lolyka H.', 
-                password: 'Bendahara 2',
-                photo: 'Anggun.jpg' 
-            },
-            '2511079': { 
-                name: 'Muh. Hanif Fakhry', 
-                password: 'Admin',
-                photo: 'Fakhry.jpg' 
-            }
+            '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'Putri.jpg' },
+            '2511043': { name: 'Anggun Lolyka H.', password: 'Bendahara 2', photo: 'Anggun.jpg' },
+            '2511079': { name: 'Muh. Hanif Fakhry', password: 'Admin', photo: 'Fakhry.jpg' }
         };
 
         const loginPage = document.getElementById('loginPage');
@@ -326,17 +328,17 @@
         const displayUserID = document.getElementById('displayUserID');
         const userAvatar = document.getElementById('userAvatar');
         const notification = document.getElementById('notification');
-        
         const errorModal = document.getElementById('errorModal');
         const errorModalContent = document.getElementById('errorModalContent');
         const inlineError = document.getElementById('inlineError');
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const pageLoading = document.getElementById('pageLoading'); // Overlay Loading Hitam
+        const browserLoader = document.getElementById('browserLoader'); // Bar Merah di Atas
         const usernameInput = document.getElementById('usernameInput');
         const passwordInput = document.getElementById('passwordInput');
 
         const ADMIN_PHONE = "6285179920064";
 
-        // Toggle Help Dropdown
         function toggleHelp() {
             const dropdown = document.getElementById('helpDropdown');
             if (dropdown.classList.contains('hidden')) {
@@ -354,7 +356,6 @@
             }
         }
 
-        // Toggle Accordion
         function toggleAccordion(id) {
             const content = document.getElementById(id);
             const arrow = document.getElementById('arrow-' + id);
@@ -363,24 +364,15 @@
                 content.classList.remove('active');
                 arrow.classList.remove('rotate-arrow');
             } else {
-                // Close others first (optional)
-                document.querySelectorAll('.accordion-content').forEach(el => {
-                    el.classList.remove('active');
-                });
-                document.querySelectorAll('.accordion-content + svg').forEach(el => {
-                   // reset arrows logic if needed
-                });
-
+                document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('active'));
                 content.classList.add('active');
                 arrow.classList.add('rotate-arrow');
             }
         }
 
-        // Close Dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('helpDropdown');
             const button = document.querySelector('button[onclick="toggleHelp()"]');
-            
             if (!dropdown.classList.contains('hidden') && !dropdown.contains(event.target) && !button.contains(event.target)) {
                 toggleHelp();
             }
@@ -415,27 +407,43 @@
             
             const userId = usernameInput.value.trim();
             const pass = passwordInput.value.trim(); 
-
             const userData = USERS[userId];
 
             if(userData && userData.password === pass) { 
                 inlineError.classList.add('hidden');
                 
-                displayUsername.innerText = userData.name;
-                displayUserID.innerText = `ID: ${userId}`;
-                userAvatar.src = userData.photo; 
+                // --- START: SIMULASI LOADING BROWSER YANG "NYATA" ---
                 
-                loginPage.classList.add('scale-95', 'opacity-0');
+                // 1. Munculkan Progress Bar Merah di Atas
+                browserLoader.style.width = "30%";
                 
+                // 2. Munculkan Layar Hitam (Loading Page)
+                pageLoading.classList.remove('hidden');
+                
+                // 3. Simulasi Progress Bar jalan pelan
+                setTimeout(() => { browserLoader.style.width = "70%"; }, 800);
+                setTimeout(() => { browserLoader.style.width = "100%"; }, 1800);
+
+                // 4. Setelah 2 Detik (Loading Selesai)
                 setTimeout(() => {
+                    // Update Data User
+                    displayUsername.innerText = userData.name;
+                    displayUserID.innerText = `ID: ${userId}`;
+                    userAvatar.src = userData.photo; 
+
+                    // Sembunyikan Login Page (Tanpa animasi fade out, langsung ganti biar kayak browser refresh)
                     loginPage.classList.add('hidden');
+                    
+                    // Tampilkan Halaman Deposit
                     depositPage.classList.remove('hidden');
                     
-                    setTimeout(() => {
-                        depositPage.classList.remove('scale-95', 'opacity-0');
-                        depositPage.classList.add('scale-100', 'opacity-100');
-                    }, 50);
-                }, 300);
+                    // Sembunyikan Loading
+                    pageLoading.classList.add('hidden');
+                    
+                    // Reset Progress Bar
+                    setTimeout(() => { browserLoader.style.width = "0%"; }, 200);
+
+                }, 2000); 
 
             } else {
                 showError();
@@ -450,7 +458,6 @@
             }, 10);
             
             inlineError.classList.remove('hidden');
-            
             usernameInput.value = '';
             passwordInput.value = '';
             
@@ -468,19 +475,8 @@
         }
 
         function logout() {
-            depositPage.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                depositPage.classList.add('hidden');
-                loginPage.classList.remove('hidden', 'scale-95', 'opacity-0');
-                
-                document.getElementById('loginForm').reset();
-                document.getElementById('depositForm').reset();
-                inlineError.classList.add('hidden');
-                
-                // Hide help dropdown on logout
-                const dropdown = document.getElementById('helpDropdown');
-                dropdown.classList.add('hidden', 'scale-95', 'opacity-0');
-            }, 300);
+            // Simulasi Logout seperti reload halaman
+            location.reload(); 
         }
 
         function kirimKeWA(e) {
