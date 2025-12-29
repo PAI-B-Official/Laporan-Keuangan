@@ -32,6 +32,7 @@
             background: linear-gradient(180deg, #8B0000 0%, #000000 100%);
             min-height: 100vh;
             width: 100vw;
+            /* Scroll default aktif */
             overflow-y: auto; 
             -webkit-overflow-scrolling: touch;
             color: white;
@@ -44,13 +45,18 @@
             padding-bottom: 3rem;
         }
 
-        body.modal-open { overflow: hidden !important; height: 100vh; }
+        /* Class untuk mengunci scroll body saat modal aktif */
+        body.modal-open {
+            overflow: hidden !important;
+            height: 100vh;
+        }
 
         .glass-panel {
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 0, 0, 0.3);
             width: 100%;
+            /* Pastikan konten dalam panel tidak tumpah */
             display: flex;
             flex-direction: column;
         }
@@ -60,37 +66,47 @@
         .mode-btn.active { opacity: 1; border-bottom: 2px solid #fff; font-weight: bold; }
         .hidden-section { display: none; }
         
+        /* Loader Styles */
         .loader { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #ff0033; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        .loader-blue { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #00f3ff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
+        /* Table Styles */
         .table-container { max-height: 400px; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
         th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #333; }
         th { background-color: #1a0000; color: #ff0033; position: sticky; top: 0; z-index: 10; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.03); }
 
+        /* Accordion transition */
         .accordion-content { transition: max-height 0.3s ease-out, opacity 0.3s ease-out; max-height: 0; overflow: hidden; opacity: 0; }
         .accordion-content.active { max-height: 200px; opacity: 1; }
         .rotate-arrow { transform: rotate(180deg); }
 
+        /* Browser Loading Bar Simulation */
         #browserLoader { position: fixed; top: 0; left: 0; height: 3px; background: #ff0033; width: 0%; z-index: 9999; transition: width 0.2s ease; box-shadow: 0 0 10px #ff0033; }
         
+        /* Animations */
         .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
         
+        /* Checkmark Animation */
         .checkmark-circle { animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
+        /* Date Input Styling Override */
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
     </style>
 </head>
 <body class="p-4">
 
+    <!-- BROWSER LOADING BAR -->
     <div id="browserLoader"></div>
 
+    <!-- Container Utama -->
     <div class="w-full max-w-md relative z-10 flex flex-col gap-4">
         
-        <!-- HEADER -->
+        <!-- HEADER (Title 1 Line) -->
         <div class="text-center shrink-0 mt-2">
             <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider drop-shadow-lg uppercase italic leading-tight whitespace-nowrap">
                 Laporan Kas <span class="text-yellow-500">PAI B</span>
@@ -134,6 +150,7 @@
         <!-- HALAMAN UTAMA -->
         <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden w-full relative transition-all duration-300">
             
+            <!-- Header User Profile (Diberi mt-8 agar turun dari ikon FAQ) -->
             <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4 pr-10 mt-8">
                 <div class="relative shrink-0"><img id="userAvatar" src="" alt="Profile" class="w-14 h-14 rounded-full border-2 border-red-500 object-cover shadow-md"></div>
                 <div class="flex-grow min-w-0">
@@ -144,6 +161,7 @@
                 <button onclick="handleLogout()" class="shrink-0 text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded border border-gray-600 transition-colors">Keluar</button>
             </div>
 
+            <!-- MODE SWITCHER -->
             <div class="flex justify-center gap-4 sm:gap-8 mb-6 border-b border-gray-800 pb-2">
                 <button id="btnMasuk" onclick="switchMode('masuk')" class="mode-btn active text-green-400 pb-2 text-lg w-1/2 text-center">PEMASUKAN</button>
                 <button id="btnKeluar" onclick="switchMode('keluar')" class="mode-btn text-red-500 pb-2 text-lg w-1/2 text-center">PENGELUARAN</button>
@@ -306,7 +324,17 @@
         function enableScroll() { document.body.classList.remove('modal-open'); }
 
         // --- HISTORY MANAGEMENT ---
-        window.addEventListener('load', () => { history.replaceState({ page: 'login' }, '', ''); });
+        window.addEventListener('load', () => { 
+            const storedUser = localStorage.getItem('paib_user');
+            if (storedUser) {
+                const userData = JSON.parse(storedUser);
+                restoreSession(userData);
+                history.replaceState({ page: 'dashboard' }, '', '#dashboard');
+            } else {
+                history.replaceState({ page: 'login' }, '', '');
+            }
+        });
+
         window.addEventListener('popstate', (event) => {
             const state = event.state;
             if (!document.getElementById('riwayatPage').classList.contains('hidden')) { closeRiwayat(); return; }
@@ -334,12 +362,14 @@
                 disableScroll();
                 
                 setTimeout(() => {
-                    document.getElementById('displayUsername').innerText = USERS[u].name;
-                    document.getElementById('displayUserID').innerText = `ID: ${u}`;
-                    document.getElementById('userAvatar').src = USERS[u].photo;
+                    const userData = {
+                        name: USERS[u].name,
+                        id: u,
+                        photo: USERS[u].photo
+                    };
                     
-                    loginPage.classList.add('hidden');
-                    depositPage.classList.remove('hidden');
+                    localStorage.setItem('paib_user', JSON.stringify(userData));
+                    restoreSession(userData);
                     
                     document.getElementById('pageLoading').classList.add('hidden');
                     document.getElementById('browserLoader').style.width = "0%";
@@ -352,6 +382,15 @@
                 form.classList.add('shake');
                 setTimeout(() => form.classList.remove('shake'), 500);
             }
+        }
+
+        function restoreSession(userData) {
+            document.getElementById('displayUsername').innerText = userData.name;
+            document.getElementById('displayUserID').innerText = `ID: ${userData.id}`;
+            document.getElementById('userAvatar').src = userData.photo;
+            
+            loginPage.classList.add('hidden');
+            depositPage.classList.remove('hidden');
         }
 
         function switchMode(mode) {
@@ -554,7 +593,10 @@
             }
         }
         
-        function handleLogout(pushHistory = true) { location.reload(); }
+        function handleLogout(pushHistory = true) { 
+            localStorage.removeItem('paib_user');
+            location.reload(); 
+        }
         
         function toggleHelp() { 
             const dropdown = document.getElementById('helpDropdown');
