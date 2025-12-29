@@ -21,8 +21,7 @@
                         'body': ['"Poppins"', 'sans-serif'],
                     },
                     boxShadow: {
-                        'neon': '0 0 15px rgba(255, 0, 51, 0.6), 0 0 30px rgba(255, 0, 51, 0.4)',
-                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+                        'neon': '0 0 10px rgba(255, 0, 51, 0.5), 0 0 20px rgba(255, 0, 51, 0.3)',
                     }
                 }
             }
@@ -30,10 +29,10 @@
     </script>
     <style>
         body {
-            background: linear-gradient(180deg, #600000 0%, #000000 100%);
+            background: linear-gradient(180deg, #8B0000 0%, #000000 100%);
             min-height: 100vh;
             width: 100vw;
-            overflow-y: auto; /* Default scrollable */
+            overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             color: white;
             font-family: 'Poppins', sans-serif;
@@ -45,78 +44,50 @@
             padding-bottom: 3rem;
         }
 
-        /* Class untuk mengunci scroll body saat modal muncul */
-        body.scroll-locked {
-            overflow: hidden !important;
-            height: 100vh;
-        }
-
         .glass-panel {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 0, 0.2);
             width: 100%;
         }
 
-        .input-glow:focus { 
-            outline: none; 
-            border-color: #ff0033; 
-            box-shadow: 0 0 15px rgba(255, 0, 51, 0.5); 
-            background: rgba(0, 0, 0, 0.8);
-        }
-        
-        .mode-btn { 
-            transition: all 0.3s ease; 
-            opacity: 0.6; 
-            border-bottom: 3px solid transparent; 
-            padding-bottom: 0.5rem;
-        }
-        .mode-btn.active { 
-            opacity: 1; 
-            border-bottom: 3px solid #fff; 
-            font-weight: 700; 
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-        }
+        .input-glow:focus { outline: none; border-color: #ff0033; box-shadow: 0 0 15px rgba(255, 0, 51, 0.4); }
+        .mode-btn { transition: all 0.3s ease; opacity: 0.5; border-bottom: 2px solid transparent; }
+        .mode-btn.active { opacity: 1; border-bottom: 2px solid #fff; font-weight: bold; }
         .hidden-section { display: none; }
         
         /* Loader Styles */
-        .loader { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #ff0033; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        .loader { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #ff0033; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        .loader-blue { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #00f3ff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         /* Table Styles */
         .table-container { max-height: 400px; overflow-y: auto; }
-        table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.75rem; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        th { background-color: #1a0000; color: #ff0033; position: sticky; top: 0; z-index: 10; font-weight: 600; letter-spacing: 0.05em; }
-        tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.03); }
-        tr:hover { background-color: rgba(255, 0, 51, 0.1); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.70rem; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #333; }
+        th { background-color: #1a0000; color: #ff0033; position: sticky; top: 0; z-index: 10; }
+        tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.05); }
 
         /* Accordion transition */
         .accordion-content { transition: max-height 0.3s ease-out, opacity 0.3s ease-out; max-height: 0; overflow: hidden; opacity: 0; }
-        .accordion-content.active { max-height: 300px; opacity: 1; }
+        .accordion-content.active { max-height: 200px; opacity: 1; }
         .rotate-arrow { transform: rotate(180deg); }
 
         /* Browser Loading Bar Simulation */
-        #browserLoader { position: fixed; top: 0; left: 0; height: 4px; background: #ff0033; width: 0%; z-index: 9999; transition: width 0.4s ease; box-shadow: 0 0 15px #ff0033; }
+        #browserLoader { position: fixed; top: 0; left: 0; height: 3px; background: #ff0033; width: 0%; z-index: 9999; transition: width 0.2s ease; box-shadow: 0 0 10px #ff0033; }
         
         /* Animations */
         .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
         
         /* Checkmark Animation */
-        .checkmark-circle { animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+        .checkmark-circle { animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
         /* Date Input Styling Override */
         input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1);
             cursor: pointer;
-            opacity: 0.6;
-        }
-        input[type="date"]::-webkit-calendar-picker-indicator:hover {
-            opacity: 1;
         }
     </style>
 </head>
@@ -126,344 +97,200 @@
     <div id="browserLoader"></div>
 
     <!-- Container Utama -->
-    <div class="w-full max-w-md relative z-10 flex flex-col gap-6">
+    <div class="w-full max-w-md relative z-10 flex flex-col">
         
         <!-- HEADER (Title 1 Line) -->
-        <div class="text-center shrink-0">
-            <h1 class="text-3xl font-bold text-white tracking-widest drop-shadow-lg uppercase italic leading-tight">
-                Laporan Kas <span class="text-yellow-500 font-extrabold">PAI B</span>
+        <div class="text-center mb-6 shrink-0">
+            <h1 class="text-3xl font-bold text-white tracking-wider drop-shadow-lg uppercase italic leading-tight">
+                Laporan Kas <span class="text-yellow-500">PAI B</span>
             </h1>
-            <div class="h-1 w-20 bg-red-600 mx-auto mt-2 rounded-full shadow-neon"></div>
-            <p class="text-gray-400 text-xs mt-2 tracking-wide">Sistem Pencatatan Keuangan Digital</p>
+            <p class="text-gray-400 text-sm mt-2">Catatan keuangan gak pake ribet.</p>
         </div>
 
         <!-- HALAMAN LOGIN -->
-        <div id="loginPage" class="glass-panel p-8 rounded-3xl shadow-2xl w-full transform transition-all duration-500">
-            <h2 class="text-xl font-bold mb-6 text-center border-b border-red-900/50 pb-4 tracking-wide">AKSES BENDAHARA</h2>
+        <div id="loginPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon w-full">
+            <h2 class="text-2xl font-bold mb-6 text-center border-b border-red-900 pb-4">Lengkapi Data</h2>
             <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="mb-5">
-                    <label class="block text-gray-400 text-xs mb-2 uppercase tracking-wider font-bold">ID Pengguna</label>
-                    <input type="text" inputmode="numeric" id="usernameInput" required placeholder="Masukkan ID (Angka)" class="w-full bg-black/60 border border-gray-700/50 rounded-xl py-3 px-4 text-white focus:border-red-500 transition-all duration-300 input-glow placeholder-gray-600 text-sm">
+                <div class="mb-4">
+                    <label class="block text-gray-300 text-sm mb-2">Username</label>
+                    <input type="text" inputmode="numeric" id="usernameInput" required placeholder="Masukkan Username" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 transition-all duration-300 input-glow">
                 </div>
-                <div class="mb-8 relative">
-                    <label class="block text-gray-400 text-xs mb-2 uppercase tracking-wider font-bold">Kata Sandi</label>
+                <div class="mb-6 relative">
+                    <label class="block text-gray-300 text-sm mb-2">Password</label>
                     <div class="relative">
-                        <input type="password" id="passwordInput" required placeholder="Masukkan Kata Sandi" class="w-full bg-black/60 border border-gray-700/50 rounded-xl py-3 px-4 text-white focus:border-red-500 transition-all duration-300 input-glow pr-12 placeholder-gray-600 text-sm">
-                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-white transition-colors p-2">👁️</button>
+                        <input type="password" id="passwordInput" required placeholder="Masukkan Password" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 transition-all duration-300 input-glow pr-12">
+                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white">👁️</button>
                     </div>
-                    <p id="inlineError" class="text-red-500 text-xs mt-2 hidden font-bold italic flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
-                        Data login tidak valid
-                    </p>
+                    <p id="inlineError" class="text-red-500 text-xs mt-2 hidden font-bold italic">⚠️ Data tidak Valid</p>
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 px-6 rounded-xl transform hover:scale-[1.02] active:scale-95 transition-all shadow-lg flex justify-center items-center gap-3 group">
-                    <span>MASUK SISTEM</span>
-                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </button>
+                <button type="submit" class="w-full bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold py-3 px-4 rounded-lg transform hover:scale-[1.02] transition-all shadow-lg flex justify-center items-center gap-2"><span>👤MASUK</span></button>
             </form>
         </div>
 
         <!-- HALAMAN UTAMA -->
-        <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl hidden w-full relative border-t-4 border-t-red-600">
+        <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden w-full relative">
             
             <!-- Header User Profile -->
-            <div class="flex items-center gap-4 mb-8 pb-4 border-b border-gray-800">
-                <div class="relative shrink-0">
-                    <img id="userAvatar" src="" alt="Profile" class="w-14 h-14 rounded-full border-2 border-red-600 object-cover shadow-[0_0_15px_rgba(255,0,51,0.3)]">
-                    <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-black rounded-full"></div>
-                </div>
-                <div class="flex-grow min-w-0">
-                    <p class="text-[10px] text-gray-400 mb-0.5 uppercase tracking-widest">Operator Aktif</p>
-                    <h2 id="displayUsername" class="text-lg font-bold text-white leading-tight truncate">User Name</h2>
-                    <p id="displayUserID" class="text-xs font-mono text-red-400 mt-0.5 opacity-80">ID: 000000</p>
-                </div>
-                <button onclick="logout()" class="shrink-0 text-xs bg-gray-800/80 hover:bg-gray-700 border border-gray-700 px-4 py-2 rounded-lg text-gray-300 transition-all hover:text-white flex items-center gap-2">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    Keluar
-                </button>
+            <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4">
+                <div class="relative shrink-0"><img id="userAvatar" src="" alt="Profile" class="w-16 h-16 rounded-full border-2 border-red-500 object-cover"></div>
+                <div class="flex-grow min-w-0"><p class="text-xs text-gray-400 mb-0.5">Otorisasi:</p><h2 id="displayUsername" class="text-lg sm:text-xl font-bold text-white leading-tight truncate">User Name</h2><p id="displayUserID" class="text-sm font-mono text-red-400 mt-0.5">ID: 000000</p></div>
+                <button onclick="logout()" class="shrink-0 text-xs bg-gray-800 hover:bg-gray-700 px-3 py-2 rounded text-gray-300 transition border border-gray-600">Keluar</button>
             </div>
 
             <!-- MODE SWITCHER -->
-            <div class="flex justify-center gap-4 mb-8 bg-black/40 p-1.5 rounded-xl border border-gray-800">
-                <button id="btnMasuk" onclick="switchMode('masuk')" class="mode-btn flex-1 active text-green-400 text-sm sm:text-base py-2 rounded-lg hover:bg-white/5">
-                    PEMASUKAN
-                </button>
-                <div class="w-px bg-gray-700 my-2"></div>
-                <button id="btnKeluar" onclick="switchMode('keluar')" class="mode-btn flex-1 text-red-500 text-sm sm:text-base py-2 rounded-lg hover:bg-white/5">
-                    PENGELUARAN
-                </button>
+            <div class="flex justify-center gap-8 mb-6 border-b border-gray-800 pb-2">
+                <button id="btnMasuk" onclick="switchMode('masuk')" class="mode-btn active text-green-400 pb-2 text-lg">PEMASUKAN</button>
+                <button id="btnKeluar" onclick="switchMode('keluar')" class="mode-btn text-red-500 pb-2 text-lg">PENGELUARAN</button>
             </div>
 
-            <form id="depositForm" class="space-y-5">
-                <div id="sectionMasuk" class="animate-fade-in-up">
-                    <div class="mb-5 relative group">
-                        <label class="block text-green-400 text-[10px] mb-2 tracking-widest uppercase font-bold">Nominal Setor</label>
-                        <div class="relative flex items-center bg-black/80 border-2 border-green-900 rounded-xl overflow-hidden focus-within:border-green-500 focus-within:shadow-[0_0_20px_rgba(0,255,0,0.2)] transition-all">
-                            <div class="bg-green-900/30 px-4 h-14 flex items-center border-r border-green-900/50">
-                                <span class="text-green-500 text-2xl font-digital select-none pt-1">Rp</span>
-                            </div>
-                            <input type="text" inputmode="numeric" id="nominalMasuk" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-3 px-4 text-right text-4xl text-white font-digital tracking-widest h-14 focus:outline-none placeholder-gray-800">
+            <form id="depositForm">
+                <div id="sectionMasuk">
+                    <div class="mb-4 relative group">
+                        <label class="block text-green-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Setor</label>
+                        <div class="relative flex items-center bg-black border-2 border-green-900 rounded-xl">
+                            <span class="pl-4 text-green-500 text-3xl font-digital select-none pb-1">Rp</span>
+                            <input type="text" inputmode="numeric" id="nominalMasuk" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-3 px-4 text-right text-4xl text-white font-digital tracking-widest h-full focus:outline-none">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-gray-400 text-[10px] mb-2 uppercase tracking-widest font-bold">Metode</label>
-                        <select id="metodeMasuk" class="w-full bg-black/60 border border-gray-700 rounded-xl py-3 px-4 text-white focus:border-green-500 input-glow font-bold appearance-none cursor-pointer">
-                            <option value="Cash">💵 Cash / Tunai</option>
-                            <option value="Transfer">💳 Transfer Bank / E-Wallet</option>
-                        </select>
+                    <div class="mb-4">
+                        <label class="block text-gray-300 text-sm mb-2">Metode</label>
+                        <select id="metodeMasuk" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-green-500 input-glow font-bold"><option value="Cash">Cash</option><option value="Transfer">Transfer</option></select>
                     </div>
                 </div>
 
-                <div id="sectionKeluar" class="hidden-section animate-fade-in-up">
-                    <div class="mb-5 relative group">
-                        <label class="block text-red-400 text-[10px] mb-2 tracking-widest uppercase font-bold">Nominal Keluar</label>
-                        <div class="relative flex items-center bg-black/80 border-2 border-red-900 rounded-xl overflow-hidden focus-within:border-red-500 focus-within:shadow-[0_0_20px_rgba(255,0,0,0.2)] transition-all">
-                            <div class="bg-red-900/30 px-4 h-14 flex items-center border-r border-red-900/50">
-                                <span class="text-red-500 text-2xl font-digital select-none pt-1">Rp</span>
-                            </div>
-                            <input type="text" inputmode="numeric" id="nominalKeluar" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-3 px-4 text-right text-4xl text-white font-digital tracking-widest h-14 focus:outline-none placeholder-gray-800">
+                <div id="sectionKeluar" class="hidden-section">
+                    <div class="mb-4 relative group">
+                        <label class="block text-red-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Keluar</label>
+                        <div class="relative flex items-center bg-black border-2 border-red-900 rounded-xl">
+                            <span class="pl-4 text-red-500 text-3xl font-digital select-none pb-1">Rp</span>
+                            <input type="text" inputmode="numeric" id="nominalKeluar" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-3 px-4 text-right text-4xl text-white font-digital tracking-widest h-full focus:outline-none">
                         </div>
                     </div>
-                    <div class="mb-5">
-                        <label class="block text-gray-400 text-[10px] mb-2 uppercase tracking-widest font-bold">Item / Keperluan</label>
-                        <input type="text" id="itemKeluar" placeholder="Contoh: Beli Spidol, Konsumsi" class="w-full bg-black/60 border border-gray-700 rounded-xl py-3 px-4 text-white focus:border-red-500 input-glow">
+                    <div class="mb-4">
+                        <label class="block text-gray-300 text-sm mb-2">Item / Jenis</label>
+                        <input type="text" id="itemKeluar" placeholder="Contoh: Beli Spidol" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 input-glow">
                     </div>
-                    <div class="relative group">
-                        <label class="block text-gray-400 text-[10px] mb-2 uppercase tracking-widest font-bold">Harga Satuan / Total</label>
-                        <div class="relative flex items-center bg-black/60 border border-gray-700 rounded-xl focus-within:border-red-500 overflow-hidden">
-                            <span class="pl-4 text-gray-500 text-sm select-none">Rp</span>
-                            <input type="text" inputmode="numeric" id="hargaBarang" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-3 px-4 text-white font-bold focus:outline-none">
-                        </div>
+                    <div class="mb-4 relative group">
+                        <label class="block text-gray-300 text-sm mb-2">Harga Barang</label>
+                        <div class="relative flex items-center bg-black/50 border border-gray-700 rounded-lg"><span class="pl-4 text-gray-500 text-lg select-none">Rp</span><input type="text" inputmode="numeric" id="hargaBarang" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-2 px-4 text-white font-bold focus:outline-none"></div>
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-gray-400 text-[10px] mb-2 uppercase tracking-widest font-bold">Note (Opsional)</label>
-                    <textarea id="catatanUmum" rows="2" placeholder="Tambahkan catatan jika perlu..." class="w-full bg-black/60 border border-gray-700 rounded-xl py-3 px-4 text-white focus:border-blue-500 input-glow text-sm resize-none"></textarea>
+                <div class="mb-4">
+                    <label class="block text-gray-300 text-sm mb-2">Note (Catatan)</label>
+                    <textarea id="catatanUmum" rows="2" placeholder="Isi strip (-) jika kosong" class="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:border-gray-500 input-glow text-sm"></textarea>
                 </div>
 
                 <!-- RIWAYAT TEXT LINK -->
-                <div class="text-center pt-2">
-                    <button type="button" onclick="openRiwayat()" class="group text-xs text-gray-400 hover:text-yellow-400 transition-colors flex items-center justify-center gap-2 mx-auto py-2 px-4 rounded-lg hover:bg-white/5">
-                        <div class="bg-gray-800 p-1.5 rounded-md group-hover:bg-yellow-500/20 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
-                        </div>
-                        <span class="underline underline-offset-4 decoration-gray-600 group-hover:decoration-yellow-500">Lihat Riwayat Transaksi</span>
+                <div class="text-center mb-4">
+                    <button type="button" onclick="openRiwayat()" class="text-sm text-yellow-500 hover:text-yellow-400 underline underline-offset-4 flex items-center justify-center gap-1 mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+                        Lihat Riwayat Transaksi
                     </button>
                 </div>
 
                 <!-- TOMBOL CONFIRM -->
-                <button type="button" onclick="kirimConfirm()" class="w-full bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 text-white font-bold py-4 px-4 rounded-xl shadow-[0_4px_20px_rgba(0,200,255,0.3)] transform hover:-translate-y-1 hover:shadow-[0_8px_25px_rgba(0,200,255,0.5)] transition-all flex justify-center items-center gap-3 mt-4 border border-cyan-500/30">
-                    <span class="bg-white/20 rounded-full p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></span>
-                    <span class="tracking-widest text-lg">KONFIRMASI</span>
+                <button type="button" onclick="kirimConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold py-4 px-4 rounded-xl shadow-lg transform hover:-translate-y-1 transition-all flex justify-center items-center gap-2">
+                    <span class="text-xl">✅</span> CONFIRM
                 </button>
             </form>
             
             <!-- HELP BUTTON -->
-            <div class="absolute top-6 right-6 z-30">
-                <button onclick="toggleHelp()" class="text-gray-500 hover:text-white transition-colors focus:outline-none p-2 hover:bg-white/10 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></button>
-                <div id="helpDropdown" class="absolute right-0 mt-2 w-72 bg-[#0a0a0a] border border-gray-800 rounded-2xl shadow-2xl p-5 hidden transform origin-top-right transition-all duration-300 scale-95 opacity-0 backdrop-blur-xl z-50">
-                    <h4 class="text-white font-bold mb-4 border-b border-gray-800 pb-3 text-xs uppercase tracking-widest flex items-center gap-2">
-                        <span class="text-xl">ℹ️</span> Pusat Bantuan
-                    </h4>
-                    <div class="mb-3">
-                        <button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs font-semibold text-left text-gray-300 hover:text-white group bg-gray-900/50 p-3 rounded-lg border border-gray-800 hover:border-gray-600 transition-all">
-                            <span>📝 Petunjuk Pengisian</span>
-                            <svg id="arrow-acc1" class="w-3 h-3 group-hover:text-yellow-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div id="acc1" class="accordion-content text-[11px] text-gray-400 mt-2 pl-2 leading-relaxed">
-                            1. Pilih Tab <b>Pemasukan</b> atau <b>Pengeluaran</b>.<br>
-                            2. Isi semua kolom dengan benar.<br>
-                            3. Klik tombol <b>KONFIRMASI</b>.<br>
-                            4. Tunggu popup sukses, lalu kirim ke WhatsApp.
-                        </div>
-                    </div>
-                    <div>
-                        <button onclick="toggleAccordion('acc2')" class="w-full flex justify-between items-center text-xs font-semibold text-left text-gray-300 hover:text-white group bg-gray-900/50 p-3 rounded-lg border border-gray-800 hover:border-gray-600 transition-all">
-                            <span>🌐 Tentang Sistem</span>
-                            <svg id="arrow-acc2" class="w-3 h-3 group-hover:text-yellow-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div id="acc2" class="accordion-content text-[11px] text-gray-400 mt-2 pl-2 leading-relaxed">
-                            Sistem ini terintegrasi langsung dengan Google Sheet PAI B. Data yang diinput akan otomatis terekap real-time.
-                        </div>
-                    </div>
+            <div class="absolute top-4 right-4 z-30">
+                <button onclick="toggleHelp()" class="text-gray-400 hover:text-yellow-500 transition-colors focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></button>
+                <div id="helpDropdown" class="absolute right-0 mt-2 w-64 bg-black/95 border border-red-900 rounded-xl shadow-2xl p-4 hidden transform origin-top-right transition-all duration-300 scale-95 opacity-0 backdrop-blur-xl">
+                    <h4 class="text-red-500 font-bold mb-3 border-b border-gray-700 pb-2 text-sm uppercase tracking-wider">Pusat Bantuan</h4>
+                    <div class="mb-2"><button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white group"><span>📝 Petunjuk</span><svg id="arrow-acc1" class="w-3 h-3 group-hover:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div id="acc1" class="accordion-content text-[10px] text-gray-400 mt-1 pl-2 border-l border-gray-700">Pilih Tab Pemasukan/Pengeluaran. Isi data dengan lengkap. Tombol Biru untuk simpan ke Database, Hijau untuk WA.</div></div>
                 </div>
             </div>
         </div>
 
-        <!-- MODAL RIWAYAT (Dark Fullscreen) -->
-        <div id="riwayatPage" class="fixed inset-0 z-50 bg-[#050505] hidden flex flex-col transition-opacity duration-300">
-            <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-[#0a0a0a] shadow-lg shrink-0">
-                <div>
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2 tracking-wide"><span class="text-2xl">📜</span> RIWAYAT</h2>
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Data Transaksi Kas</p>
-                </div>
-                <button onclick="closeRiwayat()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-900 text-gray-400 hover:bg-red-900/30 hover:text-red-500 transition-all font-bold text-xl">✕</button>
+        <!-- MODAL RIWAYAT -->
+        <div id="riwayatPage" class="fixed inset-0 z-40 bg-black/95 backdrop-blur-md hidden flex flex-col">
+            <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-gray-900">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2"><span class="text-yellow-500">📜</span> Riwayat Transaksi</h2>
+                <button onclick="closeRiwayat()" class="text-gray-400 hover:text-white font-bold text-2xl">×</button>
             </div>
             
-            <!-- FILTER BAR -->
-            <div class="p-4 bg-[#0a0a0a] border-b border-gray-800 shrink-0">
-                <div class="flex flex-col gap-3">
-                    <div class="flex gap-2">
-                        <div class="relative flex-1">
-                            <select id="filterBulan" class="w-full bg-black text-white border border-gray-700 rounded-lg px-3 py-2.5 text-xs appearance-none focus:border-blue-500 focus:outline-none">
-                                <option value="">Semua Bulan</option>
-                                <option value="01">Januari</option><option value="02">Februari</option><option value="03">Maret</option>
-                                <option value="04">April</option><option value="05">Mei</option><option value="06">Juni</option>
-                                <option value="07">Juli</option><option value="08">Agustus</option><option value="09">September</option>
-                                <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></div>
-                        </div>
-                        <div class="relative w-24">
-                            <select id="filterTahun" class="w-full bg-black text-white border border-gray-700 rounded-lg px-3 py-2.5 text-xs appearance-none focus:border-blue-500 focus:outline-none">
-                                <option value="2025">2025</option><option value="2024">2024</option>
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-2">
-                        <div class="relative flex-1">
-                            <input type="date" id="filterTanggal" class="w-full bg-black text-white border border-gray-700 rounded-lg px-3 py-2 text-xs focus:border-blue-500 focus:outline-none h-full">
-                        </div>
-                        <button onclick="fetchRiwayat()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg text-xs font-bold tracking-wider shadow-lg flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                            CARI
-                        </button>
-                    </div>
+            <!-- FILTER (Updated: With Date Picker) -->
+            <div class="p-3 flex flex-wrap gap-2 bg-gray-900 border-b border-gray-800 items-center justify-between">
+                <div class="flex gap-2 flex-1">
+                    <select id="filterBulan" class="bg-black text-white border border-gray-700 rounded px-2 py-1 text-xs w-full max-w-[100px]">
+                        <option value="">Bulan...</option>
+                        <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option>
+                        <option value="04">Apr</option><option value="05">Mei</option><option value="06">Jun</option>
+                        <option value="07">Jul</option><option value="08">Agu</option><option value="09">Sep</option>
+                        <option value="10">Okt</option><option value="11">Nov</option><option value="12">Des</option>
+                    </select>
+                    <select id="filterTahun" class="bg-black text-white border border-gray-700 rounded px-2 py-1 text-xs w-20">
+                        <option value="2025">2025</option><option value="2024">2024</option>
+                    </select>
+                </div>
+                
+                <!-- KALENDER INPUT -->
+                <div class="flex gap-2 items-center">
+                    <input type="date" id="filterTanggal" class="bg-black text-white border border-gray-700 rounded px-2 py-1 text-xs w-32">
+                    <button onclick="fetchRiwayat()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs font-bold">Cari</button>
                 </div>
             </div>
 
-            <div id="riwayatContent" class="flex-1 overflow-auto p-4 bg-[#050505]">
-                <div class="flex flex-col items-center justify-center h-40 text-gray-600 gap-3">
-                    <svg class="w-12 h-12 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                    <p class="text-xs">Silahkan pilih filter dan klik Cari untuk melihat data.</p>
-                </div>
+            <div id="riwayatContent" class="flex-1 overflow-auto p-2">
+                <p class="text-center text-gray-500 mt-10 text-sm">Silahkan pilih filter dan klik Cari.</p>
             </div>
         </div>
 
         <!-- FOOTER -->
-        <div class="mt-auto shrink-0 text-center w-full pb-6">
-            <div class="w-full h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent mb-6"></div>
-            <div class="text-gray-600 text-[10px] mb-3 uppercase tracking-widest">&copy; 2025 Laporan Kas PAI B</div>
-            <a href="https://wa.me/6285179920064?text=*Eror%20Sintaks%20Report*%20" target="_blank" class="inline-flex items-center justify-center gap-3 px-5 py-2.5 bg-white/5 hover:bg-white/10 rounded-full border border-white/5 hover:border-white/20 transition-all duration-300 group">
-                <div class="bg-green-500/20 p-1.5 rounded-full group-hover:bg-green-500/30 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-500"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
-                </div>
-                <span class="text-xs font-semibold text-gray-400 group-hover:text-white tracking-wide">Layanan Bantuan</span>
-            </a>
+        <div class="mt-8 shrink-0 text-center w-full text-gray-500 text-xs">
+            &copy; 2025 All rights reserved.
+            <div class="mt-2"><a href="https://wa.me/6285179920064" class="text-gray-400 hover:text-white underline">Customer Service</a></div>
         </div>
     </div>
 
-    <!-- MODAL LOADING (Full Screen, Scroll Locked, Dark Backdrop) -->
-    <div id="loadingOverlay" class="fixed inset-0 z-[60] hidden">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-md"></div>
-        <!-- Content -->
-        <div class="relative z-10 flex flex-col items-center justify-center h-full">
-            <div class="loader mb-6 shadow-[0_0_30px_rgba(255,0,51,0.5)]"></div>
-            <p class="text-white font-bold tracking-[0.2em] text-sm animate-pulse" id="loadingText">MEMPROSES DATA...</p>
-            <p class="text-gray-500 text-xs mt-2">Mohon jangan tutup halaman ini</p>
-        </div>
-    </div>
+    <!-- MODAL & ALERTS -->
+    <div id="loadingOverlay" class="fixed inset-0 flex flex-col items-center justify-center z-50 hidden bg-black/90 backdrop-blur-sm"><div class="loader mb-4"></div><p class="text-white font-bold tracking-widest animate-pulse" id="loadingText">MEMPROSES DATA...</p></div>
     
-    <!-- MODAL SUKSES (Full Screen, Scroll Locked, Dark Backdrop) -->
-    <div id="successModal" class="fixed inset-0 z-[60] hidden">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-md"></div>
-        <!-- Content Wrapper -->
-        <div class="relative z-10 flex items-center justify-center h-full p-4">
-            <div class="bg-[#0f0f0f] border border-green-500/30 p-8 rounded-3xl w-full max-w-sm text-center shadow-[0_0_50px_rgba(0,255,0,0.1)] relative transform scale-100 transition-all">
-                
-                <!-- Tombol Close (X) -->
-                <button onclick="closeSuccessModal()" class="absolute top-4 right-4 text-gray-600 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors text-lg">✕</button>
-                
-                <!-- Animasi Centang -->
-                <div class="flex justify-center mb-6">
-                    <div class="w-24 h-24 rounded-full border-[3px] border-green-500 flex items-center justify-center bg-green-500/10 checkmark-circle shadow-[0_0_20px_rgba(0,255,0,0.3)]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-500 drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
+    <!-- MODAL SUKSES -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="bg-[#001a1a] border border-cyan-500 p-6 rounded-2xl w-80 text-center shadow-lg relative">
+            <button onclick="closeSuccessModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white font-bold text-xl transition-colors">✕</button>
+            <div class="flex justify-center mb-4">
+                <div class="w-20 h-20 rounded-full border-4 border-green-500 flex items-center justify-center bg-green-900/20 checkmark-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
                 </div>
-                
-                <h3 class="text-2xl font-bold text-white mb-2 tracking-wide">BERHASIL!</h3>
-                <p class="text-gray-400 text-sm mb-8 leading-relaxed">Data laporan Anda telah tersimpan aman di Database Pusat.</p>
-                
-                <button onclick="lanjutKeWA()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-3 group transition-all transform hover:-translate-y-1">
-                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                    <span>Lapor via WhatsApp</span>
-                </button>
             </div>
+            <h3 class="text-xl font-bold text-cyan-400 mb-2">Sukses!</h3>
+            <p class="text-gray-300 text-sm mb-4">Data tersimpan di Database.</p>
+            <button onclick="lanjutKeWA()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded-lg transition-colors">Lanjut ke WhatsApp</button>
         </div>
     </div>
 
     <!-- MODAL ERROR -->
-    <div id="errorModal" class="fixed inset-0 z-50 hidden flex items-center justify-center">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeErrorModal()"></div>
-        <div class="relative bg-[#1a0000] border border-red-600 p-8 rounded-3xl shadow-[0_0_40px_rgba(255,0,0,0.3)] w-80 text-center transform scale-100 transition-all">
-            <div class="flex justify-center mb-5">
-                <div class="w-20 h-20 rounded-full border-4 border-red-600 flex items-center justify-center bg-red-900/20 shadow-[0_0_15px_rgba(255,0,0,0.4)]">
-                    <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path class="x-mark-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </div>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2 uppercase tracking-wide">AKSES DITOLAK</h3>
-            <p class="text-red-300 text-xs mb-6 leading-relaxed">ID atau Password yang Anda masukkan tidak terdaftar dalam sistem.</p>
-            <button onclick="closeErrorModal()" class="w-full bg-red-800 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-lg">Coba Lagi</button>
-        </div>
-    </div>
-
+    <div id="errorModal" class="fixed inset-0 flex items-center justify-center z-50 hidden"><div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeErrorModal()"></div><div class="bg-[#1a0000] border border-red-600 p-6 rounded-2xl shadow w-80 text-center transform scale-0 transition-transform duration-300 relative z-10" id="errorModalContent"><div class="flex justify-center mb-4"><div class="w-20 h-20 rounded-full border-4 border-red-600 flex items-center justify-center bg-red-900/20"><svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path class="x-mark-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg></div></div><h3 class="text-xl font-bold text-red-500 mb-2">Authorization Failed</h3><p class="text-gray-300 text-sm mb-6">Silahkan masukan data yang valid.</p><button onclick="closeErrorModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">Coba Lagi</button></div></div>
     <!-- MODAL MIN DEPOSIT -->
-    <div id="minDepositModal" class="fixed inset-0 z-50 hidden flex items-center justify-center">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeMinDepositModal()"></div>
-        <div class="relative bg-[#1a1200] border border-yellow-600 p-8 rounded-3xl shadow-[0_0_40px_rgba(255,200,0,0.2)] w-80 text-center">
-            <div class="flex justify-center mb-5">
-                <div class="w-20 h-20 rounded-full border-4 border-yellow-600 flex items-center justify-center bg-yellow-900/20">
-                    <span class="text-4xl">⚠️</span>
-                </div>
-            </div>
-            <h3 class="text-xl font-bold text-yellow-500 mb-2 uppercase tracking-wide">NOMINAL KURANG</h3>
-            <p class="text-gray-400 text-xs mb-6">Sistem mencatat minimal transaksi adalah <span class="text-white font-bold">Rp 10.000</span>.</p>
-            <button onclick="closeMinDepositModal()" class="w-full bg-yellow-700 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded-xl transition-colors">Saya Mengerti</button>
-        </div>
-    </div>
-
+    <div id="minDepositModal" class="fixed inset-0 flex items-center justify-center z-50 hidden"><div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeMinDepositModal()"></div><div class="bg-[#1a0000] border border-yellow-600 p-6 rounded-2xl shadow w-80 text-center transform scale-0 transition-transform duration-300 relative z-10" id="minDepositModalContent"><div class="flex justify-center mb-4"><div class="w-20 h-20 rounded-full border-4 border-yellow-600 flex items-center justify-center bg-yellow-900/20"><span class="text-4xl">💸</span></div></div><h3 class="text-xl font-bold text-yellow-500 mb-2">Nominal Kurang</h3><p class="text-gray-300 text-sm mb-6">Minimal transaksi adalah Rp 10.000 ya Sayang :)</p><button onclick="closeMinDepositModal()" class="w-full bg-yellow-700 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg">Okey, Mengerti</button></div></div>
     <!-- PAGE LOADING -->
-    <div id="pageLoading" class="fixed inset-0 z-[70] bg-black flex flex-col items-center justify-center hidden">
-        <div class="w-16 h-16 border-4 border-gray-800 border-t-red-600 rounded-full animate-spin mb-6"></div>
-        <p class="text-white text-xs tracking-[0.3em] animate-pulse">MEMUAT SISTEM...</p>
-    </div>
+    <div id="pageLoading" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center hidden"><div class="w-12 h-12 border-4 border-red-900 border-t-red-500 rounded-full animate-spin mb-4"></div><p class="text-gray-400 text-sm tracking-widest animate-pulse">MEMUAT HALAMAN...</p></div>
 
     <script>
         // --- KONFIGURASI ---
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTMiWpVw5QBSVl6orG67VEthFdc1QV29NyHi4pjpMAi0qf2YgaDOBwDM6sAPZ8FRQx/exec'; 
         
         const USERS = {
-            '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'https://ui-avatars.com/api/?name=Putri+Dwi&background=random&color=fff' },
-            '2511043': { name: 'Anggun Lolyka H.', password: 'Bendahara 2', photo: 'https://ui-avatars.com/api/?name=Anggun+Lolyka&background=random&color=fff' },
-            '2511079': { name: 'Muh. Hanif Fakhry', password: 'Admin', photo: 'https://ui-avatars.com/api/?name=Hanif+Fakhry&background=random&color=fff' }
+            '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'Putri.jpg' },
+            '2511043': { name: 'Anggun Lolyka H.', password: 'Bendahara 2', photo: 'Anggun.jpg' },
+            '2511079': { name: 'Muh. Hanif Fakhry', password: 'Admin', photo: 'Fakhry.jpg' }
         };
         const ADMIN_PHONE = "6285179920064";
 
         let currentMode = 'masuk'; 
         let tempWAData = null;
 
-        // Elements
         const loginPage = document.getElementById('loginPage');
         const depositPage = document.getElementById('depositPage');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const successModal = document.getElementById('successModal');
         const inlineError = document.getElementById('inlineError');
         
-        // --- HELPER SCROLL LOCK ---
-        function lockScroll() {
-            document.body.classList.add('scroll-locked');
-        }
-        function unlockScroll() {
-            document.body.classList.remove('scroll-locked');
-        }
-
         // --- LOGIC UTAMA ---
         function handleLogin(e) {
             e.preventDefault();
@@ -496,13 +323,13 @@
             if(mode === 'masuk') {
                 document.getElementById('sectionMasuk').classList.remove('hidden-section');
                 document.getElementById('sectionKeluar').classList.add('hidden-section');
-                document.getElementById('btnMasuk').className = 'mode-btn active text-green-400 text-sm sm:text-base py-2 flex-1';
-                document.getElementById('btnKeluar').className = 'mode-btn text-gray-500 text-sm sm:text-base py-2 flex-1';
+                document.getElementById('btnMasuk').className = 'mode-btn active text-green-400 pb-2 text-lg';
+                document.getElementById('btnKeluar').className = 'mode-btn text-gray-500 pb-2 text-lg';
             } else {
                 document.getElementById('sectionMasuk').classList.add('hidden-section');
                 document.getElementById('sectionKeluar').classList.remove('hidden-section');
-                document.getElementById('btnMasuk').className = 'mode-btn text-gray-500 text-sm sm:text-base py-2 flex-1';
-                document.getElementById('btnKeluar').className = 'mode-btn active text-red-500 text-sm sm:text-base py-2 flex-1';
+                document.getElementById('btnMasuk').className = 'mode-btn text-gray-500 pb-2 text-lg';
+                document.getElementById('btnKeluar').className = 'mode-btn active text-red-500 pb-2 text-lg';
             }
         }
 
@@ -536,8 +363,6 @@
 
             tempWAData = { ...dataKirim, nominalFmt: nominalFmt };
 
-            // Start Loading & Lock Scroll
-            lockScroll();
             document.getElementById('loadingText').innerText = "MENYIMPAN DATA...";
             loadingOverlay.classList.remove('hidden');
 
@@ -549,20 +374,16 @@
             }).then(() => {
                 setTimeout(() => {
                     loadingOverlay.classList.add('hidden');
-                    // Show Success Modal (Scroll still locked)
                     successModal.classList.remove('hidden');
                     resetForm();
                 }, 1500);
             }).catch(err => {
                 loadingOverlay.classList.add('hidden');
-                unlockScroll(); // Unlock if error
                 alert("Gagal koneksi database: " + err);
             });
         }
 
         function lanjutKeWA() {
-            // Unlock Scroll before leaving
-            unlockScroll();
             successModal.classList.add('hidden');
             if(!tempWAData) return;
             let pesan = '';
@@ -584,15 +405,8 @@
         }
 
         // --- RIWAYAT ---
-        function openRiwayat() { 
-            lockScroll();
-            document.getElementById('riwayatPage').classList.remove('hidden'); 
-            fetchRiwayat(); 
-        }
-        function closeRiwayat() { 
-            unlockScroll();
-            document.getElementById('riwayatPage').classList.add('hidden'); 
-        }
+        function openRiwayat() { document.getElementById('riwayatPage').classList.remove('hidden'); fetchRiwayat(); }
+        function closeRiwayat() { document.getElementById('riwayatPage').classList.add('hidden'); }
 
         function convertToIndoDate(dateStr) {
             // dateStr format: dd/MM/yyyy (from Google Sheet)
@@ -612,28 +426,32 @@
 
         function fetchRiwayat() {
             const container = document.getElementById('riwayatContent');
-            container.innerHTML = '<div class="flex justify-center mt-20"><div class="loader"></div></div>';
+            container.innerHTML = '<div class="flex justify-center mt-10"><div class="loader"></div></div>';
             
             const bln = document.getElementById('filterBulan').value;
             const thn = document.getElementById('filterTahun').value;
             const tglSpecific = document.getElementById('filterTanggal').value; // Format yyyy-mm-dd
 
             fetch(GOOGLE_SCRIPT_URL).then(res => res.json()).then(data => {
-                if(!data || data.length === 0) { 
-                    container.innerHTML = '<div class="flex flex-col items-center justify-center h-40 text-gray-600 gap-3"><svg class="w-12 h-12 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><p class="text-xs">Data belum tersedia.</p></div>'; 
-                    return; 
-                }
+                if(!data || data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500">Belum ada data.</p>'; return; }
                 
                 let filtered = data;
                 
                 // Priority: Specific Date > Month/Year
                 if(tglSpecific) {
-                    const [sY, sM, sD] = tglSpecific.split('-');
+                    // tglSpecific is yyyy-mm-dd. Sheet data is dd/mm/yyyy.
+                    const [sY, sM, sD] = tglSpecific.split('-'); // ["2025", "12", "28"]
+                    // Format sD/sM to allow flexible comparison (remove leading zeros if needed, but let's assume standard padded)
+                    
                     filtered = data.filter(row => {
                         let tgl = row[1] !== '-' ? row[1] : row[3];
                         if(!tgl || tgl === '-') return false;
-                        const parts = tgl.split('/');
+                        
+                        const parts = tgl.split('/'); // [dd, mm, yyyy]
                         if(parts.length < 3) return false;
+                        
+                        // Compare Day, Month, Year strictly
+                        // parseInt handles "01" vs "1"
                         return parseInt(parts[0]) === parseInt(sD) && 
                                parseInt(parts[1]) === parseInt(sM) && 
                                parseInt(parts[2]) === parseInt(sY);
@@ -644,45 +462,49 @@
                         if(!tgl || tgl === '-') return false;
                         const parts = tgl.split('/'); 
                         if(parts.length < 3) return false;
+
+                        // Strict Integer Comparison to avoid "1" vs "01" mismatch
                         let matchBulan = true;
                         let matchTahun = true;
+
                         if(bln) matchBulan = parseInt(parts[1]) === parseInt(bln);
                         if(thn) matchTahun = parseInt(parts[2]) === parseInt(thn);
+
                         return matchBulan && matchTahun;
                     });
                 }
                 renderTable(filtered);
             }).catch(err => {
-                container.innerHTML = `<div class="flex flex-col items-center justify-center h-40 text-red-500 gap-2"><p class="text-xs">Gagal memuat data.</p><p class="text-[10px] opacity-50">Cek koneksi internet</p></div>`;
+                container.innerHTML = `<p class="text-center text-red-500 text-xs">Gagal ambil data.<br>Pastikan Script di-Deploy sebagai 'Anyone'</p>`;
             });
         }
 
         function renderTable(data) {
             const container = document.getElementById('riwayatContent');
-            if(data.length === 0) { 
-                container.innerHTML = '<div class="flex flex-col items-center justify-center h-40 text-gray-600 gap-3"><svg class="w-12 h-12 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg><p class="text-xs">Data tidak ditemukan.</p></div>'; 
-                return; 
-            }
+            if(data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500 mt-4">Data tidak ditemukan.</p>'; return; }
 
-            let html = '<div class="overflow-x-auto"><table class="w-full"><thead><tr class="text-[10px] uppercase tracking-wider text-gray-400 border-b border-gray-800"><th class="pb-3 pl-2 text-left font-normal text-white">Tanggal</th><th class="pb-3 text-left font-normal text-white">Item/Jenis</th><th class="pb-3 text-right font-normal text-green-500">Masuk</th><th class="pb-3 text-right font-normal text-red-500">Keluar</th><th class="pb-3 pr-2 text-right font-normal text-blue-400">Otorisasi</th></tr></thead><tbody class="text-xs">';
-            data.forEach((row, index) => {
+            // UPDATED HEADER COLORS
+            let html = '<table><thead><tr><th class="text-white">Tanggal</th><th class="text-white">Item/Jenis</th><th class="text-right text-green-500">Masuk</th><th class="text-right text-red-500">Keluar</th><th class="text-blue-400">Otorisasi</th></tr></thead><tbody>';
+            data.forEach(row => {
+                // Index: 0:Masuk, 1:TglM, 2:Keluar, 3:TglK, 4:Item, 5:Harga, 6:Total, 7:Note, 8:Auth
                 let tgl = row[1] !== '-' ? row[1] : row[3];
+                // CONVERT DATE FORMAT HERE
                 let tglDisplay = convertToIndoDate(tgl);
+                
                 let item = row[4];
                 let masuk = row[0] !== '-' ? formatRupiah(row[0]) : '-';
                 let keluar = row[2] !== '-' ? formatRupiah(row[2]) : '-';
                 let auth = row[8];
-                let rowBg = index % 2 === 0 ? 'bg-white/[0.02]' : 'bg-transparent';
 
-                html += `<tr class="${rowBg} hover:bg-white/[0.05] transition-colors border-b border-gray-800/50">
-                    <td class="py-3 pl-2 whitespace-nowrap text-gray-300 font-mono">${tglDisplay}</td>
-                    <td class="py-3 font-medium text-white max-w-[120px] truncate">${item}</td>
-                    <td class="py-3 text-right font-mono ${masuk !== '-' ? 'text-green-400' : 'text-gray-600'}">${masuk}</td>
-                    <td class="py-3 text-right font-mono ${keluar !== '-' ? 'text-red-400' : 'text-gray-600'}">${keluar}</td>
-                    <td class="py-3 pr-2 text-right text-blue-300/80 text-[10px] uppercase">${auth}</td>
+                html += `<tr>
+                    <td class="text-white whitespace-nowrap">${tglDisplay}</td>
+                    <td class="text-white font-bold max-w-[100px] truncate">${item}</td>
+                    <td class="text-green-500 text-right">${masuk}</td>
+                    <td class="text-red-500 text-right">${keluar}</td>
+                    <td class="text-blue-400 text-xs">${auth}</td>
                 </tr>`;
             });
-            html += '</tbody></table></div>';
+            html += '</tbody></table>';
             container.innerHTML = html;
         }
 
@@ -691,25 +513,10 @@
         function logout() { location.reload(); }
         function toggleHelp() { document.getElementById('helpDropdown').classList.toggle('hidden'); setTimeout(()=>document.getElementById('helpDropdown').classList.toggle('opacity-100'),10); }
         function toggleAccordion(id) { document.getElementById(id).classList.toggle('active'); document.getElementById('arrow-'+id).classList.toggle('rotate-arrow'); }
-        
-        function showMinDepositModal() { 
-            lockScroll();
-            document.getElementById('minDepositModal').classList.remove('hidden'); 
-            setTimeout(()=>document.getElementById('minDepositModalContent').classList.add('scale-100', 'shake'),10); 
-            setTimeout(()=>document.getElementById('minDepositModalContent').classList.remove('shake'),500); 
-        }
-        function closeMinDepositModal() { 
-            unlockScroll();
-            document.getElementById('minDepositModal').classList.add('hidden'); 
-            document.getElementById('minDepositModalContent').classList.remove('scale-100'); 
-        }
+        function showMinDepositModal() { document.getElementById('minDepositModal').classList.remove('hidden'); setTimeout(()=>document.getElementById('minDepositModalContent').classList.add('scale-100', 'shake'),10); setTimeout(()=>document.getElementById('minDepositModalContent').classList.remove('shake'),500); }
+        function closeMinDepositModal() { document.getElementById('minDepositModal').classList.add('hidden'); document.getElementById('minDepositModalContent').classList.remove('scale-100'); }
         function closeErrorModal() { document.getElementById('errorModal').classList.add('hidden'); document.getElementById('errorModalContent').classList.remove('scale-100'); }
-        
-        // Close Success Modal
-        function closeSuccessModal() { 
-            unlockScroll();
-            document.getElementById('successModal').classList.add('hidden'); 
-        }
+        function closeSuccessModal() { document.getElementById('successModal').classList.add('hidden'); }
     </script>
 </body>
 </html>
