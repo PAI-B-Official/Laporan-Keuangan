@@ -32,7 +32,6 @@
             background: linear-gradient(180deg, #8B0000 0%, #000000 100%);
             min-height: 100vh;
             width: 100vw;
-            /* Scroll default aktif */
             overflow-y: auto; 
             -webkit-overflow-scrolling: touch;
             color: white;
@@ -40,24 +39,18 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* PERUBAHAN: justify-content menjadi center agar login di tengah layar mobile */
             justify-content: center; 
             padding-top: 1rem;
             padding-bottom: 3rem;
         }
 
-        /* Class untuk mengunci scroll body saat modal aktif */
-        body.modal-open {
-            overflow: hidden !important;
-            height: 100vh;
-        }
+        body.modal-open { overflow: hidden !important; height: 100vh; }
 
         .glass-panel {
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 0, 0, 0.3);
             width: 100%;
-            /* Pastikan konten dalam panel tidak tumpah */
             display: flex;
             flex-direction: column;
         }
@@ -67,47 +60,37 @@
         .mode-btn.active { opacity: 1; border-bottom: 2px solid #fff; font-weight: bold; }
         .hidden-section { display: none; }
         
-        /* Loader Styles */
         .loader { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #ff0033; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-        .loader-blue { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #00f3ff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* Table Styles */
         .table-container { max-height: 400px; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
         th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #333; }
         th { background-color: #1a0000; color: #ff0033; position: sticky; top: 0; z-index: 10; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.03); }
 
-        /* Accordion transition */
         .accordion-content { transition: max-height 0.3s ease-out, opacity 0.3s ease-out; max-height: 0; overflow: hidden; opacity: 0; }
         .accordion-content.active { max-height: 200px; opacity: 1; }
         .rotate-arrow { transform: rotate(180deg); }
 
-        /* Browser Loading Bar Simulation */
         #browserLoader { position: fixed; top: 0; left: 0; height: 3px; background: #ff0033; width: 0%; z-index: 9999; transition: width 0.2s ease; box-shadow: 0 0 10px #ff0033; }
         
-        /* Animations */
         .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
         
-        /* Checkmark Animation */
         .checkmark-circle { animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* Date Input Styling Override */
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
     </style>
 </head>
 <body class="p-4">
 
-    <!-- BROWSER LOADING BAR -->
     <div id="browserLoader"></div>
 
-    <!-- Container Utama -->
     <div class="w-full max-w-md relative z-10 flex flex-col gap-4">
         
-        <!-- HEADER (Title 1 Line) -->
+        <!-- HEADER -->
         <div class="text-center shrink-0 mt-2">
             <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider drop-shadow-lg uppercase italic leading-tight whitespace-nowrap">
                 Laporan Kas <span class="text-yellow-500">PAI B</span>
@@ -127,7 +110,18 @@
                     <label class="block text-gray-300 text-sm mb-2 font-medium">Password</label>
                     <div class="relative">
                         <input type="password" id="passwordInput" required placeholder="Masukkan Password" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 transition-all duration-300 input-glow pr-12">
-                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white p-2">👁️</button>
+                        <!-- ICON MATA BARU -->
+                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white p-2 focus:outline-none">
+                            <!-- Mata Tertutup (Default untuk Password) -->
+                            <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.059 10.059 0 013.999-5.125m3.75-2.13A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.059 10.059 0 01-3.328 5.75m-3.414-3.414a3 3 0 01-4.242 0m4.242-4.242l4.242 4.242M1 1l22 22" />
+                            </svg>
+                            <!-- Mata Terbuka -->
+                            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
                     </div>
                     <p id="inlineError" class="text-red-500 text-xs mt-2 hidden font-bold italic">⚠️ Data tidak Valid</p>
                 </div>
@@ -140,7 +134,6 @@
         <!-- HALAMAN UTAMA -->
         <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden w-full relative transition-all duration-300">
             
-            <!-- Header User Profile (Diberi mt-8 agar turun dari ikon FAQ) -->
             <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4 pr-10 mt-8">
                 <div class="relative shrink-0"><img id="userAvatar" src="" alt="Profile" class="w-14 h-14 rounded-full border-2 border-red-500 object-cover shadow-md"></div>
                 <div class="flex-grow min-w-0">
@@ -151,7 +144,6 @@
                 <button onclick="handleLogout()" class="shrink-0 text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded border border-gray-600 transition-colors">Keluar</button>
             </div>
 
-            <!-- MODE SWITCHER -->
             <div class="flex justify-center gap-4 sm:gap-8 mb-6 border-b border-gray-800 pb-2">
                 <button id="btnMasuk" onclick="switchMode('masuk')" class="mode-btn active text-green-400 pb-2 text-lg w-1/2 text-center">PEMASUKAN</button>
                 <button id="btnKeluar" onclick="switchMode('keluar')" class="mode-btn text-red-500 pb-2 text-lg w-1/2 text-center">PENGELUARAN</button>
@@ -212,7 +204,6 @@
                     </button>
                 </div>
 
-                <!-- TOMBOL CONFIRM -->
                 <button type="button" onclick="kirimConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold py-4 px-4 rounded-xl shadow-lg transform active:scale-95 transition-all flex justify-center items-center gap-2 mt-4">
                     <span class="text-2xl">✅</span> <span class="tracking-wider">CONFIRM</span>
                 </button>
@@ -228,14 +219,13 @@
             </div>
         </div>
 
-        <!-- MODAL RIWAYAT (Fixed Screen) -->
+        <!-- MODAL RIWAYAT -->
         <div id="riwayatPage" class="fixed inset-0 z-[60] bg-black/95 backdrop-blur-md hidden flex flex-col h-screen w-screen overflow-hidden">
             <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-gray-900 shrink-0">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2"><span class="text-yellow-500">📜</span> Riwayat Transaksi</h2>
                 <button onclick="closeRiwayat()" class="text-gray-400 hover:text-white font-bold text-2xl p-2">×</button>
             </div>
             
-            <!-- FILTER (Updated: With Date Picker) -->
             <div class="p-3 flex flex-wrap gap-2 bg-gray-900 border-b border-gray-800 items-center justify-between shrink-0">
                 <div class="flex gap-2 flex-1 min-w-0">
                     <select id="filterBulan" class="bg-black text-white border border-gray-700 rounded px-2 py-2 text-xs w-full min-w-[80px]">
@@ -268,11 +258,8 @@
     </div>
 
     <!-- MODAL & ALERTS -->
-    
-    <!-- LOADING (Z-INDEX 70) -->
     <div id="loadingOverlay" class="fixed inset-0 flex flex-col items-center justify-center z-[70] hidden bg-black/90 backdrop-blur-sm h-screen w-screen overflow-hidden"><div class="loader mb-4"></div><p class="text-white font-bold tracking-widest animate-pulse" id="loadingText">MEMPROSES DATA...</p></div>
     
-    <!-- MODAL SUKSES (Z-INDEX 80 - Paten) -->
     <div id="successModal" class="fixed inset-0 flex items-center justify-center z-[80] hidden bg-black/80 backdrop-blur-md h-screen w-screen overflow-hidden">
         <div class="bg-[#001a1a] border border-cyan-500 p-6 rounded-2xl w-80 text-center shadow-[0_0_50px_rgba(0,243,255,0.2)] relative transform scale-100 transition-all">
             <button onclick="closeSuccessModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white font-bold text-xl transition-colors p-2">✕</button>
@@ -287,13 +274,10 @@
         </div>
     </div>
 
-    <!-- MODAL ERROR (Z-INDEX 90) -->
     <div id="errorModal" class="fixed inset-0 flex items-center justify-center z-[90] hidden bg-black/80 backdrop-blur-sm h-screen w-screen overflow-hidden"><div class="bg-[#1a0000] border border-red-600 p-6 rounded-2xl shadow-2xl w-80 text-center transform scale-100 transition-all" id="errorModalContent"><div class="flex justify-center mb-4"><div class="w-20 h-20 rounded-full border-4 border-red-600 flex items-center justify-center bg-red-900/20"><svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path class="x-mark-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg></div></div><h3 class="text-xl font-bold text-red-500 mb-2">Authorization Failed</h3><p class="text-gray-300 text-sm mb-6">Silahkan masukan data yang valid.</p><button onclick="closeErrorModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg active:scale-95">Coba Lagi</button></div></div>
     
-    <!-- MODAL MIN DEPOSIT (Z-INDEX 90) -->
     <div id="minDepositModal" class="fixed inset-0 flex items-center justify-center z-[90] hidden bg-black/80 backdrop-blur-sm h-screen w-screen overflow-hidden"><div class="bg-[#1a0000] border border-yellow-600 p-6 rounded-2xl shadow-2xl w-80 text-center transform scale-100 transition-all" id="minDepositModalContent"><div class="flex justify-center mb-4"><div class="w-20 h-20 rounded-full border-4 border-yellow-600 flex items-center justify-center bg-yellow-900/20"><span class="text-4xl">💸</span></div></div><h3 class="text-xl font-bold text-yellow-500 mb-2">Nominal Kurang</h3><p class="text-gray-300 text-sm mb-6">Minimal transaksi adalah Rp 10.000 ya Sayang :)</p><button onclick="closeMinDepositModal()" class="w-full bg-yellow-700 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg active:scale-95">Okey, Mengerti</button></div></div>
     
-    <!-- PAGE LOADING (Z-INDEX 100) -->
     <div id="pageLoading" class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center hidden h-screen w-screen overflow-hidden"><div class="w-12 h-12 border-4 border-red-900 border-t-red-500 rounded-full animate-spin mb-4"></div><p class="text-gray-400 text-sm tracking-widest animate-pulse">MEMUAT HALAMAN...</p></div>
 
     <script>
@@ -301,9 +285,9 @@
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTMiWpVw5QBSVl6orG67VEthFdc1QV29NyHi4pjpMAi0qf2YgaDOBwDM6sAPZ8FRQx/exec'; 
         
         const USERS = {
-            '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'Putri.jpg' },
-            '2511043': { name: 'Anggun Lolyka H.', password: 'Bendahara 2', photo: 'Anggun.jpg' },
-            '2511079': { name: 'Muh. Hanif Fakhry', password: 'Admin', photo: 'Fakhry.jpg' }
+            '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'https://ui-avatars.com/api/?name=Putri+Dwi&background=random&color=fff' },
+            '2511043': { name: 'Anggun Lolyka H.', password: 'Bendahara 2', photo: 'https://ui-avatars.com/api/?name=Anggun+Lolyka&background=random&color=fff' },
+            '2511079': { name: 'Muh. Hanif Fakhry', password: 'Admin', photo: 'https://ui-avatars.com/api/?name=Hanif+Fakhry&background=random&color=fff' }
         };
         const ADMIN_PHONE = "6285179920064";
 
@@ -321,39 +305,18 @@
         function disableScroll() { document.body.classList.add('modal-open'); }
         function enableScroll() { document.body.classList.remove('modal-open'); }
 
-        // --- HISTORY MANAGEMENT (SMART BACK BUTTON) ---
-        // Setup initial state when loading
-        window.addEventListener('load', () => {
-            // Replace current state with 'login' if at root
-            history.replaceState({ page: 'login' }, '', '');
-        });
-
-        // Handle Back Button Press
+        // --- HISTORY MANAGEMENT ---
+        window.addEventListener('load', () => { history.replaceState({ page: 'login' }, '', ''); });
         window.addEventListener('popstate', (event) => {
             const state = event.state;
-            
-            // Jika ada modal terbuka (Riwayat, Sukses, dll), tutup modal
-            if (!document.getElementById('riwayatPage').classList.contains('hidden')) {
-                closeRiwayat(); // Ini akan handle UI
-                return; // Stop here, jangan reload
-            }
-            
-            if (!document.getElementById('successModal').classList.contains('hidden')) {
-                closeSuccessModal();
-                return;
-            }
-
-            // Logika Halaman
+            if (!document.getElementById('riwayatPage').classList.contains('hidden')) { closeRiwayat(); return; }
+            if (!document.getElementById('successModal').classList.contains('hidden')) { closeSuccessModal(); return; }
             if (state && state.page === 'dashboard') {
-                // User kembali ke dashboard (mungkin dari riwayat)
-                // Pastikan tampilan benar
                 loginPage.classList.add('hidden');
                 depositPage.classList.remove('hidden');
             } else if (state && state.page === 'login') {
-                // User kembali ke login (Logout)
-                handleLogout(false); // false = jangan push history lagi biar ga loop
+                handleLogout(false);
             } else {
-                // Fallback default
                 handleLogout(false);
             }
         });
@@ -368,7 +331,7 @@
                 inlineError.classList.add('hidden');
                 document.getElementById('browserLoader').style.width = "100%";
                 document.getElementById('pageLoading').classList.remove('hidden');
-                disableScroll(); // Lock scroll while loading
+                disableScroll();
                 
                 setTimeout(() => {
                     document.getElementById('displayUsername').innerText = USERS[u].name;
@@ -380,11 +343,8 @@
                     
                     document.getElementById('pageLoading').classList.add('hidden');
                     document.getElementById('browserLoader').style.width = "0%";
-                    enableScroll(); // Unlock scroll
-
-                    // Push State Dashboard
+                    enableScroll();
                     history.pushState({ page: 'dashboard' }, '', '#dashboard');
-
                 }, 1500);
             } else {
                 inlineError.classList.remove('hidden');
@@ -441,7 +401,7 @@
 
             document.getElementById('loadingText').innerText = "MENYIMPAN DATA...";
             loadingOverlay.classList.remove('hidden');
-            disableScroll(); // LOCK SCROLL
+            disableScroll();
 
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
@@ -451,20 +411,18 @@
             }).then(() => {
                 setTimeout(() => {
                     loadingOverlay.classList.add('hidden');
-                    // showSuccessModal handles lock scroll itself, but we are already locked.
-                    // Just make sure success modal is shown.
                     document.getElementById('successModal').classList.remove('hidden');
                     resetForm();
                 }, 1500);
             }).catch(err => {
                 loadingOverlay.classList.add('hidden');
-                enableScroll(); // Unlock if error
+                enableScroll();
                 alert("Gagal koneksi database: " + err);
             });
         }
 
         function lanjutKeWA() {
-            closeSuccessModal(); // This unlocks scroll
+            closeSuccessModal();
             if(!tempWAData) return;
             let pesan = '';
             if(tempWAData.tipe === 'masuk') {
@@ -484,33 +442,23 @@
             document.getElementById('catatanUmum').value = '';
         }
 
-        // --- RIWAYAT ---
         function openRiwayat() { 
             document.getElementById('riwayatPage').classList.remove('hidden'); 
-            disableScroll(); // LOCK SCROLL
-            
-            // Add history entry for back button support
+            disableScroll(); 
             history.pushState({ page: 'riwayat' }, '', '#riwayat');
-            
             fetchRiwayat(); 
         }
         
         function closeRiwayat() { 
             document.getElementById('riwayatPage').classList.add('hidden'); 
-            enableScroll(); // UNLOCK SCROLL
-            
-            // If we are closing via 'X' button, assume we are going back to dashboard state
-            // If the current history state is 'riwayat', go back to remove it
-            if(history.state && history.state.page === 'riwayat') {
-                history.back();
-            }
+            enableScroll(); 
+            if(history.state && history.state.page === 'riwayat') { history.back(); }
         }
 
         function convertToIndoDate(dateStr) {
             if(!dateStr || dateStr === '-') return '-';
             const parts = dateStr.split('/');
             if(parts.length < 3) return dateStr;
-            
             const day = parts[0];
             const monthIdx = parseInt(parts[1]) - 1;
             const year = parts[2];
@@ -534,7 +482,8 @@
                 if(tglSpecific) {
                     const [sY, sM, sD] = tglSpecific.split('-');
                     filtered = data.filter(row => {
-                        let tgl = row[1] !== '-' ? row[1] : row[3];
+                        // Cek Tgl Masuk (Idx 2) atau Tgl Keluar (Idx 4)
+                        let tgl = row[2] !== '-' ? row[2] : row[4];
                         if(!tgl || tgl === '-') return false;
                         const parts = tgl.split('/'); 
                         if(parts.length < 3) return false;
@@ -542,7 +491,7 @@
                     });
                 } else if(bln || thn) {
                     filtered = data.filter(row => {
-                        let tgl = row[1] !== '-' ? row[1] : row[3];
+                        let tgl = row[2] !== '-' ? row[2] : row[4];
                         if(!tgl || tgl === '-') return false;
                         const parts = tgl.split('/'); 
                         if(parts.length < 3) return false;
@@ -565,13 +514,15 @@
 
             let html = '<table><thead><tr><th class="text-white">Tanggal</th><th class="text-white">Item/Jenis</th><th class="text-right text-green-500">Masuk</th><th class="text-right text-red-500">Keluar</th><th class="text-gray-400">Note</th><th class="text-blue-400">Otorisasi</th></tr></thead><tbody>';
             data.forEach(row => {
-                let tgl = row[1] !== '-' ? row[1] : row[3];
+                // Index Mapping A-J: 
+                // 0:No, 1:Masuk, 2:TglMasuk, 3:Keluar, 4:TglKeluar, 5:Item, 6:Harga, 7:Total, 8:Note, 9:Otorisasi
+                let tgl = row[2] !== '-' ? row[2] : row[4];
                 let tglDisplay = convertToIndoDate(tgl);
-                let item = row[4];
-                let masuk = row[0] !== '-' ? formatRupiah(row[0]) : '-';
-                let keluar = row[2] !== '-' ? formatRupiah(row[2]) : '-';
-                let note = row[7];
-                let auth = row[8];
+                let item = row[5];
+                let masuk = row[1] !== '-' ? formatRupiah(row[1]) : '-';
+                let keluar = row[3] !== '-' ? formatRupiah(row[3]) : '-';
+                let note = row[8];
+                let auth = row[9];
 
                 html += `<tr>
                     <td class="text-white whitespace-nowrap">${tglDisplay}</td>
@@ -587,13 +538,23 @@
         }
 
         function formatRupiah(angka) { return new Intl.NumberFormat('id-ID').format(angka); }
-        function togglePassword() { const x=document.getElementById('passwordInput'); x.type=x.type==='password'?'text':'password'; }
-        
-        function handleLogout(pushHistory = true) {
-            // Clear credentials logic if stored
-            // Reload page to reset state
-            location.reload();
+        function togglePassword() { 
+            const input = document.getElementById('passwordInput');
+            const open = document.getElementById('eyeOpen');
+            const closed = document.getElementById('eyeClosed');
+            
+            if(input.type === 'password') {
+                input.type = 'text';
+                open.classList.remove('hidden');
+                closed.classList.add('hidden');
+            } else {
+                input.type = 'password';
+                open.classList.add('hidden');
+                closed.classList.remove('hidden');
+            }
         }
+        
+        function handleLogout(pushHistory = true) { location.reload(); }
         
         function toggleHelp() { 
             const dropdown = document.getElementById('helpDropdown');
@@ -602,7 +563,6 @@
         }
         function toggleAccordion(id) { document.getElementById(id).classList.toggle('active'); document.getElementById('arrow-'+id).classList.toggle('rotate-arrow'); }
         
-        // MODALS SHOW/HIDE HELPERS (With scroll lock)
         function showMinDepositModal() { 
             document.getElementById('minDepositModal').classList.remove('hidden'); 
             disableScroll();
@@ -626,7 +586,6 @@
             enableScroll();
         }
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('helpDropdown');
             const button = document.querySelector('button[onclick="toggleHelp()"]');
