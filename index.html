@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Laporan Kas PAI B</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font: VT323 for Digital Look & Poppins for Body -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=VT323&display=swap" rel="stylesheet">
     
     <script>
@@ -16,6 +14,7 @@
                     colors: {
                         'neon-red': '#ff0033',
                         'dark-red': '#8B0000',
+                        'neon-blue': '#00f3ff',
                     },
                     fontFamily: {
                         'digital': ['"VT323"', 'monospace'],
@@ -30,96 +29,65 @@
     </script>
     <style>
         body {
-            /* Gradasi Merah ke Hitam */
             background: linear-gradient(180deg, #8B0000 0%, #000000 100%);
-            height: 100vh; /* Tinggi pas layar */
+            min-height: 100vh;
             width: 100vw;
-            overflow: hidden; /* Hilangkan scroll */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             color: white;
             font-family: 'Poppins', sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
         }
 
         .glass-panel {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 0, 0, 0.2);
+            width: 100%;
         }
 
-        /* Animation for input focus */
-        .input-glow:focus {
-            outline: none;
-            border-color: #ff0033;
-            box-shadow: 0 0 15px rgba(255, 0, 51, 0.4);
-        }
-
-        /* X Animation */
-        .x-mark-path {
-            stroke-dasharray: 100;
-            stroke-dashoffset: 100;
-            animation: drawX 0.5s ease-in-out forwards;
-        }
+        .input-glow:focus { outline: none; border-color: #ff0033; box-shadow: 0 0 15px rgba(255, 0, 51, 0.4); }
+        .mode-btn { transition: all 0.3s ease; opacity: 0.5; border-bottom: 2px solid transparent; }
+        .mode-btn.active { opacity: 1; border-bottom: 2px solid #fff; font-weight: bold; }
+        .hidden-section { display: none; }
         
-        @keyframes drawX {
-            to {
-                stroke-dashoffset: 0;
-            }
-        }
-
-        .shake {
-            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
-
-        /* Loading Spinner for WA */
-        .loader {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-left-color: #ff0033;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        /* Loader Styles */
+        .loader { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #ff0033; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        .loader-blue { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #00f3ff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Table Styles */
+        .table-container { max-height: 400px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.70rem; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #333; }
+        th { background-color: #1a0000; color: #ff0033; position: sticky; top: 0; z-index: 10; }
+        tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.05); }
 
         /* Accordion transition */
-        .accordion-content {
-            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-        }
-        .accordion-content.active {
-            max-height: 200px;
-            opacity: 1;
-        }
-        .rotate-arrow {
-            transform: rotate(180deg);
-        }
+        .accordion-content { transition: max-height 0.3s ease-out, opacity 0.3s ease-out; max-height: 0; overflow: hidden; opacity: 0; }
+        .accordion-content.active { max-height: 200px; opacity: 1; }
+        .rotate-arrow { transform: rotate(180deg); }
 
         /* Browser Loading Bar Simulation */
-        #browserLoader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: #ff0033;
-            width: 0%;
-            z-index: 9999;
-            transition: width 0.2s ease;
-            box-shadow: 0 0 10px #ff0033;
+        #browserLoader { position: fixed; top: 0; left: 0; height: 3px; background: #ff0033; width: 0%; z-index: 9999; transition: width 0.2s ease; box-shadow: 0 0 10px #ff0033; }
+        
+        /* Animations */
+        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+        
+        /* Checkmark Animation */
+        .checkmark-circle { animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* Date Input Styling Override */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
         }
     </style>
 </head>
@@ -129,12 +97,12 @@
     <div id="browserLoader"></div>
 
     <!-- Container Utama -->
-    <div class="w-full max-w-md relative z-10 flex flex-col h-full pt-10">
+    <div class="w-full max-w-md relative z-10 flex flex-col">
         
-        <!-- LOGO / HEADER AREA -->
+        <!-- HEADER (Title 1 Line) -->
         <div class="text-center mb-6 shrink-0">
-            <h1 class="text-4xl font-bold text-white tracking-wider drop-shadow-lg uppercase italic leading-tight">
-                Laporan kas <br> <span class="text-yellow-500 text-5xl">PAI B</span>
+            <h1 class="text-3xl font-bold text-white tracking-wider drop-shadow-lg uppercase italic leading-tight">
+                Laporan Kas <span class="text-yellow-500">PAI B</span>
             </h1>
             <p class="text-gray-400 text-sm mt-2">Catatan keuangan gak pake ribet.</p>
         </div>
@@ -142,431 +110,413 @@
         <!-- HALAMAN LOGIN -->
         <div id="loginPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon w-full">
             <h2 class="text-2xl font-bold mb-6 text-center border-b border-red-900 pb-4">Lengkapi Data</h2>
-            
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="mb-4">
                     <label class="block text-gray-300 text-sm mb-2">Username</label>
-                    <input type="text" inputmode="numeric" id="usernameInput" required placeholder="Masukkan Username" 
-                        class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:border-red-500 transition-all duration-300 input-glow">
+                    <input type="text" inputmode="numeric" id="usernameInput" required placeholder="Masukkan Username" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 transition-all duration-300 input-glow">
                 </div>
-
                 <div class="mb-6 relative">
                     <label class="block text-gray-300 text-sm mb-2">Password</label>
                     <div class="relative">
-                        <input type="password" id="passwordInput" required placeholder="Masukkan Password" 
-                            class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white placeholder-gray-600 focus:border-red-500 transition-all duration-300 input-glow pr-12">
-                        
-                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white focus:outline-none">
-                            <svg id="eyeIconOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            <svg id="eyeIconClosed" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.059 10.059 0 013.999-5.125m3.75-2.13A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.059 10.059 0 01-3.328 5.75m-3.414-3.414a3 3 0 01-4.242 0m4.242-4.242l4.242 4.242M1 1l22 22" />
-                            </svg>
-                        </button>
+                        <input type="password" id="passwordInput" required placeholder="Masukkan Password" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 transition-all duration-300 input-glow pr-12">
+                        <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white">👁️</button>
                     </div>
                     <p id="inlineError" class="text-red-500 text-xs mt-2 hidden font-bold italic">⚠️ Data tidak Valid</p>
                 </div>
-
-                <button type="submit" 
-                    class="w-full bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold py-3 px-4 rounded-lg transform hover:scale-[1.02] transition-all duration-200 shadow-lg flex justify-center items-center gap-2">
-                    <span>👤MASUK</span>
-                </button>
+                <button type="submit" class="w-full bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-bold py-3 px-4 rounded-lg transform hover:scale-[1.02] transition-all shadow-lg flex justify-center items-center gap-2"><span>👤MASUK</span></button>
             </form>
         </div>
 
-        <!-- MODAL AUTHORIZATION FAILED -->
-        <div id="errorModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeErrorModal()"></div>
-            <div class="bg-[#1a0000] border border-red-600 p-6 rounded-2xl shadow-[0_0_30px_rgba(255,0,0,0.6)] w-80 text-center transform scale-0 transition-transform duration-300 relative z-10" id="errorModalContent">
-                <div class="flex justify-center mb-4">
-                    <div class="w-20 h-20 rounded-full border-4 border-red-600 flex items-center justify-center bg-red-900/20">
-                        <svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path class="x-mark-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </div>
-                </div>
-                <h3 class="text-xl font-bold text-red-500 mb-2 uppercase tracking-wide">Authorization Failed</h3>
-                <p class="text-gray-300 text-sm mb-6">Silahkan masukan data yang valid untuk melanjutkan.</p>
-                <button onclick="closeErrorModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
-                    Coba Lagi
-                </button>
-            </div>
-        </div>
-
-        <!-- MODAL MINIMAL DEPOSIT (BARU) -->
-        <div id="minDepositModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeMinDepositModal()"></div>
-            <div class="bg-[#1a0000] border border-yellow-600 p-6 rounded-2xl shadow-[0_0_30px_rgba(255,200,0,0.4)] w-80 text-center transform scale-0 transition-transform duration-300 relative z-10" id="minDepositModalContent">
-                <div class="flex justify-center mb-4">
-                    <div class="w-20 h-20 rounded-full border-4 border-yellow-600 flex items-center justify-center bg-yellow-900/20">
-                        <span class="text-4xl">💸</span>
-                    </div>
-                </div>
-                <h3 class="text-xl font-bold text-yellow-500 mb-2 uppercase tracking-wide">Nominal Kurang</h3>
-                <p class="text-gray-300 text-sm mb-6">Minimal setoran adalah Rp 10.000 ya Sayang :)</p>
-                <button onclick="closeMinDepositModal()" class="w-full bg-yellow-700 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
-                    Okey, Mengerti
-                </button>
-            </div>
-        </div>
-
-        <!-- PAGE LOADING OVERLAY (SIMULASI BROWSER LOAD) -->
-        <div id="pageLoading" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center hidden">
-             <!-- Spinner Simple -->
-             <div class="w-12 h-12 border-4 border-red-900 border-t-red-500 rounded-full animate-spin mb-4"></div>
-             <p class="text-gray-400 text-sm tracking-widest animate-pulse">MEMUAT HALAMAN...</p>
-        </div>
-
-        <!-- LOADING OVERLAY (UNTUK KIRIM WA) -->
-        <div id="loadingOverlay" class="fixed inset-0 flex flex-col items-center justify-center z-50 hidden bg-black/90 backdrop-blur-sm transition-opacity duration-300">
-            <div class="loader mb-4"></div>
-            <p class="text-white font-bold tracking-widest animate-pulse">TUNGGU SEBENTAR...</p>
-        </div>
-
-        <!-- HALAMAN FORMULIR SETOR (Awalnya Hidden) -->
+        <!-- HALAMAN UTAMA -->
         <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden w-full relative">
             
-            <!-- TOMBOL BANTUAN -->
-            <div class="absolute top-4 right-4 z-30">
-                <button onclick="toggleHelp()" class="text-gray-400 hover:text-yellow-500 transition-colors focus:outline-none" title="Bantuan">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                    </svg>
-                </button>
-
-                <div id="helpDropdown" class="absolute right-0 mt-2 w-64 bg-black/95 border border-red-900 rounded-xl shadow-2xl p-4 hidden transform origin-top-right transition-all duration-300 scale-95 opacity-0 backdrop-blur-xl">
-                    <h4 class="text-red-500 font-bold mb-3 border-b border-gray-700 pb-2 text-sm uppercase tracking-wider">Pusat Bantuan</h4>
-                    <div class="mb-2">
-                        <button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white py-1 focus:outline-none group">
-                            <span>📝 Petunjuk Pengisian</span>
-                            <svg id="arrow-acc1" class="w-3 h-3 transition-transform duration-300 group-hover:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div id="acc1" class="accordion-content text-[10px] text-gray-400 mt-1 pl-2 border-l border-gray-700">
-                            Isi nominal setor (minimal 10rb), pilih metode (Cash/Transfer), lalu klik tombol hijau untuk kirim laporan ke WhatsApp Admin.
-                        </div>
-                    </div>
-                    <div>
-                        <button onclick="toggleAccordion('acc2')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white py-1 focus:outline-none group">
-                            <span>🌐 Tentang Web Ini</span>
-                            <svg id="arrow-acc2" class="w-3 h-3 transition-transform duration-300 group-hover:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div id="acc2" class="accordion-content text-[10px] text-gray-400 mt-1 pl-2 border-l border-gray-700">
-                            Aplikasi resmi pelaporan Kas PAI B untuk memudahkan pendataan dan rekapitulasi bendahara secara real-time.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Header User Profile -->
-            <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4 pr-8">
-                <div class="relative shrink-0">
-                    <img id="userAvatar" src="https://via.placeholder.com/150" alt="Profile" 
-                         class="w-16 h-16 rounded-full border-2 border-red-500 object-cover shadow-[0_0_15px_rgba(255,0,0,0.4)]">
-                </div>
-                
-                <div class="flex-grow min-w-0">
-                    <p class="text-xs text-gray-400 mb-0.5">Hello,</p>
-                    <h2 id="displayUsername" class="text-lg sm:text-xl font-bold text-white leading-tight truncate">User Name</h2>
-                    <p id="displayUserID" class="text-sm font-mono text-red-400 mt-0.5">ID: 000000</p>
-                </div>
-                
-                <button onclick="logout()" class="shrink-0 text-xs bg-gray-800 hover:bg-gray-700 px-3 py-2 rounded text-gray-300 transition border border-gray-600">
-                    Keluar
-                </button>
+            <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4">
+                <div class="relative shrink-0"><img id="userAvatar" src="" alt="Profile" class="w-16 h-16 rounded-full border-2 border-red-500 object-cover"></div>
+                <div class="flex-grow min-w-0"><p class="text-xs text-gray-400 mb-0.5">Otorisasi:</p><h2 id="displayUsername" class="text-lg sm:text-xl font-bold text-white leading-tight truncate">User Name</h2><p id="displayUserID" class="text-sm font-mono text-red-400 mt-0.5">ID: 000000</p></div>
+                <button onclick="logout()" class="shrink-0 text-xs bg-gray-800 hover:bg-gray-700 px-3 py-2 rounded text-gray-300 transition border border-gray-600">Keluar</button>
             </div>
 
-            <form id="depositForm" onsubmit="kirimKeWA(event)">
-                
-                <div class="mb-4 relative group">
-                    <label class="block text-red-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Setor</label>
-                    <div class="relative flex items-center bg-black border-2 border-red-900 rounded-xl transition-all duration-300 focus-within:border-red-500 focus-within:shadow-[0_0_15px_rgba(255,0,51,0.4)]">
-                        <span class="pl-4 text-red-500 text-3xl font-digital select-none pb-1">Rp</span>
-                        <input type="text" inputmode="numeric" id="nominalInput" required placeholder="0" oninput="formatInputCurrency(this)"
-                            class="w-full bg-transparent border-none py-3 px-4 text-right text-4xl text-white font-digital placeholder-gray-800 focus:ring-0 focus:outline-none tracking-widest h-full">
+            <!-- MODE SWITCHER -->
+            <div class="flex justify-center gap-8 mb-6 border-b border-gray-800 pb-2">
+                <button id="btnMasuk" onclick="switchMode('masuk')" class="mode-btn active text-green-400 pb-2 text-lg">PEMASUKAN</button>
+                <button id="btnKeluar" onclick="switchMode('keluar')" class="mode-btn text-red-500 pb-2 text-lg">PENGELUARAN</button>
+            </div>
+
+            <form id="depositForm">
+                <div id="sectionMasuk">
+                    <div class="mb-4 relative group">
+                        <label class="block text-green-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Setor</label>
+                        <div class="relative flex items-center bg-black border-2 border-green-900 rounded-xl">
+                            <span class="pl-4 text-green-500 text-3xl font-digital select-none pb-1">Rp</span>
+                            <input type="text" inputmode="numeric" id="nominalMasuk" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-3 px-4 text-right text-4xl text-white font-digital tracking-widest h-full focus:outline-none">
+                        </div>
                     </div>
-                    <p class="text-right text-xs text-gray-500 mt-1">Silahkan Isi Nominal</p>
+                    <div class="mb-4">
+                        <label class="block text-gray-300 text-sm mb-2">Metode</label>
+                        <select id="metodeMasuk" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-green-500 input-glow font-bold"><option value="Cash">Cash</option><option value="Transfer">Transfer</option></select>
+                    </div>
+                </div>
+
+                <div id="sectionKeluar" class="hidden-section">
+                    <div class="mb-4 relative group">
+                        <label class="block text-red-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Keluar</label>
+                        <div class="relative flex items-center bg-black border-2 border-red-900 rounded-xl">
+                            <span class="pl-4 text-red-500 text-3xl font-digital select-none pb-1">Rp</span>
+                            <input type="text" inputmode="numeric" id="nominalKeluar" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-3 px-4 text-right text-4xl text-white font-digital tracking-widest h-full focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-300 text-sm mb-2">Item / Jenis</label>
+                        <input type="text" id="itemKeluar" placeholder="Contoh: Beli Spidol" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 input-glow">
+                    </div>
+                    <div class="mb-4 relative group">
+                        <label class="block text-gray-300 text-sm mb-2">Harga Barang</label>
+                        <div class="relative flex items-center bg-black/50 border border-gray-700 rounded-lg"><span class="pl-4 text-gray-500 text-lg select-none">Rp</span><input type="text" inputmode="numeric" id="hargaBarang" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-2 px-4 text-white font-bold focus:outline-none"></div>
+                    </div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-gray-300 text-sm mb-2">Metode Pembayaran</label>
-                    <select id="methodInput" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 mb-4 input-glow font-bold">
-                        <option value="Cash">Cash</option>
-                        <option value="Transfer">Transfer</option>
-                    </select>
-                    
-                    <label class="block text-gray-300 text-sm mb-2">Catatan (Opsional)</label>
-                    <textarea id="noteInput" rows="2" placeholder="Pesan tambahan..." 
-                        class="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white placeholder-gray-600 focus:border-red-500 input-glow text-sm"></textarea>
+                    <label class="block text-gray-300 text-sm mb-2">Note (Catatan)</label>
+                    <textarea id="catatanUmum" rows="2" placeholder="Isi strip (-) jika kosong" class="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:border-gray-500 input-glow text-sm"></textarea>
                 </div>
 
-                <button type="submit" 
-                    class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 px-4 rounded-xl transform hover:-translate-y-1 transition-all duration-200 shadow-[0_4px_14px_0_rgba(72,187,120,0.39)] flex justify-center items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                    Kirim ke WhatsApp
+                <!-- RIWAYAT TEXT LINK -->
+                <div class="text-center mb-4">
+                    <button type="button" onclick="openRiwayat()" class="text-sm text-yellow-500 hover:text-yellow-400 underline underline-offset-4 flex items-center justify-center gap-1 mx-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+                        Lihat Riwayat Transaksi
+                    </button>
+                </div>
+
+                <!-- TOMBOL CONFIRM -->
+                <button type="button" onclick="kirimConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold py-4 px-4 rounded-xl shadow-lg transform hover:-translate-y-1 transition-all flex justify-center items-center gap-2">
+                    <span class="text-xl">✅</span> CONFIRM
                 </button>
             </form>
+            
+            <!-- HELP BUTTON -->
+            <div class="absolute top-4 right-4 z-30">
+                <button onclick="toggleHelp()" class="text-gray-400 hover:text-yellow-500 transition-colors focus:outline-none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></button>
+                <div id="helpDropdown" class="absolute right-0 mt-2 w-64 bg-black/95 border border-red-900 rounded-xl shadow-2xl p-4 hidden transform origin-top-right transition-all duration-300 scale-95 opacity-0 backdrop-blur-xl">
+                    <h4 class="text-red-500 font-bold mb-3 border-b border-gray-700 pb-2 text-sm uppercase tracking-wider">Pusat Bantuan</h4>
+                    <div class="mb-2"><button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white group"><span>📝 Petunjuk</span><svg id="arrow-acc1" class="w-3 h-3 group-hover:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div id="acc1" class="accordion-content text-[10px] text-gray-400 mt-1 pl-2 border-l border-gray-700">Pilih Tab Pemasukan/Pengeluaran. Isi data dengan lengkap. Tombol Biru untuk simpan ke Database, Hijau untuk WA.</div></div>
+                </div>
+            </div>
         </div>
-        
-        <!-- Footer & Customer Service -->
-        <div class="mt-8 shrink-0 text-center w-full">
-            <div class="text-gray-500 text-xs mb-3">
-                &copy; 2025 All rights reserved.
+
+        <!-- MODAL RIWAYAT -->
+        <div id="riwayatPage" class="fixed inset-0 z-40 bg-black/95 backdrop-blur-md hidden flex flex-col">
+            <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-gray-900">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2"><span class="text-yellow-500">📜</span> Riwayat Transaksi</h2>
+                <button onclick="closeRiwayat()" class="text-gray-400 hover:text-white font-bold text-2xl">×</button>
             </div>
             
-            <a href="https://wa.me/6285179920064?text=*Eror%20Sintaks%20Report*%20" target="_blank" class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-all duration-300 group">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-500 group-hover:text-red-400 transition-colors">
-                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
-                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
-                </svg>
-                <span class="text-sm font-semibold text-gray-300 group-hover:text-white">Customer Service</span>
-            </a>
+            <!-- FILTER (Updated: With Date Picker) -->
+            <div class="p-3 flex flex-wrap gap-2 bg-gray-900 border-b border-gray-800 items-center justify-between">
+                <div class="flex gap-2 flex-1">
+                    <select id="filterBulan" class="bg-black text-white border border-gray-700 rounded px-2 py-1 text-xs w-full max-w-[100px]">
+                        <option value="">Bulan...</option>
+                        <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option>
+                        <option value="04">Apr</option><option value="05">Mei</option><option value="06">Jun</option>
+                        <option value="07">Jul</option><option value="08">Agu</option><option value="09">Sep</option>
+                        <option value="10">Okt</option><option value="11">Nov</option><option value="12">Des</option>
+                    </select>
+                    <select id="filterTahun" class="bg-black text-white border border-gray-700 rounded px-2 py-1 text-xs w-20">
+                        <option value="2025">2025</option><option value="2024">2024</option>
+                    </select>
+                </div>
+                
+                <!-- KALENDER INPUT -->
+                <div class="flex gap-2 items-center">
+                    <input type="date" id="filterTanggal" class="bg-black text-white border border-gray-700 rounded px-2 py-1 text-xs w-32">
+                    <button onclick="fetchRiwayat()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-xs font-bold">Cari</button>
+                </div>
+            </div>
+
+            <div id="riwayatContent" class="flex-1 overflow-auto p-2">
+                <p class="text-center text-gray-500 mt-10 text-sm">Silahkan pilih filter dan klik Cari.</p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="mt-8 shrink-0 text-center w-full text-gray-500 text-xs">
+            &copy; 2025 All rights reserved.
+            <div class="mt-2"><a href="https://wa.me/6285179920064" class="text-gray-400 hover:text-white underline">Customer Service</a></div>
         </div>
     </div>
 
-    <!-- NOTIFIKASI SUKSES -->
-    <div id="notification" class="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-xl transform translate-x-40 opacity-0 transition-all duration-300 pointer-events-none z-50">
-        Pesan Siap Dikirim!
+    <!-- MODAL & ALERTS -->
+    <div id="loadingOverlay" class="fixed inset-0 flex flex-col items-center justify-center z-50 hidden bg-black/90 backdrop-blur-sm"><div class="loader mb-4"></div><p class="text-white font-bold tracking-widest animate-pulse" id="loadingText">MEMPROSES DATA...</p></div>
+    
+    <!-- MODAL SUKSES -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="bg-[#001a1a] border border-cyan-500 p-6 rounded-2xl w-80 text-center shadow-lg relative">
+            <button onclick="closeSuccessModal()" class="absolute top-3 right-3 text-gray-400 hover:text-white font-bold text-xl transition-colors">✕</button>
+            <div class="flex justify-center mb-4">
+                <div class="w-20 h-20 rounded-full border-4 border-green-500 flex items-center justify-center bg-green-900/20 checkmark-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                </div>
+            </div>
+            <h3 class="text-xl font-bold text-cyan-400 mb-2">Sukses!</h3>
+            <p class="text-gray-300 text-sm mb-4">Data tersimpan di Database.</p>
+            <button onclick="lanjutKeWA()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded-lg transition-colors">Lanjut ke WhatsApp</button>
+        </div>
     </div>
 
+    <!-- MODAL ERROR -->
+    <div id="errorModal" class="fixed inset-0 flex items-center justify-center z-50 hidden"><div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeErrorModal()"></div><div class="bg-[#1a0000] border border-red-600 p-6 rounded-2xl shadow w-80 text-center transform scale-0 transition-transform duration-300 relative z-10" id="errorModalContent"><div class="flex justify-center mb-4"><div class="w-20 h-20 rounded-full border-4 border-red-600 flex items-center justify-center bg-red-900/20"><svg class="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path class="x-mark-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg></div></div><h3 class="text-xl font-bold text-red-500 mb-2">Authorization Failed</h3><p class="text-gray-300 text-sm mb-6">Silahkan masukan data yang valid.</p><button onclick="closeErrorModal()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">Coba Lagi</button></div></div>
+    <!-- MODAL MIN DEPOSIT -->
+    <div id="minDepositModal" class="fixed inset-0 flex items-center justify-center z-50 hidden"><div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeMinDepositModal()"></div><div class="bg-[#1a0000] border border-yellow-600 p-6 rounded-2xl shadow w-80 text-center transform scale-0 transition-transform duration-300 relative z-10" id="minDepositModalContent"><div class="flex justify-center mb-4"><div class="w-20 h-20 rounded-full border-4 border-yellow-600 flex items-center justify-center bg-yellow-900/20"><span class="text-4xl">💸</span></div></div><h3 class="text-xl font-bold text-yellow-500 mb-2">Nominal Kurang</h3><p class="text-gray-300 text-sm mb-6">Minimal transaksi adalah Rp 10.000 ya Sayang :)</p><button onclick="closeMinDepositModal()" class="w-full bg-yellow-700 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg">Okey, Mengerti</button></div></div>
+    <!-- PAGE LOADING -->
+    <div id="pageLoading" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center hidden"><div class="w-12 h-12 border-4 border-red-900 border-t-red-500 rounded-full animate-spin mb-4"></div><p class="text-gray-400 text-sm tracking-widest animate-pulse">MEMUAT HALAMAN...</p></div>
+
     <script>
+        // --- KONFIGURASI ---
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTMiWpVw5QBSVl6orG67VEthFdc1QV29NyHi4pjpMAi0qf2YgaDOBwDM6sAPZ8FRQx/exec'; 
+        
         const USERS = {
             '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'Putri.jpg' },
             '2511043': { name: 'Anggun Lolyka H.', password: 'Bendahara 2', photo: 'Anggun.jpg' },
             '2511079': { name: 'Muh. Hanif Fakhry', password: 'Admin', photo: 'Fakhry.jpg' }
         };
+        const ADMIN_PHONE = "6285179920064";
+
+        let currentMode = 'masuk'; 
+        let tempWAData = null;
 
         const loginPage = document.getElementById('loginPage');
         const depositPage = document.getElementById('depositPage');
-        const displayUsername = document.getElementById('displayUsername');
-        const displayUserID = document.getElementById('displayUserID');
-        const userAvatar = document.getElementById('userAvatar');
-        const notification = document.getElementById('notification');
-        const errorModal = document.getElementById('errorModal');
-        const errorModalContent = document.getElementById('errorModalContent');
-        const inlineError = document.getElementById('inlineError');
         const loadingOverlay = document.getElementById('loadingOverlay');
-        const pageLoading = document.getElementById('pageLoading'); // Overlay Loading Hitam
-        const browserLoader = document.getElementById('browserLoader'); // Bar Merah di Atas
-        const usernameInput = document.getElementById('usernameInput');
-        const passwordInput = document.getElementById('passwordInput');
-
-        // Referensi Modal Minimal Deposit (BARU)
-        const minDepositModal = document.getElementById('minDepositModal');
-        const minDepositModalContent = document.getElementById('minDepositModalContent');
-
-        const ADMIN_PHONE = "6285179920064";
-
-        function toggleHelp() {
-            const dropdown = document.getElementById('helpDropdown');
-            if (dropdown.classList.contains('hidden')) {
-                dropdown.classList.remove('hidden');
+        const successModal = document.getElementById('successModal');
+        const inlineError = document.getElementById('inlineError');
+        
+        // --- LOGIC UTAMA ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('usernameInput').value.trim();
+            const p = document.getElementById('passwordInput').value.trim();
+            
+            if(USERS[u] && USERS[u].password === p) {
+                inlineError.classList.add('hidden');
+                document.getElementById('browserLoader').style.width = "100%";
+                document.getElementById('pageLoading').classList.remove('hidden');
                 setTimeout(() => {
-                    dropdown.classList.remove('scale-95', 'opacity-0');
-                    dropdown.classList.add('scale-100', 'opacity-100');
-                }, 10);
+                    document.getElementById('displayUsername').innerText = USERS[u].name;
+                    document.getElementById('displayUserID').innerText = `ID: ${u}`;
+                    document.getElementById('userAvatar').src = USERS[u].photo;
+                    loginPage.classList.add('hidden');
+                    depositPage.classList.remove('hidden');
+                    document.getElementById('pageLoading').classList.add('hidden');
+                    document.getElementById('browserLoader').style.width = "0%";
+                }, 1500);
             } else {
-                dropdown.classList.remove('scale-100', 'opacity-100');
-                dropdown.classList.add('scale-95', 'opacity-0');
-                setTimeout(() => {
-                    dropdown.classList.add('hidden');
-                }, 300);
+                inlineError.classList.remove('hidden');
+                const form = document.getElementById('loginPage');
+                form.classList.add('shake');
+                setTimeout(() => form.classList.remove('shake'), 500);
             }
         }
 
-        function toggleAccordion(id) {
-            const content = document.getElementById(id);
-            const arrow = document.getElementById('arrow-' + id);
-            
-            if (content.classList.contains('active')) {
-                content.classList.remove('active');
-                arrow.classList.remove('rotate-arrow');
+        function switchMode(mode) {
+            currentMode = mode;
+            if(mode === 'masuk') {
+                document.getElementById('sectionMasuk').classList.remove('hidden-section');
+                document.getElementById('sectionKeluar').classList.add('hidden-section');
+                document.getElementById('btnMasuk').className = 'mode-btn active text-green-400 pb-2 text-lg';
+                document.getElementById('btnKeluar').className = 'mode-btn text-gray-500 pb-2 text-lg';
             } else {
-                document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('active'));
-                content.classList.add('active');
-                arrow.classList.add('rotate-arrow');
-            }
-        }
-
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('helpDropdown');
-            const button = document.querySelector('button[onclick="toggleHelp()"]');
-            if (!dropdown.classList.contains('hidden') && !dropdown.contains(event.target) && !button.contains(event.target)) {
-                toggleHelp();
-            }
-        });
-
-        function togglePassword() {
-            const input = document.getElementById('passwordInput');
-            const iconOpen = document.getElementById('eyeIconOpen');
-            const iconClosed = document.getElementById('eyeIconClosed');
-            
-            if (input.type === "password") {
-                input.type = "text";
-                iconOpen.classList.add('hidden');
-                iconClosed.classList.remove('hidden');
-            } else {
-                input.type = "password";
-                iconOpen.classList.remove('hidden');
-                iconClosed.classList.add('hidden');
+                document.getElementById('sectionMasuk').classList.add('hidden-section');
+                document.getElementById('sectionKeluar').classList.remove('hidden-section');
+                document.getElementById('btnMasuk').className = 'mode-btn text-gray-500 pb-2 text-lg';
+                document.getElementById('btnKeluar').className = 'mode-btn active text-red-500 pb-2 text-lg';
             }
         }
 
         function formatInputCurrency(input) {
             let value = input.value.replace(/\D/g, '');
-            if (value) {
-                value = new Intl.NumberFormat('id-ID').format(value);
-            }
+            if (value) value = new Intl.NumberFormat('id-ID').format(value);
             input.value = value;
         }
 
-        function handleLogin(e) {
-            e.preventDefault();
-            
-            const userId = usernameInput.value.trim();
-            const pass = passwordInput.value.trim(); 
-            const userData = USERS[userId];
+        function kirimConfirm() {
+            if(GOOGLE_SCRIPT_URL.includes('PASTE')) { alert("Error: URL Script belum dipasang!"); return; }
 
-            if(userData && userData.password === pass) { 
-                inlineError.classList.add('hidden');
-                
-                // --- START: SIMULASI LOADING BROWSER YANG "NYATA" ---
-                
-                // 1. Munculkan Progress Bar Merah di Atas
-                browserLoader.style.width = "30%";
-                
-                // 2. Munculkan Layar Hitam (Loading Page)
-                pageLoading.classList.remove('hidden');
-                
-                // 3. Simulasi Progress Bar jalan pelan
-                setTimeout(() => { browserLoader.style.width = "70%"; }, 800);
-                setTimeout(() => { browserLoader.style.width = "100%"; }, 1800);
+            const rawNominal = currentMode === 'masuk' ? document.getElementById('nominalMasuk').value.replace(/\D/g, '') : document.getElementById('nominalKeluar').value.replace(/\D/g, '');
+            const nominalFmt = currentMode === 'masuk' ? document.getElementById('nominalMasuk').value : document.getElementById('nominalKeluar').value;
 
-                // 4. Setelah 2 Detik (Loading Selesai)
-                setTimeout(() => {
-                    // Update Data User
-                    displayUsername.innerText = userData.name;
-                    displayUserID.innerText = `ID: ${userId}`;
-                    userAvatar.src = userData.photo; 
+            if(!rawNominal) { alert("Isi nominal dulu!"); return; }
+            if(parseInt(rawNominal) < 10000) { showMinDepositModal(); return; }
 
-                    // Sembunyikan Login Page (Tanpa animasi fade out, langsung ganti biar kayak browser refresh)
-                    loginPage.classList.add('hidden');
-                    
-                    // Tampilkan Halaman Deposit
-                    depositPage.classList.remove('hidden');
-                    
-                    // Sembunyikan Loading
-                    pageLoading.classList.add('hidden');
-                    
-                    // Reset Progress Bar
-                    setTimeout(() => { browserLoader.style.width = "0%"; }, 200);
+            const dataKirim = {
+                tipe: currentMode,
+                nama: document.getElementById('displayUsername').innerText,
+                nim: document.getElementById('displayUserID').innerText.replace('ID: ', ''),
+                nominal: parseInt(rawNominal),
+                catatan: document.getElementById('catatanUmum').value,
+                metode: document.getElementById('metodeMasuk').value,
+                item: document.getElementById('itemKeluar').value,
+                harga: document.getElementById('hargaBarang').value
+            };
 
-                }, 2000); 
+            if(currentMode === 'keluar' && !dataKirim.item) { alert("Isi Item Pengeluaran!"); return; }
 
-            } else {
-                showError();
-            }
-        }
+            tempWAData = { ...dataKirim, nominalFmt: nominalFmt };
 
-        function showError() {
-            errorModal.classList.remove('hidden');
-            setTimeout(() => {
-                errorModalContent.classList.remove('scale-0');
-                errorModalContent.classList.add('scale-100', 'shake');
-            }, 10);
-            
-            inlineError.classList.remove('hidden');
-            usernameInput.value = '';
-            passwordInput.value = '';
-            
-            setTimeout(() => {
-                errorModalContent.classList.remove('shake');
-            }, 500);
-        }
-
-        function closeErrorModal() {
-            errorModalContent.classList.remove('scale-100');
-            errorModalContent.classList.add('scale-0');
-            setTimeout(() => {
-                errorModal.classList.add('hidden');
-            }, 300);
-        }
-
-        // Logic Popup Minimal Deposit (BARU)
-        function showMinDepositModal() {
-            minDepositModal.classList.remove('hidden');
-            setTimeout(() => {
-                minDepositModalContent.classList.remove('scale-0');
-                minDepositModalContent.classList.add('scale-100', 'shake');
-            }, 10);
-            
-            setTimeout(() => {
-                minDepositModalContent.classList.remove('shake');
-            }, 500);
-        }
-
-        function closeMinDepositModal() {
-            minDepositModalContent.classList.remove('scale-100');
-            minDepositModalContent.classList.add('scale-0');
-            setTimeout(() => {
-                minDepositModal.classList.add('hidden');
-            }, 300);
-        }
-
-        function logout() {
-            // Simulasi Logout seperti reload halaman
-            location.reload(); 
-        }
-
-        function kirimKeWA(e) {
-            e.preventDefault();
-
-            const name = displayUsername.innerText;
-            const idRaw = displayUserID.innerText.replace('ID: ', '');
-            const nominalFormatted = document.getElementById('nominalInput').value;
-            const metode = document.getElementById('methodInput').value;
-            const catatan = document.getElementById('noteInput').value;
-
-            if(!nominalFormatted) return;
-
-            // VALIDASI MINIMAL 10K (BARU)
-            // Hilangkan titik untuk cek angka asli
-            const rawNominal = nominalFormatted.replace(/\D/g, '');
-            if(parseInt(rawNominal) < 10000) {
-                showMinDepositModal();
-                return; // Stop function, jangan lanjut kirim WA
-            }
-
+            document.getElementById('loadingText').innerText = "MENYIMPAN DATA...";
             loadingOverlay.classList.remove('hidden');
 
-            setTimeout(() => {
-                const pesan = `
-*LAPORAN KEUANGAN KAS PAI B*
-~~~~~~~~~~~~~~~~~~~~~~
-Account = ${name}
-NIM = ${idRaw}
-Nominal = Rp${nominalFormatted}
-Metode = ${metode}
-Note = ${catatan || '-'}
-________________________________________
-_Admin, Mohon segera update laporan KAS Pai B_
-                `.trim();
-
-                const encodedPesan = encodeURIComponent(pesan);
-                
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataKirim)
+            }).then(() => {
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                    successModal.classList.remove('hidden');
+                    resetForm();
+                }, 1500);
+            }).catch(err => {
                 loadingOverlay.classList.add('hidden');
-
-                const waLink = `https://wa.me/${ADMIN_PHONE}?text=${encodedPesan}`;
-                window.open(waLink, '_blank');
-
-                document.getElementById('nominalInput').value = '';
-                document.getElementById('noteInput').value = '';
-                
-            }, 2000); 
+                alert("Gagal koneksi database: " + err);
+            });
         }
+
+        function lanjutKeWA() {
+            successModal.classList.add('hidden');
+            if(!tempWAData) return;
+            let pesan = '';
+            if(tempWAData.tipe === 'masuk') {
+                pesan = `*LAPORAN PEMASUKAN KAS PAI B*\n~~~~~~~~~~~~~~~~~~~~~~\n👤 Nama: ${tempWAData.nama}\n🪪 NIM: ${tempWAData.nim}\n💰 Nominal: Rp${tempWAData.nominalFmt}\n💳 Metode: ${tempWAData.metode}\n📝 Note: ${tempWAData.catatan || '-'}\n🔑 Otorisasi: ${tempWAData.nama}\n______________________\n_Admin, data sudah masuk database!_`;
+            } else {
+                pesan = `*LAPORAN PENGELUARAN KAS PAI B*\n~~~~~~~~~~~~~~~~~~~~~~\n👤 Otorisasi: ${tempWAData.nama}\n📉 Nominal: Rp${tempWAData.nominalFmt}\n🛍️ Item: ${tempWAData.item}\n🏷️ Harga: ${tempWAData.harga}\n📝 Note: ${tempWAData.catatan || '-'}\n______________________\n_Admin, pengeluaran tercatat._`;
+            }
+            const waLink = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(pesan)}`;
+            window.open(waLink, '_blank');
+        }
+
+        function resetForm() {
+            document.getElementById('nominalMasuk').value = '';
+            document.getElementById('nominalKeluar').value = '';
+            document.getElementById('itemKeluar').value = '';
+            document.getElementById('hargaBarang').value = '';
+            document.getElementById('catatanUmum').value = '';
+        }
+
+        // --- RIWAYAT ---
+        function openRiwayat() { document.getElementById('riwayatPage').classList.remove('hidden'); fetchRiwayat(); }
+        function closeRiwayat() { document.getElementById('riwayatPage').classList.add('hidden'); }
+
+        function convertToIndoDate(dateStr) {
+            // dateStr format: dd/MM/yyyy (from Google Sheet)
+            if(!dateStr || dateStr === '-') return '-';
+            const parts = dateStr.split('/');
+            if(parts.length < 3) return dateStr;
+            
+            const day = parts[0];
+            const monthIdx = parseInt(parts[1]) - 1;
+            const year = parts[2];
+            
+            const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+            const monStr = months[monthIdx] || parts[1];
+            
+            return `${day}-${monStr}-${year}`;
+        }
+
+        function fetchRiwayat() {
+            const container = document.getElementById('riwayatContent');
+            container.innerHTML = '<div class="flex justify-center mt-10"><div class="loader"></div></div>';
+            
+            const bln = document.getElementById('filterBulan').value;
+            const thn = document.getElementById('filterTahun').value;
+            const tglSpecific = document.getElementById('filterTanggal').value; // Format yyyy-mm-dd
+
+            fetch(GOOGLE_SCRIPT_URL).then(res => res.json()).then(data => {
+                if(!data || data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500">Belum ada data.</p>'; return; }
+                
+                let filtered = data;
+                
+                // Priority: Specific Date > Month/Year
+                if(tglSpecific) {
+                    // tglSpecific is yyyy-mm-dd. Sheet data is dd/mm/yyyy.
+                    const [sY, sM, sD] = tglSpecific.split('-'); // ["2025", "12", "28"]
+                    // Format sD/sM to allow flexible comparison (remove leading zeros if needed, but let's assume standard padded)
+                    
+                    filtered = data.filter(row => {
+                        let tgl = row[1] !== '-' ? row[1] : row[3];
+                        if(!tgl || tgl === '-') return false;
+                        
+                        const parts = tgl.split('/'); // [dd, mm, yyyy]
+                        if(parts.length < 3) return false;
+                        
+                        // Compare Day, Month, Year strictly
+                        // parseInt handles "01" vs "1"
+                        return parseInt(parts[0]) === parseInt(sD) && 
+                               parseInt(parts[1]) === parseInt(sM) && 
+                               parseInt(parts[2]) === parseInt(sY);
+                    });
+                } else if(bln || thn) {
+                    filtered = data.filter(row => {
+                        let tgl = row[1] !== '-' ? row[1] : row[3];
+                        if(!tgl || tgl === '-') return false;
+                        const parts = tgl.split('/'); 
+                        if(parts.length < 3) return false;
+
+                        // Strict Integer Comparison to avoid "1" vs "01" mismatch
+                        let matchBulan = true;
+                        let matchTahun = true;
+
+                        if(bln) matchBulan = parseInt(parts[1]) === parseInt(bln);
+                        if(thn) matchTahun = parseInt(parts[2]) === parseInt(thn);
+
+                        return matchBulan && matchTahun;
+                    });
+                }
+                renderTable(filtered);
+            }).catch(err => {
+                container.innerHTML = `<p class="text-center text-red-500 text-xs">Gagal ambil data.<br>Pastikan Script di-Deploy sebagai 'Anyone'</p>`;
+            });
+        }
+
+        function renderTable(data) {
+            const container = document.getElementById('riwayatContent');
+            if(data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500 mt-4">Data tidak ditemukan.</p>'; return; }
+
+            // UPDATED HEADER COLORS
+            let html = '<table><thead><tr><th class="text-white">Tanggal</th><th class="text-white">Item/Jenis</th><th class="text-right text-green-500">Masuk</th><th class="text-right text-red-500">Keluar</th><th class="text-blue-400">Otorisasi</th></tr></thead><tbody>';
+            data.forEach(row => {
+                // Index: 0:Masuk, 1:TglM, 2:Keluar, 3:TglK, 4:Item, 5:Harga, 6:Total, 7:Note, 8:Auth
+                let tgl = row[1] !== '-' ? row[1] : row[3];
+                // CONVERT DATE FORMAT HERE
+                let tglDisplay = convertToIndoDate(tgl);
+                
+                let item = row[4];
+                let masuk = row[0] !== '-' ? formatRupiah(row[0]) : '-';
+                let keluar = row[2] !== '-' ? formatRupiah(row[2]) : '-';
+                let auth = row[8];
+
+                html += `<tr>
+                    <td class="text-white whitespace-nowrap">${tglDisplay}</td>
+                    <td class="text-white font-bold max-w-[100px] truncate">${item}</td>
+                    <td class="text-green-500 text-right">${masuk}</td>
+                    <td class="text-red-500 text-right">${keluar}</td>
+                    <td class="text-blue-400 text-xs">${auth}</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function formatRupiah(angka) { return new Intl.NumberFormat('id-ID').format(angka); }
+        function togglePassword() { const x=document.getElementById('passwordInput'); x.type=x.type==='password'?'text':'password'; }
+        function logout() { location.reload(); }
+        function toggleHelp() { document.getElementById('helpDropdown').classList.toggle('hidden'); setTimeout(()=>document.getElementById('helpDropdown').classList.toggle('opacity-100'),10); }
+        function toggleAccordion(id) { document.getElementById(id).classList.toggle('active'); document.getElementById('arrow-'+id).classList.toggle('rotate-arrow'); }
+        function showMinDepositModal() { document.getElementById('minDepositModal').classList.remove('hidden'); setTimeout(()=>document.getElementById('minDepositModalContent').classList.add('scale-100', 'shake'),10); setTimeout(()=>document.getElementById('minDepositModalContent').classList.remove('shake'),500); }
+        function closeMinDepositModal() { document.getElementById('minDepositModal').classList.add('hidden'); document.getElementById('minDepositModalContent').classList.remove('scale-100'); }
+        function closeErrorModal() { document.getElementById('errorModal').classList.add('hidden'); document.getElementById('errorModalContent').classList.remove('scale-100'); }
+        function closeSuccessModal() { document.getElementById('successModal').classList.add('hidden'); }
     </script>
 </body>
 </html>
