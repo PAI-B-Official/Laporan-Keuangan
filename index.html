@@ -40,8 +40,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding-top: 2rem;
+            /* PERUBAHAN: justify-content menjadi center agar login di tengah layar mobile */
+            justify-content: center; 
+            padding-top: 1rem;
             padding-bottom: 3rem;
         }
 
@@ -562,13 +563,14 @@
             const container = document.getElementById('riwayatContent');
             if(data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500 mt-4">Data tidak ditemukan.</p>'; return; }
 
-            let html = '<table><thead><tr><th class="text-white">Tanggal</th><th class="text-white">Item/Jenis</th><th class="text-right text-green-500">Masuk</th><th class="text-right text-red-500">Keluar</th><th class="text-blue-400">Otorisasi</th></tr></thead><tbody>';
+            let html = '<table><thead><tr><th class="text-white">Tanggal</th><th class="text-white">Item/Jenis</th><th class="text-right text-green-500">Masuk</th><th class="text-right text-red-500">Keluar</th><th class="text-gray-400">Note</th><th class="text-blue-400">Otorisasi</th></tr></thead><tbody>';
             data.forEach(row => {
                 let tgl = row[1] !== '-' ? row[1] : row[3];
                 let tglDisplay = convertToIndoDate(tgl);
                 let item = row[4];
                 let masuk = row[0] !== '-' ? formatRupiah(row[0]) : '-';
                 let keluar = row[2] !== '-' ? formatRupiah(row[2]) : '-';
+                let note = row[7];
                 let auth = row[8];
 
                 html += `<tr>
@@ -576,6 +578,7 @@
                     <td class="text-white font-bold max-w-[100px] truncate">${item}</td>
                     <td class="text-green-500 text-right">${masuk}</td>
                     <td class="text-red-500 text-right">${keluar}</td>
+                    <td class="text-gray-500 text-xs italic max-w-[80px] truncate">${note}</td>
                     <td class="text-blue-400 text-xs">${auth}</td>
                 </tr>`;
             });
