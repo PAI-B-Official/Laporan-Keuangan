@@ -183,7 +183,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-300 text-sm mb-2 font-medium">Item / Jenis</label>
-                        <input type="text" id="itemKeluar" placeholder="Contoh: Beli Spidol" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 input-glow">
+                        <input type="text" id="itemKeluar" placeholder="Contoh: Spidol" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 input-glow">
                     </div>
                     <div class="relative group">
                         <label class="block text-gray-300 text-sm mb-2 font-medium">Harga Barang</label>
@@ -195,19 +195,19 @@
                 </div>
 
                 <div>
-                    <label class="block text-gray-300 text-sm mb-2 font-medium">Note (Catatan)</label>
-                    <textarea id="catatanUmum" rows="2" placeholder="Isi strip (-) jika kosong" class="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:border-gray-500 input-glow text-sm"></textarea>
+                    <label class="block text-gray-300 text-sm mb-2 font-medium">Catatan (Opsional)</label>
+                    <textarea id="catatanUmum" rows="2" placeholder="Detail Keterangan" class="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:border-gray-500 input-glow text-sm"></textarea>
                 </div>
 
                 <div class="text-center pt-2">
                     <button type="button" onclick="openRiwayat()" class="text-sm text-yellow-500 hover:text-yellow-400 underline underline-offset-4 flex items-center justify-center gap-1 mx-auto transition-colors p-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
-                        Lihat Riwayat Transaksi
+                        Lihat Riwayat
                     </button>
                 </div>
 
                 <button type="button" onclick="kirimConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold py-4 px-4 rounded-xl shadow-lg transform active:scale-95 transition-all flex justify-center items-center gap-2 mt-4">
-                    <span class="text-2xl">✈︎</span> <span class="tracking-wider">CONFIRM</span>
+                    <span class="text-2xl">CONFIRM</span> <span class="tracking-wider">✈︎</span>
                 </button>
             </form>
             
@@ -215,7 +215,7 @@
                 <button onclick="toggleHelp()" class="text-gray-400 hover:text-yellow-500 transition-colors focus:outline-none p-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></button>
                 <div id="helpDropdown" class="absolute right-0 mt-2 w-72 bg-black/95 border border-red-900 rounded-xl shadow-2xl p-4 hidden transform origin-top-right transition-all duration-300 scale-95 opacity-0 backdrop-blur-xl z-50">
                     <h4 class="text-red-500 font-bold mb-3 border-b border-gray-700 pb-2 text-sm uppercase tracking-wider">Pusat Bantuan</h4>
-                    <div class="mb-2"><button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white group py-1"><span>📝 Petunjuk</span><svg id="arrow-acc1" class="w-3 h-3 group-hover:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div id="acc1" class="accordion-content text-[10px] text-gray-400 mt-1 pl-2 border-l border-gray-700">Pilih Tab Pemasukan/Pengeluaran. Isi data dengan lengkap. Tombol Biru untuk simpan ke Database, Hijau untuk WA.</div></div>
+                    <div class="mb-2"><button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white group py-1"><span>📝 Petunjuk</span><svg id="arrow-acc1" class="w-3 h-3 group-hover:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div id="acc1" class="accordion-content text-[10px] text-gray-400 mt-1 pl-2 border-l border-gray-700">Pilih menu Pemasukan / Pengerluaran, lalu isi Nominal sesuai kebutuhan dan isi juga detail lain-nya sesuai judul kolom yang sudah tertera pada Laporan KAS PAI B, Jika dirasa sudah yakin maka silahkan klik Confirm agar data masuk ke Server KAS PAI B. Untuk melihat status-nya bisa klik Lihat Riwayat.</div></div>
                 </div>
             </div>
         </div>
@@ -270,7 +270,7 @@
                 </div>
             </div>
             <h3 class="text-xl font-bold text-cyan-400 mb-2">Sukses!</h3>
-            <p class="text-gray-300 text-sm mb-6">Data Terkirim, Silahkan WEB Kelas</p>
+            <p class="text-gray-300 text-sm mb-6">Data Terkirim, Silahkan lihat WEB Kelas</p>
             <button onclick="lanjutKeWA()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-colors shadow-lg active:scale-95">Lanjut ke WhatsApp</button>
         </div>
     </div>
@@ -400,7 +400,7 @@
             const rawNominal = currentMode === 'masuk' ? document.getElementById('nominalMasuk').value.replace(/\D/g, '') : document.getElementById('nominalKeluar').value.replace(/\D/g, '');
             const nominalFmt = currentMode === 'masuk' ? document.getElementById('nominalMasuk').value : document.getElementById('nominalKeluar').value;
 
-            if(!rawNominal) { alert("Isi nominal dulu!"); return; }
+            if(!rawNominal) { alert("Lengkapi Formulir Dahulu!"); return; }
             if(parseInt(rawNominal) < 10000) { showMinDepositModal(); return; }
 
             // Sanitasi Harga: Hapus titik
@@ -647,4 +647,5 @@
     </script>
 </body>
 </html>
+
 
