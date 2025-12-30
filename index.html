@@ -32,7 +32,6 @@
             background: linear-gradient(180deg, #8B0000 0%, #000000 100%);
             min-height: 100vh;
             width: 100vw;
-            /* Scroll default aktif */
             overflow-y: auto; 
             -webkit-overflow-scrolling: touch;
             color: white;
@@ -45,18 +44,13 @@
             padding-bottom: 3rem;
         }
 
-        /* Class untuk mengunci scroll body saat modal aktif */
-        body.modal-open {
-            overflow: hidden !important;
-            height: 100vh;
-        }
+        body.modal-open { overflow: hidden !important; height: 100vh; }
 
         .glass-panel {
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 0, 0, 0.3);
             width: 100%;
-            /* Pastikan konten dalam panel tidak tumpah */
             display: flex;
             flex-direction: column;
         }
@@ -66,47 +60,37 @@
         .mode-btn.active { opacity: 1; border-bottom: 2px solid #fff; font-weight: bold; }
         .hidden-section { display: none; }
         
-        /* Loader Styles */
         .loader { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #ff0033; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
-        .loader-blue { border: 4px solid rgba(255, 255, 255, 0.1); border-left-color: #00f3ff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* Table Styles */
         .table-container { max-height: 400px; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
         th, td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #333; }
         th { background-color: #1a0000; color: #ff0033; position: sticky; top: 0; z-index: 10; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
         tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.03); }
 
-        /* Accordion transition */
         .accordion-content { transition: max-height 0.3s ease-out, opacity 0.3s ease-out; max-height: 0; overflow: hidden; opacity: 0; }
         .accordion-content.active { max-height: 200px; opacity: 1; }
         .rotate-arrow { transform: rotate(180deg); }
 
-        /* Browser Loading Bar Simulation */
         #browserLoader { position: fixed; top: 0; left: 0; height: 3px; background: #ff0033; width: 0%; z-index: 9999; transition: width 0.2s ease; box-shadow: 0 0 10px #ff0033; }
         
-        /* Animations */
         .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
         
-        /* Checkmark Animation */
         .checkmark-circle { animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* Date Input Styling Override */
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
     </style>
 </head>
 <body class="p-4">
 
-    <!-- BROWSER LOADING BAR -->
     <div id="browserLoader"></div>
 
-    <!-- Container Utama -->
     <div class="w-full max-w-md relative z-10 flex flex-col gap-4">
         
-        <!-- HEADER (Title 1 Line) -->
+        <!-- HEADER -->
         <div class="text-center shrink-0 mt-2">
             <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-wider drop-shadow-lg uppercase italic leading-tight whitespace-nowrap">
                 Laporan Kas <span class="text-yellow-500">PAI B</span>
@@ -126,14 +110,15 @@
                     <label class="block text-gray-300 text-sm mb-2 font-medium">Password</label>
                     <div class="relative">
                         <input type="password" id="passwordInput" required placeholder="Masukkan Password" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 transition-all duration-300 input-glow pr-12">
-                        <!-- ICON MATA BARU -->
+                        
+                        <!-- ICON MATA BARU (Interactive) -->
                         <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white p-2 focus:outline-none">
-                            <!-- Mata Tertutup (Default untuk Password) -->
-                            <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <!-- Mata Tertutup (Default) -->
+                            <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.059 10.059 0 013.999-5.125m3.75-2.13A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.059 10.059 0 01-3.328 5.75m-3.414-3.414a3 3 0 01-4.242 0m4.242-4.242l4.242 4.242M1 1l22 22" />
                             </svg>
                             <!-- Mata Terbuka -->
-                            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
@@ -150,7 +135,7 @@
         <!-- HALAMAN UTAMA -->
         <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden w-full relative transition-all duration-300">
             
-            <!-- Header User Profile (Diberi mt-8 agar turun dari ikon FAQ) -->
+            <!-- Header User Profile -->
             <div class="flex items-center gap-4 mb-6 border-b border-red-900 pb-4 pr-10 mt-8">
                 <div class="relative shrink-0"><img id="userAvatar" src="" alt="Profile" class="w-14 h-14 rounded-full border-2 border-red-500 object-cover shadow-md"></div>
                 <div class="flex-grow min-w-0">
@@ -214,7 +199,6 @@
                     <textarea id="catatanUmum" rows="2" placeholder="Isi strip (-) jika kosong" class="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:border-gray-500 input-glow text-sm"></textarea>
                 </div>
 
-                <!-- RIWAYAT TEXT LINK -->
                 <div class="text-center pt-2">
                     <button type="button" onclick="openRiwayat()" class="text-sm text-yellow-500 hover:text-yellow-400 underline underline-offset-4 flex items-center justify-center gap-1 mx-auto transition-colors p-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
@@ -227,7 +211,6 @@
                 </button>
             </form>
             
-            <!-- HELP BUTTON -->
             <div class="absolute top-4 right-4 z-30">
                 <button onclick="toggleHelp()" class="text-gray-400 hover:text-yellow-500 transition-colors focus:outline-none p-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></button>
                 <div id="helpDropdown" class="absolute right-0 mt-2 w-72 bg-black/95 border border-red-900 rounded-xl shadow-2xl p-4 hidden transform origin-top-right transition-all duration-300 scale-95 opacity-0 backdrop-blur-xl z-50">
@@ -300,30 +283,27 @@
 
     <script>
         // --- KONFIGURASI ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby0RnDVB0U6Tt61HUl62tYXTylYPjAK6dr5GfSx0FUnvk4-c7iLlltuKNwpolsHNjRDPg/exec'; 
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTneA3rhcN9WT4wrS0Cyxj8-BNZN7VKN42rEct__YLksobASTqUX-IyUjjNUo2fTgR/exec'; 
         
         const USERS = {
-            '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'Putri.jpg' },
-            '2511043': { name: 'Anggun Lolyka H.', password: 'Bendahara 2', photo: 'Anggun.jpg' },
-            '2511079': { name: 'Muh. Hanif Fakhry', password: 'Admin', photo: 'Fakhry.jpg' }
+            '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'https://ui-avatars.com/api/?name=Putri+Dwi&background=random&color=fff' },
+            '2511043': { name: 'Anggun Lolyka H.', password: 'Bendahara 2', photo: 'https://ui-avatars.com/api/?name=Anggun+Lolyka&background=random&color=fff' },
+            '2511079': { name: 'Muh. Hanif Fakhry', password: 'Admin', photo: 'https://ui-avatars.com/api/?name=Hanif+Fakhry&background=random&color=fff' }
         };
         const ADMIN_PHONE = "6285179920064";
 
         let currentMode = 'masuk'; 
         let tempWAData = null;
 
-        // Elements
         const loginPage = document.getElementById('loginPage');
         const depositPage = document.getElementById('depositPage');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const successModal = document.getElementById('successModal');
         const inlineError = document.getElementById('inlineError');
         
-        // --- HELPERS SCROLL LOCK ---
         function disableScroll() { document.body.classList.add('modal-open'); }
         function enableScroll() { document.body.classList.remove('modal-open'); }
 
-        // --- HISTORY MANAGEMENT ---
         window.addEventListener('load', () => { 
             const storedUser = localStorage.getItem('paib_user');
             if (storedUser) {
@@ -423,15 +403,18 @@
             if(!rawNominal) { alert("Isi nominal dulu!"); return; }
             if(parseInt(rawNominal) < 10000) { showMinDepositModal(); return; }
 
+            // Sanitasi Harga: Hapus titik
+            const rawHarga = document.getElementById('hargaBarang').value.replace(/\D/g, '');
+
             const dataKirim = {
                 tipe: currentMode,
                 nama: document.getElementById('displayUsername').innerText,
                 nim: document.getElementById('displayUserID').innerText.replace('ID: ', ''),
-                nominal: parseInt(rawNominal),
+                nominal: parseInt(rawNominal), // Kirim Angka Murni
                 catatan: document.getElementById('catatanUmum').value,
                 metode: document.getElementById('metodeMasuk').value,
                 item: document.getElementById('itemKeluar').value,
-                harga: document.getElementById('hargaBarang').value
+                harga: rawHarga ? parseInt(rawHarga) : 0 // Kirim Angka Murni
             };
 
             if(currentMode === 'keluar' && !dataKirim.item) { alert("Isi Item Pengeluaran!"); return; }
@@ -496,14 +479,25 @@
 
         function convertToIndoDate(dateStr) {
             if(!dateStr || dateStr === '-') return '-';
-            const parts = dateStr.split('/');
-            if(parts.length < 3) return dateStr;
-            const day = parts[0];
-            const monthIdx = parseInt(parts[1]) - 1;
-            const year = parts[2];
-            const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-            const monStr = months[monthIdx] || parts[1];
-            return `${day}-${monStr}-${year}`;
+            // dateStr format expected: 30dec2025
+            // Convert to 30-Des-2025
+            // Since data cleaning in Apps Script ensures "30dec2025" or "30dec", we parse that.
+            
+            // Basic parsing assuming ddMMMyyyy
+            const match = dateStr.match(/^(\d{1,2})([A-Za-z]{3})(\d{4})$/);
+            if(match) {
+                const day = match[1];
+                const mon = match[2];
+                const year = match[3];
+                // Map Eng to Indo
+                const mapBulan = {
+                    "jan":"Jan", "feb":"Feb", "mar":"Mar", "apr":"Apr", "may":"Mei", "jun":"Jun",
+                    "jul":"Jul", "aug":"Agu", "sep":"Sep", "oct":"Okt", "nov":"Nov", "dec":"Des"
+                };
+                const monIndo = mapBulan[mon.toLowerCase()] || mon;
+                return `${day}-${monIndo}-${year}`;
+            }
+            return dateStr;
         }
 
         function fetchRiwayat() {
@@ -518,26 +512,41 @@
                 if(!data || data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500">Belum ada data.</p>'; return; }
                 
                 let filtered = data;
+                // Note: filtering logic here relies on string matching the new format "30dec2025"
                 if(tglSpecific) {
                     const [sY, sM, sD] = tglSpecific.split('-');
                     filtered = data.filter(row => {
-                        // Cek Tgl Masuk (Idx 2) atau Tgl Keluar (Idx 4)
                         let tgl = row[2] !== '-' ? row[2] : row[4];
                         if(!tgl || tgl === '-') return false;
-                        const parts = tgl.split('/'); 
-                        if(parts.length < 3) return false;
-                        return parseInt(parts[0]) === parseInt(sD) && parseInt(parts[1]) === parseInt(sM) && parseInt(parts[2]) === parseInt(sY);
+                        
+                        // Parse "30dec2025"
+                        // Since we saved it as "30dec2025" (lowercase) in backend
+                        const dStr = parseInt(sD).toString();
+                        const mNames = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+                        const mStr = mNames[parseInt(sM)-1];
+                        
+                        // Check exact match or contains
+                        // "30dec2025" contains "30", "dec", "2025"
+                        // Regex check is safer: ^30dec2025$
+                        const pattern = new RegExp(`^0?${sD}${mStr}${sY}$`, 'i');
+                        return pattern.test(tgl);
                     });
                 } else if(bln || thn) {
                     filtered = data.filter(row => {
                         let tgl = row[2] !== '-' ? row[2] : row[4];
                         if(!tgl || tgl === '-') return false;
-                        const parts = tgl.split('/'); 
-                        if(parts.length < 3) return false;
+                        
                         let matchBulan = true;
                         let matchTahun = true;
-                        if(bln) matchBulan = parseInt(parts[1]) === parseInt(bln);
-                        if(thn) matchTahun = parseInt(parts[2]) === parseInt(thn);
+                        
+                        if(bln) {
+                            const mNames = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+                            const mStr = mNames[parseInt(bln)-1];
+                            matchBulan = tgl.toLowerCase().includes(mStr);
+                        }
+                        if(thn) {
+                            matchTahun = tgl.includes(thn);
+                        }
                         return matchBulan && matchTahun;
                     });
                 }
@@ -551,21 +560,21 @@
             const container = document.getElementById('riwayatContent');
             if(data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500 mt-4">Data tidak ditemukan.</p>'; return; }
 
-            let html = '<table><thead><tr><th class="text-white">Tanggal</th><th class="text-white">Item/Jenis</th><th class="text-right text-green-500">Masuk</th><th class="text-right text-red-500">Keluar</th><th class="text-gray-400">Note</th><th class="text-blue-400">Otorisasi</th></tr></thead><tbody>';
+            // FORMAT BARU (A-J)
+            // Index: 0:No, 1:Masuk, 2:TglM, 3:Keluar, 4:TglK, 5:Item, 6:Harga, 7:Note, 8:Skip, 9:Auth
+            let html = '<table><thead><tr><th class="text-white">Tgl</th><th class="text-white">Ket</th><th class="text-right text-green-500">Masuk</th><th class="text-right text-red-500">Keluar</th><th class="text-gray-400">Note</th><th class="text-blue-400">Auth</th></tr></thead><tbody>';
             data.forEach(row => {
-                // Index Mapping A-J: 
-                // 0:No, 1:Masuk, 2:TglMasuk, 3:Keluar, 4:TglKeluar, 5:Item, 6:Harga, 7:Total, 8:Note, 9:Otorisasi
                 let tgl = row[2] !== '-' ? row[2] : row[4];
                 let tglDisplay = convertToIndoDate(tgl);
                 let item = row[5];
                 let masuk = row[1] !== '-' ? formatRupiah(row[1]) : '-';
                 let keluar = row[3] !== '-' ? formatRupiah(row[3]) : '-';
-                let note = row[8];
+                let note = row[7];
                 let auth = row[9];
 
                 html += `<tr>
                     <td class="text-white whitespace-nowrap">${tglDisplay}</td>
-                    <td class="text-white font-bold max-w-[100px] truncate">${item}</td>
+                    <td class="text-white font-bold max-w-[80px] truncate">${item}</td>
                     <td class="text-green-500 text-right">${masuk}</td>
                     <td class="text-red-500 text-right">${keluar}</td>
                     <td class="text-gray-500 text-xs italic max-w-[80px] truncate">${note}</td>
@@ -638,6 +647,3 @@
     </script>
 </body>
 </html>
-
-
-
