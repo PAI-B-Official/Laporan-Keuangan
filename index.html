@@ -65,7 +65,8 @@
         
         /* Table Styles */
         .table-container { max-height: 400px; overflow-y: auto; }
-        table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.75rem; }
+        /* Perbaikan: min-width agar tabel tidak menyusut di HP dan bisa di-slide */
+        table { width: 100%; min-width: 600px; border-collapse: separate; border-spacing: 0; font-size: 0.75rem; }
         th { background-color: #1a0000; color: #ff0033; position: sticky; top: 0; z-index: 10; padding: 10px 8px; text-align: left; border-bottom: 1px solid #333; }
         td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #333; vertical-align: top; }
         tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.03); }
@@ -123,14 +124,7 @@
         <!-- HALAMAN UTAMA -->
         <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden w-full relative transition-all duration-300">
             
-            <!-- PREVIEW SALDO (CENTER DI ATAS HEADER) -->
-            <div class="flex flex-col items-center justify-center mt-2 mb-6">
-                <p class="text-xs text-gray-400 mb-1 uppercase tracking-widest font-semibold">Total Saldo Kas</p>
-                <!-- Container Saldo Tanpa Kolom/Border Berlebihan -->
-                <div class="px-8 py-1">
-                    <span id="saldoPreview" class="text-4xl font-digital text-green-400 tracking-widest animate-pulse">Tunggu...</span>
-                </div>
-            </div>
+            <!-- (Preview Saldo telah dihapus sesuai permintaan) -->
 
             <!-- Header User Profile (Flex Row agar menyamping di mobile) -->
             <div class="flex flex-row items-center gap-4 mb-6 border-b border-red-900 pb-4 pr-10">
@@ -279,7 +273,7 @@
 
     <script>
         // --- KONFIGURASI ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywEnvjavl8lkDGkjSqGHgw6UGIw1tAx-W213_TnRwdoq5ORm2rcZez8CZ2_Xo__n_B/exec'; 
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQ8dCevXebZqpcRaIcTVsHTznQtJpfcclXaKv8t-3RdOKage4SttB5hQfHBHhLolcE/exec'; 
         
         const USERS = {
             '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'Putri.jpg' },
@@ -313,7 +307,6 @@
                     const userData = JSON.parse(storedUser);
                     restoreSession(userData);
                     history.replaceState({ page: 'dashboard' }, '', '#dashboard');
-                    fetchSaldo();
                 }
             } else {
                 history.replaceState({ page: 'login' }, '', '');
@@ -351,7 +344,6 @@
                     localStorage.setItem('paib_login_time', new Date().getTime().toString());
                     
                     restoreSession(userData);
-                    fetchSaldo();
                     
                     document.getElementById('pageLoading').classList.add('hidden');
                     document.getElementById('browserLoader').style.width = "0%";
@@ -372,12 +364,6 @@
             document.getElementById('userAvatar').src = userData.photo;
             loginPage.classList.add('hidden');
             depositPage.classList.remove('hidden');
-        }
-
-        function fetchSaldo() {
-            fetch(GOOGLE_SCRIPT_URL).then(res => res.json()).then(data => {
-                if(data.saldo) document.getElementById('saldoPreview').innerText = data.saldo;
-            }).catch(err => console.log("Saldo fetch error", err));
         }
 
         function switchMode(mode) {
@@ -441,7 +427,6 @@
                     loadingOverlay.classList.add('hidden');
                     document.getElementById('successModal').classList.remove('hidden');
                     resetForm();
-                    fetchSaldo(); 
                 }, 1500);
             }).catch(err => {
                 loadingOverlay.classList.add('hidden');
@@ -498,8 +483,11 @@
             
             const bln = document.getElementById('filterBulan').value;
             const thn = document.getElementById('filterTahun').value;
+            
+            // ANTI-CACHE: Tambah ?t=timestamp
+            const timestamp = new Date().getTime();
 
-            fetch(GOOGLE_SCRIPT_URL).then(res => res.json()).then(data => {
+            fetch(GOOGLE_SCRIPT_URL + '?t=' + timestamp).then(res => res.json()).then(data => {
                 const rows = data.riwayat || [];
                 if(!rows || rows.length === 0) { container.innerHTML = '<p class="text-center text-gray-500">Belum ada data.</p>'; return; }
                 
@@ -526,44 +514,52 @@
             const container = document.getElementById('riwayatContent');
             if(data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500 mt-4">Data tidak ditemukan.</p>'; return; }
 
-            // A-J Format (Index 0-9)
-            // 0:No, 1:Masuk, 2:TglM, 3:Keluar, 4:TglK, 5:Item, 6:Harga, 7:Total, 8:Note, 9:Auth
-            let html = '<table><thead><tr><th class="text-white">Tanggal</th><th class="text-white">Keterangan</th><th class="text-green-500">Masuk</th><th class="text-red-500">Keluar</th><th class="text-blue-400 text-center">Informasi</th></tr></thead><tbody>';
+            // FORMAT: 0:No, 1:Masuk, 2:TglM, 3:Keluar, 4:TglK, 5:Item, 6:Harga, 7:Saldo, 8:Note, 9:Auth
+            // CONTAINER WRAPPER UNTUK SCROLL MOBILE
+            let html = '<div class="w-full overflow-x-auto border border-gray-800 rounded-lg">';
+            html += '<table><thead><tr><th class="text-white">Tanggal</th><th class="text-white">Keterangan</th><th class="text-green-500">Masuk</th><th class="text-red-500">Keluar</th><th class="text-blue-400 text-center">Info</th></tr></thead><tbody>';
             
             data.forEach((row, index) => {
                 let tgl = row[2] !== '-' ? row[2] : row[4];
                 let tglDisplay = convertToIndoDate(tgl);
                 let item = row[5];
-                let masuk = row[1] !== '-' ? formatRupiah(row[1]) : '-';
-                let keluar = row[3] !== '-' ? formatRupiah(row[3]) : '-';
                 
-                // FIX: Menangani Catatan Kosong
-                let note = (row[8] && row[8].toString().trim() !== "") ? row[8] : "-";
+                // ANTI-NAN FIX
+                let masuk = (row[1] && row[1] !== '-' && row[1] !== '0') ? formatRupiah(row[1]) : '-';
+                let keluar = (row[3] && row[3] !== '-' && row[3] !== '0') ? formatRupiah(row[3]) : '-';
+                
+                let note = row[8];
                 let auth = row[9];
                 let rowId = `note-${index}`;
 
                 html += `
                 <tr>
-                    <td class="text-white whitespace-nowrap text-xs py-3 align-middle">${tglDisplay}</td>
-                    <td class="text-white font-bold max-w-[80px] truncate text-xs align-middle">${item}</td>
-                    <td class="text-green-500 text-center text-xs align-middle">${masuk}</td>
-                    <td class="text-red-500 text-center text-xs align-middle">${keluar}</td>
-                    <td class="text-center align-middle">
-                        <button onclick="toggleNote('${rowId}')" class="text-gray-400 hover:text-white focus:outline-none transition-transform duration-300" id="btn-${rowId}">
+                    <td class="text-white whitespace-nowrap text-xs py-3 align-middle font-mono border-b border-gray-800">${tglDisplay}</td>
+                    <td class="text-white font-bold max-w-[120px] truncate text-xs align-middle border-b border-gray-800">${item}</td>
+                    <td class="text-green-500 text-xs align-middle border-b border-gray-800">${masuk}</td>
+                    <td class="text-red-500 text-xs align-middle border-b border-gray-800">${keluar}</td>
+                    <td class="text-center align-middle border-b border-gray-800">
+                        <button onclick="toggleNote('${rowId}')" class="text-gray-400 hover:text-white focus:outline-none transition-transform duration-300 p-2" id="btn-${rowId}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                         </button>
                     </td>
                 </tr>
                 <tr id="${rowId}" class="hidden note-row">
-                    <td colspan="5" class="px-4 py-2 text-xs text-gray-300 bg-black/40 border-b border-gray-800">
-                        <div class="flex flex-col gap-1">
-                            <div><span class="text-gray-400 text-[10px]">Catatan :</span> <span class="italic text-yellow-100">${note}</span></div>
-                            <div><span class="text-gray-400 text-[10px]">Otorisasi :</span> <span class="font-bold text-blue-500">${auth}</span></div>
+                    <td colspan="5" class="px-4 py-3 text-xs text-gray-300 bg-black/40 border-b border-gray-800">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-start gap-2">
+                                <span class="text-gray-500 text-[10px] uppercase w-16 shrink-0">Catatan:</span>
+                                <span class="italic text-yellow-100">${note}</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="text-gray-500 text-[10px] uppercase w-16 shrink-0">Otorisasi:</span>
+                                <span class="font-bold text-blue-500">${auth}</span>
+                            </div>
                         </div>
                     </td>
                 </tr>`;
             });
-            html += '</tbody></table>';
+            html += '</tbody></table></div>'; // TUTUP WRAPPER
             container.innerHTML = html;
         }
         
@@ -574,7 +570,14 @@
             btn.classList.toggle('rotate-180');
         }
 
-        function formatRupiah(angka) { return new Intl.NumberFormat('id-ID').format(angka); }
+        function formatRupiah(angka) { 
+            // ANTI-NAN FIX: Cek jika input valid sebelum format
+            if (!angka || angka === '-' || angka === 'Rp NaN') return '-';
+            // Bersihkan karakter non-angka
+            let clean = angka.toString().replace(/[^0-9]/g, '');
+            if (clean === '' || isNaN(clean)) return '-';
+            return new Intl.NumberFormat('id-ID').format(clean); 
+        }
         function togglePassword() { 
             const input = document.getElementById('passwordInput');
             const open = document.getElementById('eyeOpen');
