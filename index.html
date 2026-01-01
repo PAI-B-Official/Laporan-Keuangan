@@ -74,6 +74,11 @@
         /* Dropdown Note Animation */
         .note-row { transition: all 0.3s ease; background-color: rgba(0,0,0,0.5) !important; }
         .rotate-icon { transform: rotate(180deg); transition: transform 0.3s; }
+        
+        /* Accordion Style */
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-content.active { max-height: 200px; transition: max-height 0.3s ease-in; }
+        .rotate-arrow { transform: rotate(180deg); }
 
         #browserLoader { position: fixed; top: 0; left: 0; height: 3px; background: #ff0033; width: 0%; z-index: 9999; transition: width 0.2s ease; box-shadow: 0 0 10px #ff0033; }
         .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
@@ -124,19 +129,51 @@
         <!-- HALAMAN UTAMA -->
         <div id="depositPage" class="glass-panel p-6 sm:p-8 rounded-2xl shadow-neon hidden w-full relative transition-all duration-300">
             
-            <!-- (Preview Saldo telah dihapus sesuai permintaan) -->
+            <!-- Header User Profile (REVISI: Kiri Profil, Kanan Help) -->
+            <div class="flex flex-row items-start justify-between mb-6 border-b border-red-900 pb-4 relative">
+                <!-- KIRI: Avatar & Info -->
+                <div class="flex items-center gap-3">
+                    <div class="relative shrink-0">
+                        <img id="userAvatar" src="" alt="Profile" class="w-12 h-12 rounded-full border-2 border-red-500 object-cover shadow-md">
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                        <h2 id="displayUsername" class="text-base font-bold text-white leading-tight truncate w-40 sm:w-56">User Name</h2>
+                        <p id="displayUserID" class="text-xs font-mono text-gray-400">ID: 000000</p>
+                        <!-- Tombol Keluar pindah kesini -->
+                        <button onclick="handleLogout()" class="text-xs text-red-500 hover:text-red-300 text-left mt-1 underline underline-offset-2 w-max">Keluar</button>
+                    </div>
+                </div>
 
-            <!-- Header User Profile (Flex Row agar menyamping di mobile) -->
-            <div class="flex flex-row items-center gap-4 mb-6 border-b border-red-900 pb-4 pr-10">
-                <div class="relative shrink-0">
-                    <img id="userAvatar" src="" alt="Profile" class="w-12 h-12 rounded-full border-2 border-red-500 object-cover shadow-md">
+                <!-- KANAN: Help Icon & Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleHelp()" class="text-gray-400 hover:text-yellow-500 transition-colors focus:outline-none p-1.5 rounded-full hover:bg-white/5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    </button>
+                    
+                    <!-- Dropdown Revisi -->
+                    <div id="helpDropdown" class="absolute right-0 top-10 w-64 bg-[#0a0a0a] border border-red-900 rounded-lg shadow-2xl hidden z-[60] overflow-hidden origin-top-right transition-all">
+                        <div class="bg-red-900/20 p-3 border-b border-red-900/50 flex items-center gap-2">
+                             <span class="text-lg">💡</span>
+                             <h4 class="text-red-500 font-bold text-xs uppercase tracking-wider">Pusat Bantuan</h4>
+                        </div>
+                        <div class="p-3">
+                            <div class="border border-gray-800 rounded-lg overflow-hidden bg-black/40">
+                                <button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white p-3 bg-gray-900/50 transition-colors">
+                                    <span class="font-semibold">Cara Mengisi Data?</span>
+                                    <svg id="arrow-acc1" class="w-3 h-3 transition-transform duration-300 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                                <div id="acc1" class="accordion-content text-[11px] text-gray-400 bg-black/80">
+                                    <div class="p-3 border-t border-gray-800 leading-relaxed">
+                                        1. Pilih Tab <b>Masuk</b> atau <b>Keluar</b>.<br>
+                                        2. Isi nominal dan data lain dengan lengkap.<br>
+                                        3. Klik <b>Confirm</b> (Biru) untuk simpan.<br>
+                                        4. Tunggu konfirmasi sukses.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-grow min-w-0">
-                    <p class="text-[10px] text-gray-400 mb-0.5 uppercase tracking-wider">Otorisasi:</p>
-                    <h2 id="displayUsername" class="text-base font-bold text-white leading-tight truncate">User Name</h2>
-                    <p id="displayUserID" class="text-xs font-mono text-red-400 mt-0.5">ID: 000000</p>
-                </div>
-                <button onclick="handleLogout()" class="shrink-0 text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded border border-gray-600 transition-colors">Keluar</button>
             </div>
 
             <!-- MODE SWITCHER -->
@@ -145,7 +182,8 @@
                 <button id="btnKeluar" onclick="switchMode('keluar')" class="mode-btn text-red-500 pb-2 text-lg w-1/2 text-center">PENGELUARAN</button>
             </div>
 
-            <form id="depositForm" class="space-y-5">
+            <!-- FIX: Menggunakan Flex Gap menggantikan space-y-5 untuk mencegah layout shift -->
+            <form id="depositForm" class="flex flex-col gap-5">
                 <div id="sectionMasuk" class="space-y-5">
                     <div class="relative group">
                         <label class="block text-green-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Masuk</label>
@@ -203,15 +241,6 @@
                     <span class="text-2xl">CONFIRM</span> <span class="tracking-wider">❯❯❯</span>
                 </button>
             </form>
-            
-            <!-- HELP BUTTON -->
-            <div class="absolute top-4 right-4 z-30">
-                <button onclick="toggleHelp()" class="text-gray-400 hover:text-yellow-500 transition-colors focus:outline-none p-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></button>
-                <div id="helpDropdown" class="absolute right-0 mt-2 w-72 bg-black/95 border border-red-900 rounded-xl shadow-2xl p-4 hidden transform origin-top-right transition-all duration-300 scale-95 opacity-0 backdrop-blur-xl z-50">
-                    <h4 class="text-red-500 font-bold mb-3 border-b border-gray-700 pb-2 text-sm uppercase tracking-wider">Pusat Bantuan</h4>
-                    <div class="mb-2"><button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white group py-1"><span>📝 Petunjuk</span><svg id="arrow-acc1" class="w-3 h-3 group-hover:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div id="acc1" class="accordion-content text-[10px] text-gray-400 mt-1 pl-2 border-l border-gray-700">Pilih Tab Pemasukan/Pengeluaran. Isi data dengan lengkap. Tombol Biru untuk simpan ke Database, Hijau untuk WA.</div></div>
-                </div>
-            </div>
         </div>
 
         <!-- MODAL RIWAYAT (No Calendar) -->
@@ -273,7 +302,7 @@
 
     <script>
         // --- KONFIGURASI ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQ8dCevXebZqpcRaIcTVsHTznQtJpfcclXaKv8t-3RdOKage4SttB5hQfHBHhLolcE/exec'; 
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwy88Ww10HSxwsa5f9RMKXPUv0Ikh3634HGm9v_Sidf6iYffP7OG8EtPsFunXceZcES/exec'; 
         
         const USERS = {
             '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'Putri.jpg' },
@@ -548,12 +577,12 @@
                     <td colspan="5" class="px-4 py-3 text-xs text-gray-300 bg-black/40 border-b border-gray-800">
                         <div class="flex flex-col gap-2">
                             <div class="flex items-start gap-2">
-                                <span class="text-gray-500 text-[10px] uppercase w-16 shrink-0">Catatan:</span>
-                                <span class="italic text-yellow-100">${note}</span>
+                                <span class="font-bold text-yellow-500 text-[13px] uppercase w16 shrink-0">Catatan :</span>
+                                <span class="italic text-gray-500">${note}</span>
                             </div>
                             <div class="flex items-start gap-2">
-                                <span class="text-gray-500 text-[10px] uppercase w-16 shrink-0">Otorisasi:</span>
-                                <span class="font-bold text-blue-500">${auth}</span>
+                                <span class="font-bold text-blue-500 text-[13px] uppercase w16 shrink-0">Otorisasi :</span>
+                                <span class="text-blue-500">${auth}</span>
                             </div>
                         </div>
                     </td>
@@ -603,9 +632,13 @@
         function toggleHelp() { 
             const dropdown = document.getElementById('helpDropdown');
             dropdown.classList.toggle('hidden'); 
-            setTimeout(()=>dropdown.classList.toggle('opacity-100'),10); 
         }
-        function toggleAccordion(id) { document.getElementById(id).classList.toggle('active'); document.getElementById('arrow-'+id).classList.toggle('rotate-arrow'); }
+        function toggleAccordion(id) { 
+            const content = document.getElementById(id);
+            const arrow = document.getElementById('arrow-' + id);
+            content.classList.toggle('active');
+            arrow.classList.toggle('rotate-arrow');
+        }
         
         function showMinDepositModal() { 
             document.getElementById('minDepositModal').classList.remove('hidden'); 
@@ -633,8 +666,11 @@
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('helpDropdown');
             const button = document.querySelector('button[onclick="toggleHelp()"]');
-            if (!dropdown.classList.contains('hidden') && !dropdown.contains(event.target) && !button.contains(event.target)) {
-                toggleHelp();
+            // Cek apakah dropdown dan button ada di halaman saat ini
+            if (dropdown && button) {
+                if (!dropdown.classList.contains('hidden') && !dropdown.contains(event.target) && !button.contains(event.target)) {
+                    toggleHelp();
+                }
             }
         });
     </script>
