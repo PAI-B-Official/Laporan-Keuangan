@@ -80,14 +80,14 @@
         
         .checkmark-circle { animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-
-        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
     </style>
 </head>
 <body class="p-4">
 
+    <!-- BROWSER LOADING BAR -->
     <div id="browserLoader"></div>
 
+    <!-- Container Utama -->
     <div class="w-full max-w-md relative z-10 flex flex-col gap-4">
         
         <!-- HEADER -->
@@ -111,16 +111,16 @@
                     <div class="relative">
                         <input type="password" id="passwordInput" required placeholder="Masukkan Password" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 transition-all duration-300 input-glow pr-12">
                         
-                        <!-- ICON MATA BARU (Interactive) -->
+                        <!-- ICON MATA BARU -->
                         <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white p-2 focus:outline-none">
-                            <!-- Mata Tertutup (Default) -->
-                            <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.059 10.059 0 013.999-5.125m3.75-2.13A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.059 10.059 0 01-3.328 5.75m-3.414-3.414a3 3 0 01-4.242 0m4.242-4.242l4.242 4.242M1 1l22 22" />
+                            <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                <path d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-18-18ZM22.676 12.553a11.249 11.249 0 0 1-2.631 4.31l-3.099-3.099a5.25 5.25 0 0 0-6.71-6.71L7.759 4.577a11.217 11.217 0 0 1 4.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113Z" />
+                                <path d="M15.75 12c0 .18-.013.357-.037.53l-4.244-4.243A3.75 3.75 0 0 1 15.75 12ZM12.53 15.713l-4.243-4.244a3.75 3.75 0 0 0 4.243 4.243Z" />
+                                <path d="M6.75 12c0-.619.107-1.213.304-1.764l-3.1-3.1a11.25 11.25 0 0 0-2.63 4.31c-.12.362-.12.752 0 1.114 1.489 4.467 5.704 7.69 10.675 7.69 1.5 0 2.933-.294 4.242-.827l-2.477-2.477A5.25 5.25 0 0 1 6.75 12Z" />
                             </svg>
-                            <!-- Mata Terbuka -->
-                            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 hidden">
+                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.489 4.467-5.705 7.69-10.675 7.69-4.97 0-9.185-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd" />
                             </svg>
                         </button>
                     </div>
@@ -155,7 +155,7 @@
             <form id="depositForm" class="space-y-5">
                 <div id="sectionMasuk" class="space-y-5">
                     <div class="relative group">
-                        <label class="block text-green-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Masuk</label>
+                        <label class="block text-green-400 text-sm mb-2 tracking-widest uppercase font-bold">Nominal Setor</label>
                         <div class="relative flex items-center bg-black border-2 border-green-900 rounded-xl overflow-hidden">
                             <span class="pl-4 text-green-500 text-3xl font-digital select-none pb-1">Rp</span>
                             <input type="text" inputmode="numeric" id="nominalMasuk" placeholder="0" oninput="formatInputCurrency(this)" class="w-full bg-transparent border-none py-3.5 px-4 text-right text-4xl text-white font-digital tracking-widest h-full focus:outline-none">
@@ -183,7 +183,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-300 text-sm mb-2 font-medium">Item / Jenis</label>
-                        <input type="text" id="itemKeluar" placeholder="Contoh: Spidol" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 input-glow">
+                        <input type="text" id="itemKeluar" placeholder="Contoh: Beli Spidol" class="w-full bg-black/50 border border-gray-700 rounded-lg py-3 px-4 text-white focus:border-red-500 input-glow">
                     </div>
                     <div class="relative group">
                         <label class="block text-gray-300 text-sm mb-2 font-medium">Harga Barang</label>
@@ -195,27 +195,28 @@
                 </div>
 
                 <div>
-                    <label class="block text-gray-300 text-sm mb-2 font-medium">Catatan (Opsional)</label>
-                    <textarea id="catatanUmum" rows="2" placeholder="Detail Keterangan" class="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:border-gray-500 input-glow text-sm"></textarea>
+                    <label class="block text-gray-300 text-sm mb-2 font-medium">Note (Catatan)</label>
+                    <textarea id="catatanUmum" rows="2" placeholder="Isi strip (-) jika kosong" class="w-full bg-black/50 border border-gray-700 rounded-lg py-2 px-4 text-white focus:border-gray-500 input-glow text-sm"></textarea>
                 </div>
 
                 <div class="text-center pt-2">
                     <button type="button" onclick="openRiwayat()" class="text-sm text-yellow-500 hover:text-yellow-400 underline underline-offset-4 flex items-center justify-center gap-1 mx-auto transition-colors p-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
-                        Lihat Riwayat
+                        Lihat Riwayat Transaksi
                     </button>
                 </div>
 
                 <button type="button" onclick="kirimConfirm()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold py-4 px-4 rounded-xl shadow-lg transform active:scale-95 transition-all flex justify-center items-center gap-2 mt-4">
-                    <span class="text-2xl">CONFIRM</span> <span class="tracking-wider">❯❯❯</span>
+                    <span class="text-2xl">✅</span> <span class="tracking-wider">CONFIRM</span>
                 </button>
             </form>
             
+            <!-- HELP BUTTON -->
             <div class="absolute top-4 right-4 z-30">
                 <button onclick="toggleHelp()" class="text-gray-400 hover:text-yellow-500 transition-colors focus:outline-none p-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></button>
                 <div id="helpDropdown" class="absolute right-0 mt-2 w-72 bg-black/95 border border-red-900 rounded-xl shadow-2xl p-4 hidden transform origin-top-right transition-all duration-300 scale-95 opacity-0 backdrop-blur-xl z-50">
                     <h4 class="text-red-500 font-bold mb-3 border-b border-gray-700 pb-2 text-sm uppercase tracking-wider">Pusat Bantuan</h4>
-                    <div class="mb-2"><button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white group py-1"><span>📝 Petunjuk</span><svg id="arrow-acc1" class="w-3 h-3 group-hover:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div id="acc1" class="accordion-content text-[10px] text-gray-400 mt-1 pl-2 border-l border-gray-700">Pilih menu Pemasukan / Pengerluaran, lalu isi Nominal sesuai kebutuhan dan isi juga detail lain-nya sesuai judul kolom yang sudah tertera pada Laporan KAS PAI B, Jika dirasa sudah yakin maka silahkan klik Confirm agar data masuk ke Server KAS PAI B. Untuk melihat status-nya bisa klik Lihat Riwayat.</div></div>
+                    <div class="mb-2"><button onclick="toggleAccordion('acc1')" class="w-full flex justify-between items-center text-xs text-left text-gray-300 hover:text-white group py-1"><span>📝 Petunjuk</span><svg id="arrow-acc1" class="w-3 h-3 group-hover:text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button><div id="acc1" class="accordion-content text-[10px] text-gray-400 mt-1 pl-2 border-l border-gray-700">Pilih Tab Pemasukan/Pengeluaran. Isi data dengan lengkap. Tombol Biru untuk simpan ke Database, Hijau untuk WA.</div></div>
                 </div>
             </div>
         </div>
@@ -240,9 +241,9 @@
                         <option value="2025">2025</option><option value="2024">2024</option>
                     </select>
                 </div>
+                <!-- HAPUS KALENDER SESUAI PERMINTAAN -->
                 <div class="flex gap-2 items-center flex-shrink-0">
-                    <input type="date" id="filterTanggal" class="bg-black text-white border border-gray-700 rounded px-2 py-2 text-xs w-28 sm:w-32">
-                    <button onclick="fetchRiwayat()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded text-xs font-bold active:scale-95 transition-transform">Cari</button>
+                    <button onclick="fetchRiwayat()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-xs font-bold active:scale-95 transition-transform">Cari Data</button>
                 </div>
             </div>
 
@@ -270,7 +271,7 @@
                 </div>
             </div>
             <h3 class="text-xl font-bold text-cyan-400 mb-2">Sukses!</h3>
-            <p class="text-gray-300 text-sm mb-6">Data Terkirim, Silahkan lihat WEB Kelas</p>
+            <p class="text-gray-300 text-sm mb-6">Data tersimpan di Database.</p>
             <button onclick="lanjutKeWA()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition-colors shadow-lg active:scale-95">Lanjut ke WhatsApp</button>
         </div>
     </div>
@@ -283,7 +284,7 @@
 
     <script>
         // --- KONFIGURASI ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzRAhAlDcQU6UVXBd7wH9DbLsT8C1uBLJHUWsieZQcx3BNOrt27PG-UzZGVF_jqAbJp/exec'; 
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxV43ZKYFS_1yemectRKTcphwYx721Lc1rYw02WqovK2kyi-GRnN6U0AM_f58IwlY6Jtw/exec'; 
         
         const USERS = {
             '2511061': { name: 'Putri Dwi Astuti', password: 'Bendahara 1', photo: 'Putri.jpg' },
@@ -295,6 +296,7 @@
         let currentMode = 'masuk'; 
         let tempWAData = null;
 
+        // Elements
         const loginPage = document.getElementById('loginPage');
         const depositPage = document.getElementById('depositPage');
         const loadingOverlay = document.getElementById('loadingOverlay');
@@ -304,12 +306,22 @@
         function disableScroll() { document.body.classList.add('modal-open'); }
         function enableScroll() { document.body.classList.remove('modal-open'); }
 
+        // --- HISTORY MANAGEMENT (AUTO LOGOUT 24H) ---
         window.addEventListener('load', () => { 
             const storedUser = localStorage.getItem('paib_user');
             if (storedUser) {
-                const userData = JSON.parse(storedUser);
-                restoreSession(userData);
-                history.replaceState({ page: 'dashboard' }, '', '#dashboard');
+                const sessionData = JSON.parse(storedUser);
+                const now = new Date().getTime();
+                
+                // Cek kadaluarsa (24 Jam)
+                if (now < sessionData.expiry) {
+                    restoreSession(sessionData.user);
+                    history.replaceState({ page: 'dashboard' }, '', '#dashboard');
+                } else {
+                    // Sesi habis, hapus data
+                    localStorage.removeItem('paib_user');
+                    history.replaceState({ page: 'login' }, '', '');
+                }
             } else {
                 history.replaceState({ page: 'login' }, '', '');
             }
@@ -348,7 +360,13 @@
                         photo: USERS[u].photo
                     };
                     
-                    localStorage.setItem('paib_user', JSON.stringify(userData));
+                    // Simpan sesi dengan waktu kadaluarsa 24 jam (86400000 ms)
+                    const sessionData = {
+                        user: userData,
+                        expiry: new Date().getTime() + 86400000 
+                    };
+                    
+                    localStorage.setItem('paib_user', JSON.stringify(sessionData));
                     restoreSession(userData);
                     
                     document.getElementById('pageLoading').classList.add('hidden');
@@ -400,21 +418,20 @@
             const rawNominal = currentMode === 'masuk' ? document.getElementById('nominalMasuk').value.replace(/\D/g, '') : document.getElementById('nominalKeluar').value.replace(/\D/g, '');
             const nominalFmt = currentMode === 'masuk' ? document.getElementById('nominalMasuk').value : document.getElementById('nominalKeluar').value;
 
-            if(!rawNominal) { alert("Lengkapi Formulir Dahulu!"); return; }
+            if(!rawNominal) { alert("Isi nominal dulu!"); return; }
             if(parseInt(rawNominal) < 10000) { showMinDepositModal(); return; }
 
-            // Sanitasi Harga: Hapus titik
             const rawHarga = document.getElementById('hargaBarang').value.replace(/\D/g, '');
 
             const dataKirim = {
                 tipe: currentMode,
                 nama: document.getElementById('displayUsername').innerText,
                 nim: document.getElementById('displayUserID').innerText.replace('ID: ', ''),
-                nominal: parseInt(rawNominal), // Kirim Angka Murni
+                nominal: parseInt(rawNominal),
                 catatan: document.getElementById('catatanUmum').value,
                 metode: document.getElementById('metodeMasuk').value,
                 item: document.getElementById('itemKeluar').value,
-                harga: rawHarga ? parseInt(rawHarga) : 0 // Kirim Angka Murni
+                harga: rawHarga ? parseInt(rawHarga) : 0
             };
 
             if(currentMode === 'keluar' && !dataKirim.item) { alert("Isi Item Pengeluaran!"); return; }
@@ -479,17 +496,28 @@
 
         function convertToIndoDate(dateStr) {
             if(!dateStr || dateStr === '-') return '-';
-            // dateStr format expected: 30dec2025
-            // Convert to 30-Des-2025
-            // Since data cleaning in Apps Script ensures "30dec2025" or "30dec", we parse that.
             
-            // Basic parsing assuming ddMMMyyyy
+            // Format pembersihan: Jika ada T17... (ISO String), ambil bagian tanggal saja
+            if(dateStr.includes('T')) {
+                dateStr = dateStr.split('T')[0]; // Ambil 2025-12-30
+                const parts = dateStr.split('-'); // [2025, 12, 30]
+                // Ubah ke format dd-MMM-yyyy
+                if(parts.length === 3) {
+                    const year = parts[0];
+                    const month = parseInt(parts[1]);
+                    const day = parts[2];
+                    const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+                    return `${day}-${months[month-1]}-${year}`;
+                }
+            }
+
+            // Jika formatnya ddMMMyyyy (dari script lama) atau dd/mm/yyyy
+            // Biarkan regex lama menangani yang ini
             const match = dateStr.match(/^(\d{1,2})([A-Za-z]{3})(\d{4})$/);
             if(match) {
                 const day = match[1];
                 const mon = match[2];
                 const year = match[3];
-                // Map Eng to Indo
                 const mapBulan = {
                     "jan":"Jan", "feb":"Feb", "mar":"Mar", "apr":"Apr", "may":"Mei", "jun":"Jun",
                     "jul":"Jul", "aug":"Agu", "sep":"Sep", "oct":"Okt", "nov":"Nov", "dec":"Des"
@@ -506,32 +534,12 @@
             
             const bln = document.getElementById('filterBulan').value;
             const thn = document.getElementById('filterTahun').value;
-            const tglSpecific = document.getElementById('filterTanggal').value; 
 
             fetch(GOOGLE_SCRIPT_URL).then(res => res.json()).then(data => {
                 if(!data || data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500">Belum ada data.</p>'; return; }
                 
                 let filtered = data;
-                // Note: filtering logic here relies on string matching the new format "30dec2025"
-                if(tglSpecific) {
-                    const [sY, sM, sD] = tglSpecific.split('-');
-                    filtered = data.filter(row => {
-                        let tgl = row[2] !== '-' ? row[2] : row[4];
-                        if(!tgl || tgl === '-') return false;
-                        
-                        // Parse "30dec2025"
-                        // Since we saved it as "30dec2025" (lowercase) in backend
-                        const dStr = parseInt(sD).toString();
-                        const mNames = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
-                        const mStr = mNames[parseInt(sM)-1];
-                        
-                        // Check exact match or contains
-                        // "30dec2025" contains "30", "dec", "2025"
-                        // Regex check is safer: ^30dec2025$
-                        const pattern = new RegExp(`^0?${sD}${mStr}${sY}$`, 'i');
-                        return pattern.test(tgl);
-                    });
-                } else if(bln || thn) {
+                if(bln || thn) {
                     filtered = data.filter(row => {
                         let tgl = row[2] !== '-' ? row[2] : row[4];
                         if(!tgl || tgl === '-') return false;
@@ -539,10 +547,17 @@
                         let matchBulan = true;
                         let matchTahun = true;
                         
+                        // Cek apakah string mengandung tahun/bulan (cara sederhana)
+                        // Karena format tanggal di database bisa '30dec2025' atau ISO string
+                        const tglLower = tgl.toLowerCase();
+                        
                         if(bln) {
                             const mNames = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+                            // Konversi angka bulan 01 -> index 0 -> jan
                             const mStr = mNames[parseInt(bln)-1];
-                            matchBulan = tgl.toLowerCase().includes(mStr);
+                            // Cek juga format angka jika database menyimpan ISO string (e.g. 2025-12...)
+                            const mNum = bln; 
+                            matchBulan = tglLower.includes(mStr) || tgl.includes(`-${mNum}-`);
                         }
                         if(thn) {
                             matchTahun = tgl.includes(thn);
@@ -560,12 +575,12 @@
             const container = document.getElementById('riwayatContent');
             if(data.length === 0) { container.innerHTML = '<p class="text-center text-gray-500 mt-4">Data tidak ditemukan.</p>'; return; }
 
-            // FORMAT BARU (A-J)
-            // Index: 0:No, 1:Masuk, 2:TglM, 3:Keluar, 4:TglK, 5:Item, 6:Harga, 7:Note, 8:Skip, 9:Auth
             let html = '<table><thead><tr><th class="text-white">Tgl</th><th class="text-white">Ket</th><th class="text-right text-green-500">Masuk</th><th class="text-right text-red-500">Keluar</th><th class="text-gray-400">Note</th><th class="text-blue-400">Auth</th></tr></thead><tbody>';
             data.forEach(row => {
+                // Mapping A-J
                 let tgl = row[2] !== '-' ? row[2] : row[4];
-                let tglDisplay = convertToIndoDate(tgl);
+                let tglDisplay = convertToIndoDate(tgl); // Membersihkan format tanggal
+                
                 let item = row[5];
                 let masuk = row[1] !== '-' ? formatRupiah(row[1]) : '-';
                 let keluar = row[3] !== '-' ? formatRupiah(row[3]) : '-';
@@ -647,7 +662,3 @@
     </script>
 </body>
 </html>
-
-
-
-
