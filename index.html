@@ -469,9 +469,9 @@
             if(!tempWAData) return;
             let pesan = '';
             if(tempWAData.tipe === 'masuk') {
-                pesan = `*LAPORAN PEMASUKAN KAS PAI B*\n~~~~~~~~~~~~~~~~~~~~~~\n👤 Nama: ${tempWAData.nama}\n🪪 NIM: ${tempWAData.nim}\n💰 Nominal: Rp${tempWAData.nominalFmt}\n💳 Metode: ${tempWAData.metode}\n📝 Note: ${tempWAData.catatan || '-'}\n🔑 Otorisasi: ${tempWAData.nama}\n______________________\n_Admin, data sudah masuk database!_`;
+                pesan = `*LAPORAN PEMASUKAN KAS PAI B*\n~~~~~~~~~~~~~~~~~~~~~~\n👤 Nama: ${tempWAData.nama}\n🪪 NIM : ${tempWAData.nim}\n💰 Nominal : Rp${tempWAData.nominalFmt}\n💳 Metode : ${tempWAData.metode}\n📝 Note : ${tempWAData.catatan || '-'}\n🔑 Otorisasi : ${tempWAData.nama}\n___________________________\n_Admin uang masuk, Silahkan di Check !_`;
             } else {
-                pesan = `*LAPORAN PENGELUARAN KAS PAI B*\n~~~~~~~~~~~~~~~~~~~~~~\n👤 Otorisasi: ${tempWAData.nama}\n📉 Nominal: Rp${tempWAData.nominalFmt}\n🛍️ Item: ${tempWAData.item}\n🏷️ Harga: ${tempWAData.harga}\n📝 Note: ${tempWAData.catatan || '-'}\n______________________\n_Admin, pengeluaran tercatat._`;
+                pesan = `*LAPORAN PENGELUARAN KAS PAI B*\n~~~~~~~~~~~~~~~~~~~~~~\n👤 Otorisasi: ${tempWAData.nama}\n📉 Nominal : Rp${tempWAData.nominalFmt}\n🛍️ Item : ${tempWAData.item}\n🏷️ Harga : ${tempWAData.harga}\n📝 Note : ${tempWAData.catatan || '-'}\n___________________________\n_Admin uang keluar, Silahkan di check ._`;
             }
             const waLink = `https://wa.me/${ADMIN_PHONE}?text=${encodeURIComponent(pesan)}`;
             window.open(waLink, '_blank');
@@ -676,4 +676,5 @@
     </script>
 </body>
 </html>
+
 
